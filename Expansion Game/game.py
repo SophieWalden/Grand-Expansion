@@ -141,13 +141,13 @@ def menu(board,selection):
         gameDisplay.blit(text_surface, (420, 110))
 
     #Magic
-    if UpgradeInfo["Map Upgrades"][0][3] == True:
+    if UpgradeInfo["Map Upgrades"][0][3] == True and 1 == 2:
         pygame.draw.rect(gameDisplay,(228,217,111),(255,15,50,50),0)
         game_font = pygame.freetype.Font("Font.ttf", 50)
-        text_surface, rect = game_font.render(("Mqtid: "), (0, 0, 0))
+        text_surface, rect = game_font.render(("Electricity: "), (0, 0, 0))
         gameDisplay.blit(text_surface, (310, 20))
         game_font = pygame.freetype.Font("Font.ttf", 35)
-        text_surface, rect = game_font.render((shorten(ResourceCount["Mqgic"])), (0, 0, 0))
+        text_surface, rect = game_font.render((shorten(ResourceCount["Electricity"])), (0, 0, 0))
         gameDisplay.blit(text_surface, (400, 30))
         
     if selection != [-1,-1]:
