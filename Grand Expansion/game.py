@@ -1,5 +1,5 @@
 try:
-    import time, random, sys
+    import time, random, sys, os
 except:
     print("Make sure to have the time module")
     sys.exit()
@@ -27,28 +27,35 @@ clock = pygame.time.Clock()
 
 gameDisplay = pygame.display.set_mode((DisplayWidth,DisplayHeight))
 pygame.display.set_caption("Grand Expansion")
+font_23 = pygame.freetype.Font("Font.ttf", 23)
+font_25 = pygame.freetype.Font("Font.ttf", 25)
+font_30 = pygame.freetype.Font("Font.ttf", 30)
+font_35 = pygame.freetype.Font("Font.ttf", 35)
+font_40 = pygame.freetype.Font("Font.ttf", 40)
+font_50 = pygame.freetype.Font("Font.ttf", 50)
+font_75 = pygame.freetype.Font("Font.ttf", 75)
+font_150 = pygame.freetype.Font("Font.ttf", 150)
 
 #Loading the images
 
-try:
-    Forest1 = pygame.image.load("Images/Forest1.png")
-    Forest2 = pygame.image.load("Images/Forest2.png")
-    Forest3 = pygame.image.load("Images/Forest3.png")
-    Forest4 = pygame.image.load("Images/Forest4.png")
-    Quarry1 = pygame.image.load("Images/Quarry1.png")
-    Quarry2 = pygame.image.load("Images/Quarry2.png")
-    Quarry3 = pygame.image.load("Images/Quarry3.png")
-    Quarry4 = pygame.image.load("Images/Quarry4.png")
-    Water1 = pygame.image.load("Images/Water1.png")
-    Water2 = pygame.image.load("Images/Water2.png")
-    Water3 = pygame.image.load("Images/Water3.png")
-    Dam1 = pygame.image.load("Images/Dam1.png")
-    Dam2 = pygame.image.load("Images/Dam2.png")
-except Exception:
-    print("There was an error in loading the images\nAsk for help if you don't know why this happened")
-    sys.exit()
-    
+def load_images(path_to_directory):
+    """Load all images from subdirectories and return them as a dict."""
+    images = {}
+    for dirpath, dirnames, filenames in os.walk(path_to_directory):
+        for name in filenames:
+            if name.endswith('.png'):
+                key = name[:-4]
+                img = pygame.image.load(os.path.join(dirpath, name)).convert()
+                images[key] = img
+    return images
 
+global Images
+
+Images = load_images("Images")
+
+#Function to change text size
+def SysFont(name, size, bold=0, italic=0, constructor=None):
+    pygame.ftfont.SysFont(name, size, bold=False, italic=False, constructor=None)
 
 def shorten(Num):
     count = 0
@@ -142,81 +149,64 @@ def menu(board,selection):
 
     #Wood
     pygame.draw.rect(gameDisplay,(165,42,42),(5,15,50,50),0)
-    game_font = pygame.freetype.Font("Font.ttf", 50)
-    text_surface, rect = game_font.render(("Wood: "), (0, 0, 0))
+    text_surface, rect = font_50.render(("Wood: "), (0, 0, 0))
     gameDisplay.blit(text_surface, (60, 20))
-    game_font = pygame.freetype.Font("Font.ttf", 35)
-    text_surface, rect = game_font.render((shorten(ResourceCount["Wood"])), (0, 0, 0))
+    text_surface, rect = font_35.render((shorten(ResourceCount["Wood"])), (0, 0, 0))
     gameDisplay.blit(text_surface, (160, 30))
 
     #Stones
     if MaterialsEarned["Stones"] >= 1:
         pygame.draw.rect(gameDisplay,(50,50,50),(5,95,50,50),0)
-        game_font = pygame.freetype.Font("Font.ttf", 50)
-        text_surface, rect = game_font.render(("Stones: "), (0, 0, 0))
+        text_surface, rect = font_50.render(("Stones: "), (0, 0, 0))
         gameDisplay.blit(text_surface, (60, 100))
-        game_font = pygame.freetype.Font("Font.ttf", 30)
-        text_surface, rect = game_font.render((shorten(ResourceCount["Stones"])), (0, 0, 0))
+        text_surface, rect = font_30.render((shorten(ResourceCount["Stones"])), (0, 0, 0))
         gameDisplay.blit(text_surface, (182, 113))
 
     #Food:
     if MaterialsEarned["Food"] >= 1:
         pygame.draw.rect(gameDisplay,(228,217,111),(255,15,50,50),0)
-        game_font = pygame.freetype.Font("Font.ttf", 50)
-        text_surface, rect = game_font.render(("Food: "), (0, 0, 0))
+        text_surface, rect = font_50.render(("Food: "), (0, 0, 0))
         gameDisplay.blit(text_surface, (310, 20))
-        game_font = pygame.freetype.Font("Font.ttf", 35)
-        text_surface, rect = game_font.render((shorten(ResourceCount["Food"])), (0, 0, 0))
+        text_surface, rect = font_35.render((shorten(ResourceCount["Food"])), (0, 0, 0))
         gameDisplay.blit(text_surface, (400, 30))
 
     #Metal
     if MaterialsEarned["Metal"] >= 1:
         pygame.draw.rect(gameDisplay,(125,125,125),(255,95,50,50),0)
-        game_font = pygame.freetype.Font("Font.ttf", 50)
-        text_surface, rect = game_font.render(("Metal: "), (0, 0, 0))
+        text_surface, rect = font_50.render(("Metal: "), (0, 0, 0))
         gameDisplay.blit(text_surface, (310, 100))
-        game_font = pygame.freetype.Font("Font.ttf", 35)
-        text_surface, rect = game_font.render((shorten(ResourceCount["Metal"])), (0, 0, 0))
+        text_surface, rect = font_35.render((shorten(ResourceCount["Metal"])), (0, 0, 0))
         gameDisplay.blit(text_surface, (420, 110))
 
     #Electricity
     if UnUpgradable[0] != "Water":
         pygame.draw.rect(gameDisplay,(255,255,0),(505,15,50,50),0)
-        game_font = pygame.freetype.Font("Font.ttf", 30)
-        text_surface, rect = game_font.render(("Electricity: "), (0, 0, 0))
+        text_surface, rect = font_30.render(("Electricity: "), (0, 0, 0))
         gameDisplay.blit(text_surface, (560, 30))
-        game_font = pygame.freetype.Font("Font.ttf", 35)
-        text_surface, rect = game_font.render((shorten(ResourceCount["Electricity"])), (0, 0, 0))
+        text_surface, rect = font_35.render((shorten(ResourceCount["Electricity"])), (0, 0, 0))
         gameDisplay.blit(text_surface, (680, 27))
         
     if selection != [-1,-1]:
         if board[selection[1]][selection[0]] == "Dam":
-            game_font = pygame.freetype.Font("Font.ttf", 75)
-            text_surface, rect = game_font.render(("Waterwheel"), (0, 0, 0))
+            text_surface, rect = font_75.render(("Waterwheel"), (0, 0, 0))
             gameDisplay.blit(text_surface, (665, 175))
         if board[selection[1]][selection[0]] == "Grass":
-            game_font = pygame.freetype.Font("Font.ttf", 75)
-            text_surface, rect = game_font.render(("Grass"), (0, 0, 0))
+            text_surface, rect = font_75.render(("Grass"), (0, 0, 0))
             gameDisplay.blit(text_surface, (750, 175))
         if board[selection[1]][selection[0]] == "Water":
-            game_font = pygame.freetype.Font("Font.ttf", 75)
-            text_surface, rect = game_font.render(("Water"), (0, 0, 0))
+            text_surface, rect = font_75.render(("Water"), (0, 0, 0))
             gameDisplay.blit(text_surface, (750, 175))
         if board[selection[1]][selection[0]] == "Forest Lv1" or board[selection[1]][selection[0]] == "Forest Lv2" or board[selection[1]][selection[0]] == "Forest Lv3":
-            game_font = pygame.freetype.Font("Font.ttf", 75)
-            text_surface, rect = game_font.render(("Forest"), (0, 0, 0))
+            text_surface, rect = font_75.render(("Forest"), (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
         if board[selection[1]][selection[0]] == "Quarry Lv1" or board[selection[1]][selection[0]] == "Quarry Lv2" or board[selection[1]][selection[0]] == "Quarry Lv3":
-            game_font = pygame.freetype.Font("Font.ttf", 75)
-            text_surface, rect = game_font.render(("Quarry"), (0, 0, 0))
+            text_surface, rect = font_75.render(("Quarry"), (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
         if board[selection[1]][selection[0]] == "City":
-            game_font = pygame.freetype.Font("Font.ttf", 75)
-            text_surface, rect = game_font.render(("City"), (0, 0, 0))
+            text_surface, rect = font_75.render(("City"), (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
         if board[selection[1]][selection[0]] == "Factory":
-            game_font = pygame.freetype.Font("Font.ttf", 75)
-            text_surface, rect = game_font.render(("Factory"), (0, 0, 0))
+            text_surface, rect = font_75.render(("Factory"), (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
 
         stop = False
@@ -231,50 +221,47 @@ def menu(board,selection):
             else:
                 pygame.draw.rect(gameDisplay,(255,0,0),(725,550,200,100),0)
             
-            game_font = pygame.freetype.Font("Font.ttf", 50)
-            text_surface, rect = game_font.render(("Upgrade"), (0, 0, 0))
+            text_surface, rect = font_50.render(("Upgrade"), (0, 0, 0))
             gameDisplay.blit(text_surface, (760, 575))
 
         
-            game_font = pygame.freetype.Font("Font.ttf", 50)
-            text_surface, rect = game_font.render(("Current Production: "), (0, 0, 0))
+            text_surface, rect = font_50.render(("Current Production: "), (0, 0, 0))
             gameDisplay.blit(text_surface, (650, 250))
             if len(UpgradeInfo[board[selection[1]][selection[0]]]) == 3:
-                text_surface, rect = game_font.render((str(UpgradeInfo[board[selection[1]][selection[0]]][1])), (0, 0, 0))
+                text_surface, rect = font_50.render((str(UpgradeInfo[board[selection[1]][selection[0]]][1])), (0, 0, 0))
             else:
-                text_surface, rect = game_font.render((str(UpgradeInfo[board[selection[1]][selection[0]]][2])), (0, 0, 0))
+                text_surface, rect = font_50.render((str(UpgradeInfo[board[selection[1]][selection[0]]][2])), (0, 0, 0))
             if board[selection[1]][selection[0]] != "Water":
                 gameDisplay.blit(text_surface, (750, 325))
             else:
                 gameDisplay.blit(text_surface, (730, 325))
 
             pygame.draw.line(gameDisplay,(50,50,50),(640,400),(1000,400),5)
-            if board[selection[1]][selection[0]] != "Water":
-                game_font = pygame.freetype.Font("Font.ttf", 50)
-            else:
-                game_font = pygame.freetype.Font("Font.ttf", 40)
             if len(UpgradeInfo[board[selection[1]][selection[0]]]) == 3:
-                text_surface, rect = game_font.render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][2])), (0, 0, 0))
+                text_surface, rect = font_50.render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][2])), (0, 0, 0))
                 gameDisplay.blit(text_surface, (670, 450))
             else:
-                text_surface, rect = game_font.render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][3])), (0, 0, 0))
+                if board[selection[1]][selection[0]] != "Water":
+                    text_surface, rect = font_50.render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][3])), (0, 0, 0))
+                else:
+                    text_surface, rect = font_40.render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][3])), (0, 0, 0))
+
                 if board[selection[1]][selection[0]] != "City":
                     gameDisplay.blit(text_surface, (660, 410))
                 else:
                     gameDisplay.blit(text_surface, (670, 410))
 
-            game_font = pygame.freetype.Font("Font.ttf", 50)
                    
             if len(UpgradeInfo[board[selection[1]][selection[0]]]) == 3:
-                text_surface, rect = game_font.render(("Cost: " + str(UpgradeInfo[board[selection[1]][selection[0]]][0])), (0, 0, 0))
+                text_surface, rect = font_50.render(("Cost: " + str(UpgradeInfo[board[selection[1]][selection[0]]][0])), (0, 0, 0))
                 gameDisplay.blit(text_surface, (710, 500))
             else:
-                text_surface, rect = game_font.render(("Cost: " + str(UpgradeInfo[board[selection[1]][selection[0]]][0])), (0, 0, 0))
+                text_surface, rect = font_50.render(("Cost: " + str(UpgradeInfo[board[selection[1]][selection[0]]][0])), (0, 0, 0))
                 if board[selection[1]][selection[0]] != "City":
                     gameDisplay.blit(text_surface, (710, 450))
                 else:
                     gameDisplay.blit(text_surface, (700, 450))
-                text_surface, rect = game_font.render((str(UpgradeInfo[board[selection[1]][selection[0]]][1])), (0, 0, 0))
+                text_surface, rect = font_50.render((str(UpgradeInfo[board[selection[1]][selection[0]]][1])), (0, 0, 0))
                 if board[selection[1]][selection[0]] != "City":
                     gameDisplay.blit(text_surface, (740, 500))
                 else:
@@ -298,20 +285,20 @@ def menu(board,selection):
                     ResourceCount[Item] += ResourceCount["Food"]
                     MaterialsEarned[Item] += ResourceCount["Food"]
                     ResourceCount["Food"] -= ResourceCount["Food"]
-        if Count["Forest Lv4"] >= 1:
+        if Count["Forest Lv4"] >= 1 and ResourceCount["Electricity"] > 0:
             if ResourceCount["Electricity"] >= Count["Forest Lv4"]:
                 ResourceCount["Electricity"] -= Count["Forest Lv4"]
             else:
                 num = Count["Forest Lv4"] - ResourceCount["Electricity"]
                 ResourceCount["Wood"] -= 15 * num
-                ResourceCount["Electricity"] -= num
-        if Count["Quarry Lv4"] >= 1:
+                ResourceCount["Electricity"] = 0 
+        if Count["Quarry Lv4"] >= 1 and ResourceCount["Electricity"] > 0:
             if ResourceCount["Electricity"] >= Count["Quarry Lv4"]:
                 ResourceCount["Electricity"] -= Count["Quarry Lv4"]
             else:
                 num = Count["Quarry Lv4"] - ResourceCount["Electricity"]
                 ResourceCount["Stones"] -= 15 * num
-                ResourceCount["Electricity"] -= num
+                ResourceCount["Electricity"] = 0 
                 
         Cooldown = time.process_time()
         
@@ -325,8 +312,7 @@ def menu(board,selection):
     else:
         pygame.draw.rect(gameDisplay,(150,150,150),(650,685,150,50),0)
     pygame.draw.rect(gameDisplay,(50,50,50),(650,685,150,50),3)
-    game_font = pygame.freetype.Font("Font.ttf", 35)
-    text_surface, rect = game_font.render(("Restart"), (0, 0, 0))
+    text_surface, rect = font_35.render(("Restart"), (0, 0, 0))
     gameDisplay.blit(text_surface, (680, 700))
 
     #Demolish Building
@@ -335,29 +321,26 @@ def menu(board,selection):
     else:
         pygame.draw.rect(gameDisplay,(150,150,150),(825,685,150,50),0)
     pygame.draw.rect(gameDisplay,(50,50,50),(825,685,150,50),3)
-    game_font = pygame.freetype.Font("Font.ttf", 23)
-    text_surface, rect = game_font.render(("Demolish Building"), (0, 0, 0))
+    text_surface, rect = font_23.render(("Demolish Building"), (0, 0, 0))
     gameDisplay.blit(text_surface, (832.5, 705))
 
 
     #Menu Upgrades(Finishing the game)
 
     if selection == [-1,-1]:
-        game_font = pygame.freetype.Font("Font.ttf", 75)
-        text_surface, rect = game_font.render(("Finish Game"), (0, 0, 0))
+        text_surface, rect = font_75.render(("Finish Game"), (0, 0, 0))
         gameDisplay.blit(text_surface, (670, 180))
-        game_font = pygame.freetype.Font("Font.ttf", 50)
-        text_surface, rect = game_font.render(("Cost: "), (0, 0, 0))
+        text_surface, rect = font_50.render(("Cost: "), (0, 0, 0))
         gameDisplay.blit(text_surface, (770, 240))
-        text_surface, rect = game_font.render(("1k wood"), (0, 0, 0))
+        text_surface, rect = font_50.render(("1k wood"), (0, 0, 0))
         gameDisplay.blit(text_surface, (750, 280))
-        text_surface, rect = game_font.render(("500 stones"), (0, 0, 0))
+        text_surface, rect = font_50.render(("500 stones"), (0, 0, 0))
         gameDisplay.blit(text_surface, (730, 320))
-        text_surface, rect = game_font.render(("200 Food"), (0, 0, 0))
+        text_surface, rect = font_50.render(("200 Food"), (0, 0, 0))
         gameDisplay.blit(text_surface, (740, 360))
-        text_surface, rect = game_font.render(("100 metal"), (0, 0, 0))
+        text_surface, rect = font_50.render(("100 metal"), (0, 0, 0))
         gameDisplay.blit(text_surface, (740, 400))
-        text_surface, rect = game_font.render(("50 electricity"), (0, 0, 0))
+        text_surface, rect = font_50.render(("50 electricity"), (0, 0, 0))
         gameDisplay.blit(text_surface, (710, 440))
 
         if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650:
@@ -365,7 +348,7 @@ def menu(board,selection):
         else:
             pygame.draw.rect(gameDisplay,(255,0,0),(725,550,200,100),0)
 
-        text_surface, rect = game_font.render(("Unlock"), (0, 0, 0))
+        text_surface, rect = font_50.render(("Unlock"), (0, 0, 0))
         gameDisplay.blit(text_surface, (760, 567))
 
 
@@ -376,17 +359,17 @@ def menu(board,selection):
     
 
 def draw(x,y,Obj,Type,height,width):
-    global AnimationStage, MaterialProduction, Count
+    global AnimationStage, MaterialProduction, Count, Images
     if Obj == "Tile":
         if Type == "Grass":
             pygame.draw.rect(gameDisplay,(0,128,0),(x,y,(640/width),(640/height)),0)
         if Type == "Water":
             if AnimationStage["Water"][0] == 1:
-                gameDisplay.blit(Water1,(x,y))
+                gameDisplay.blit(Images["Water1"],(x,y))
             if AnimationStage["Water"][0] == 2:
-                gameDisplay.blit(Water2,(x,y))
+                gameDisplay.blit(Images["Water2"],(x,y))
             if AnimationStage["Water"][0] == 3:
-                gameDisplay.blit(Water3,(x,y))
+                gameDisplay.blit(Images["Water3"],(x,y))
 
             if AnimationStage["Water"][1] <= 0:
                 AnimationStage["Water"][0] += 1
@@ -398,9 +381,9 @@ def draw(x,y,Obj,Type,height,width):
 
         if Type == "Dam":
             if AnimationStage["Dam"][0] == 1:
-                gameDisplay.blit(Dam1,(x,y))
+                gameDisplay.blit(Images["Dam1"],(x,y))
             if AnimationStage["Dam"][0] == 2:
-                gameDisplay.blit(Dam2,(x,y))
+                gameDisplay.blit(Images["Dam2"],(x,y))
             if AnimationStage["Dam"][1] <= 0:
                 AnimationStage["Dam"][0] += 1
                 AnimationStage["Dam"][1] = 0.5
@@ -410,21 +393,21 @@ def draw(x,y,Obj,Type,height,width):
                 AnimationStage["Dam"][1] -= 0.05/Count["Dam"]
             
         if Type == "Quarry Lv1":
-            gameDisplay.blit(Quarry1,(x,y))
+            gameDisplay.blit(Images["Quarry1"],(x,y))
         if Type == "Quarry Lv2":
-            gameDisplay.blit(Quarry2,(x,y))
+            gameDisplay.blit(Images["Quarry2"],(x,y))
         if Type == "Quarry Lv3":
-            gameDisplay.blit(Quarry3,(x,y))
+            gameDisplay.blit(Images["Quarry3"],(x,y))
         if Type == "Quarry Lv4":
-            gameDisplay.blit(Quarry4,(x,y))
+            gameDisplay.blit(Images["Quarry4"],(x,y))
         if Type == "Forest Lv4":
-            gameDisplay.blit(Forest4,(x,y))
+            gameDisplay.blit(Images["Forest4"],(x,y))
         if Type == "Forest Lv3":
-            gameDisplay.blit(Forest3,(x,y))
+            gameDisplay.blit(Images["Forest3"],(x,y))
         if Type == "Forest Lv1":
-            gameDisplay.blit(Forest1,(x,y))
+            gameDisplay.blit(Images["Forest1"],(x,y))
         if Type == "Forest Lv2":
-            gameDisplay.blit(Forest2,(x,y))
+            gameDisplay.blit(Images["Forest2"],(x,y))
 
         if Type == "City":
             pygame.draw.rect(gameDisplay,(0,128,0),(x,y,(640/width),(640/height)),0)
@@ -513,13 +496,11 @@ def MainMenu(time):
                     game_loop()
 
 
-        game_font = pygame.freetype.Font("Font.ttf", 150)
-        text_surface, rect = game_font.render(("Grand Expansion"), (0, 0, 0))
+        text_surface, rect = font_150.render(("Grand Expansion"), (0, 0, 0))
         gameDisplay.blit(text_surface, (85, 50))
 
         if time != 0:
-            game_font = pygame.freetype.Font("Font.ttf", 75)
-            text_surface, rect = game_font.render(("Time: " + str(time)), (0, 0, 0))
+            text_surface, rect = font_75.render(("Time: " + str(time)), (0, 0, 0))
             gameDisplay.blit(text_surface, (380, 300))
 
 
@@ -528,8 +509,7 @@ def MainMenu(time):
         else:
             pygame.draw.rect(gameDisplay,(255,0,0),(400,600,200,100),0)
 
-        game_font = pygame.freetype.Font("Font.ttf", 50)
-        text_surface, rect = game_font.render(("Play"), (0, 0, 0))
+        text_surface, rect = font_50.render(("Play"), (0, 0, 0))
         gameDisplay.blit(text_surface, (460, 630))
         
 
@@ -562,6 +542,9 @@ def game_loop():
     AnimationStage = {"Water": [1,0.5],"Dam": [1,0.5]}
     Count = {"Water": 0,"Dam": 0}
     StartTime = time.process_time()
+    hour = 0
+    seconds = 0
+    minutes = 0
 
 
     while game_run == True:
@@ -680,7 +663,7 @@ def game_loop():
                         board[CurSelection[1]][CurSelection[0]] = "Dam"
 
                 if CurSelection == [-1,-1] and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650 and ResourceCount["Wood"] >= 1000 and ResourceCount["Stones"] >= 500 and ResourceCount["Food"] >= 200 and ResourceCount["Metal"] >= 100 and ResourceCount["Electricity"] >= 50:
-                    time2 = int(time.process_time() - StartTime)
+                    time2 = int((time.process_time() - StartTime))
                     hours = 0
                     minutes = 0
                     seconds = 0
@@ -739,13 +722,11 @@ def game_loop():
                 quest["Show Cooldown"] -= 0.1
                 pygame.draw.rect(gameDisplay,(200,200,200),(300,700,400,100),0)
                 pygame.draw.rect(gameDisplay,(25,25,25),(300,700,400,100),5)
-                game_font = pygame.freetype.Font("Font.ttf", 50)
-                text_surface, rect = game_font.render((quest["Name"]), (0, 0, 0))
+                text_surface, rect = font_50.render((quest["Name"]), (0, 0, 0))
                 gameDisplay.blit(text_surface, (310, 710))
-                game_font = pygame.freetype.Font("Font.ttf", 25)
-                text_surface, rect = game_font.render((quest["Description"]), (0, 0, 0))
+                text_surface, rect = font_25.render((quest["Description"]), (0, 0, 0))
                 gameDisplay.blit(text_surface, (310, 750))
-                text_surface, rect = game_font.render((quest["Reward"]), (0, 0, 0))
+                text_surface, rect = font_25.render((quest["Reward"]), (0, 0, 0))
                 gameDisplay.blit(text_surface, (310, 775))
 
 
@@ -753,8 +734,7 @@ def game_loop():
         if Confirming == True:
             pygame.draw.rect(gameDisplay,(150,150,150),(300,300,400,200),0)
             pygame.draw.rect(gameDisplay,(50,50,50),(300,300,400,200),5)
-            game_font = pygame.freetype.Font("Font.ttf", 23)
-            text_surface, rect = game_font.render((ConfirmMessage), (0, 0, 0))
+            text_surface, rect = font_23.render((ConfirmMessage), (0, 0, 0))
             gameDisplay.blit(text_surface, (315, 350))
 
             if pos[0] >= 320 and pos[0] <= 420 and pos[1] >= 400 and pos[1] <= 450:
@@ -769,14 +749,12 @@ def game_loop():
             else:
                 pygame.draw.rect(gameDisplay,(150,0,0),(570,400,100,50),0)
 
-            text_surface, rect = game_font.render(("Yes"), (0, 0, 0))
+            text_surface, rect = font_23.render(("Yes"), (0, 0, 0))
             gameDisplay.blit(text_surface, (355, 415))
-            text_surface, rect = game_font.render(("No"), (0, 0, 0))
+            text_surface, rect = font_23.render(("No"), (0, 0, 0))
             gameDisplay.blit(text_surface, (610, 415))
 
             pygame.draw.rect(gameDisplay,(200,0,0),(570,400,100,50),3)
-
-            
                 
                 
 
