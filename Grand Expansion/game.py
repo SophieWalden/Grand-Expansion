@@ -10,16 +10,11 @@ except ImportError:
     sys.exit()
 from pygame import freetype
 
-#game_font = pygame.freetype.Font("Font.ttf", 75)
-#text_surface, rect = game_font.render(("Programmer: 8BitToaster"), (0, 0, 0))
-#gameDisplay.blit(text_surface, (150, 300))
-
 #To do list:
 #Add things that are made with magic
 
 # Initialize the game engine
 pygame.init()
-
 
 
 DisplayWidth,DisplayHeight = 1000, 800
@@ -39,7 +34,6 @@ font_150 = pygame.freetype.Font("Font.ttf", 150)
 #Loading the images
 
 def load_images(path_to_directory):
-    """Load all images from subdirectories and return them as a dict."""
     images = {}
     for dirpath, dirnames, filenames in os.walk(path_to_directory):
         for name in filenames:
@@ -53,9 +47,11 @@ global Images
 
 Images = load_images("Images")
 
-#Function to change text size
-def SysFont(name, size, bold=0, italic=0, constructor=None):
-    pygame.ftfont.SysFont(name, size, bold=False, italic=False, constructor=None)
+pygame.mixer.music.load('Sounds/Soundtrack.wav')
+pygame.mixer.music.set_volume(0.2)
+pygame.mixer.music.play(-1)
+global MusicPaused
+MusicPaused = False
 
 def shorten(Num):
     count = 0
@@ -90,7 +86,7 @@ def shorten(Num):
 
 
 def Achviement(Achviements):
-    global ResourceCount, MaterialProduction, UnUpgradable, UpgradeInfo, MaterialsEarned, Unlocked
+    global ResourceCount, MaterialProduction, UnUpgradable, UpgradeInfo, MaterialsEarned, Unlocked, Count
 
     count = 0
     for Quest in Achviements:
@@ -99,16 +95,21 @@ def Achviement(Achviements):
                 Quest["Finished"] = True
                 Quest["Show Cooldown"] = 10
                 UnUpgradable.pop(UnUpgradable.index("Grass"))
+                UnUpgradable.append("CityFac")
                 UnUpgradable.append("City")
+                UnUpgradable.append("CityFar")
                 UpgradeInfo["Grass"] = ["50 Wood","20 Stones","0 Food","1 Food"]
         if count == 1:
             if Quest["food"] <= MaterialsEarned["Food"] and Quest["Finished"] == False:
                 Quest["Finished"] = True
                 Quest["Show Cooldown"] = 10
-                UnUpgradable.pop(UnUpgradable.index("City"))
+                UnUpgradable.pop(UnUpgradable.index("CityFac"))
+                UnUpgradable.pop(UnUpgradable.index("CityFar"))
 
-                UnUpgradable.append("Factories")
-                UpgradeInfo["Factory"] = ["200 Wood","75 Stones","1 Food","1 Metal"]
+                UnUpgradable.append("Factory")
+                UnUpgradable.append("Farm")
+                UpgradeInfo["CityFar"] = ["100 Wood","50 food","1 Food","3 Food"]
+                UpgradeInfo["CityFac"] = ["50 stones","1 food per second","1 Food","1 Metal"]
         if count == 2:
             if Quest["metal"] <= MaterialsEarned["Metal"] and Quest["Finished"] == False:
                 Quest["Finished"] = True
@@ -126,6 +127,14 @@ def Achviement(Achviements):
                 UnUpgradable.append("Quarry Lv4")
                 UpgradeInfo["Forest Lv3"] = ["100 Metal","1 Electricity per second","5 wood","15 wood"]
                 UpgradeInfo["Quarry Lv3"] = ["150 Metal","1 Electricity per second","5 stones","15 stones"]
+        if count == 4:
+            if Count["Forest Lv4"] > 0 or Count["Quarry Lv4"] > 0:
+                if Quest["Finished"] == False:
+                    Quest["Finished"] = True
+                    Quest["Show Cooldown"] = 10
+                    UnUpgradable.pop(UnUpgradable.index("Factory"))
+                    UnUpgradable.append("Super Factories")
+                    UpgradeInfo["Super Factories"] = ["100 Metal", "2 Electricity per second", "1 metal","5 Metal"]
         count += 1
 
 
@@ -203,69 +212,91 @@ def menu(board,selection):
             text_surface, rect = font_75.render(("Quarry"), (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
         if board[selection[1]][selection[0]] == "City":
+            text_surface, rect = font_75.render(("Upgrade Path"), (0, 0, 0))
+            gameDisplay.blit(text_surface, (660, 175))
+        if board[selection[1]][selection[0]] == "CityFac" or board[selection[1]][selection[0]] == "CityFar":
             text_surface, rect = font_75.render(("City"), (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
         if board[selection[1]][selection[0]] == "Factory":
             text_surface, rect = font_75.render(("Factory"), (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
 
-        stop = False
 
         #Button for upgrading
-        for item in UnUpgradable:
-            if item == board[selection[1]][selection[0]]:
-                stop = True
-        if stop == False:
-            if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650:
-                pygame.draw.rect(gameDisplay,(150,0,0),(725,550,200,100),0)
-            else:
-                pygame.draw.rect(gameDisplay,(255,0,0),(725,550,200,100),0)
+        if board[selection[1]][selection[0]] != "City":
+            stop = False
+            for item in UnUpgradable:
+                if item == board[selection[1]][selection[0]]:
+                    stop = True
+            if stop == False:
+                if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650:
+                    pygame.draw.rect(gameDisplay,(150,0,0),(725,550,200,100),0)
+                else:
+                    pygame.draw.rect(gameDisplay,(255,0,0),(725,550,200,100),0)
+                
+                text_surface, rect = font_50.render(("Upgrade"), (0, 0, 0))
+                gameDisplay.blit(text_surface, (760, 575))
+
             
-            text_surface, rect = font_50.render(("Upgrade"), (0, 0, 0))
-            gameDisplay.blit(text_surface, (760, 575))
-
-        
-            text_surface, rect = font_50.render(("Current Production: "), (0, 0, 0))
-            gameDisplay.blit(text_surface, (650, 250))
-            if len(UpgradeInfo[board[selection[1]][selection[0]]]) == 3:
-                text_surface, rect = font_50.render((str(UpgradeInfo[board[selection[1]][selection[0]]][1])), (0, 0, 0))
-            else:
-                text_surface, rect = font_50.render((str(UpgradeInfo[board[selection[1]][selection[0]]][2])), (0, 0, 0))
-            if board[selection[1]][selection[0]] != "Water":
-                gameDisplay.blit(text_surface, (750, 325))
-            else:
-                gameDisplay.blit(text_surface, (730, 325))
-
-            pygame.draw.line(gameDisplay,(50,50,50),(640,400),(1000,400),5)
-            if len(UpgradeInfo[board[selection[1]][selection[0]]]) == 3:
-                text_surface, rect = font_50.render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][2])), (0, 0, 0))
-                gameDisplay.blit(text_surface, (670, 450))
-            else:
+                text_surface, rect = font_50.render(("Current Production: "), (0, 0, 0))
+                gameDisplay.blit(text_surface, (650, 250))
+                if len(UpgradeInfo[board[selection[1]][selection[0]]]) == 3:
+                    text_surface, rect = font_50.render((str(UpgradeInfo[board[selection[1]][selection[0]]][1])), (0, 0, 0))
+                else:
+                    text_surface, rect = font_50.render((str(UpgradeInfo[board[selection[1]][selection[0]]][2])), (0, 0, 0))
                 if board[selection[1]][selection[0]] != "Water":
-                    text_surface, rect = font_50.render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][3])), (0, 0, 0))
+                    gameDisplay.blit(text_surface, (750, 325))
                 else:
-                    text_surface, rect = font_40.render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][3])), (0, 0, 0))
+                    gameDisplay.blit(text_surface, (730, 325))
 
-                if board[selection[1]][selection[0]] != "City":
-                    gameDisplay.blit(text_surface, (660, 410))
+                pygame.draw.line(gameDisplay,(50,50,50),(640,400),(1000,400),5)
+                if len(UpgradeInfo[board[selection[1]][selection[0]]]) == 3:
+                    text_surface, rect = font_50.render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][2])), (0, 0, 0))
+                    gameDisplay.blit(text_surface, (670, 450))
                 else:
-                    gameDisplay.blit(text_surface, (670, 410))
+                    if board[selection[1]][selection[0]] != "Water":
+                        text_surface, rect = font_50.render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][3])), (0, 0, 0))
+                    else:
+                        text_surface, rect = font_40.render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][3])), (0, 0, 0))
 
-                   
-            if len(UpgradeInfo[board[selection[1]][selection[0]]]) == 3:
-                text_surface, rect = font_50.render(("Cost: " + str(UpgradeInfo[board[selection[1]][selection[0]]][0])), (0, 0, 0))
-                gameDisplay.blit(text_surface, (710, 500))
-            else:
-                text_surface, rect = font_50.render(("Cost: " + str(UpgradeInfo[board[selection[1]][selection[0]]][0])), (0, 0, 0))
-                if board[selection[1]][selection[0]] != "City":
-                    gameDisplay.blit(text_surface, (710, 450))
+                    if board[selection[1]][selection[0]] != "CityFac":
+                        gameDisplay.blit(text_surface, (660, 410))
+                    else:
+                        gameDisplay.blit(text_surface, (670, 410))
+
+                       
+                if len(UpgradeInfo[board[selection[1]][selection[0]]]) == 3:
+                    text_surface, rect = font_50.render(("Cost: " + str(UpgradeInfo[board[selection[1]][selection[0]]][0])), (0, 0, 0))
+                    gameDisplay.blit(text_surface, (710, 500))
                 else:
-                    gameDisplay.blit(text_surface, (700, 450))
-                text_surface, rect = font_50.render((str(UpgradeInfo[board[selection[1]][selection[0]]][1])), (0, 0, 0))
-                if board[selection[1]][selection[0]] != "City":
-                    gameDisplay.blit(text_surface, (740, 500))
+                    text_surface, rect = font_50.render(("Cost: " + str(UpgradeInfo[board[selection[1]][selection[0]]][0])), (0, 0, 0))
+                    if board[selection[1]][selection[0]] != "CityFac":
+                        gameDisplay.blit(text_surface, (710, 450))
+                    else:
+                        gameDisplay.blit(text_surface, (700, 450))
+                    text_surface, rect = font_50.render((str(UpgradeInfo[board[selection[1]][selection[0]]][1])), (0, 0, 0))
+                    if board[selection[1]][selection[0]] != "CityFac":
+                        gameDisplay.blit(text_surface, (740, 500))
+                    else:
+                        gameDisplay.blit(text_surface, (680, 500))
+        else:
+            if board[selection[1]][selection[0]] == "City":
+                if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650:
+                    pygame.draw.rect(gameDisplay,(150,0,0),(725,550,200,100),0)
                 else:
-                    gameDisplay.blit(text_surface, (680, 500))
+                    pygame.draw.rect(gameDisplay,(255,0,0),(725,550,200,100),0)
+                
+                text_surface, rect = font_50.render(("Factory"), (0, 0, 0))
+                gameDisplay.blit(text_surface, (760, 575))
+
+                if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 350 and pos[1] <= 450:
+                    pygame.draw.rect(gameDisplay,(150,0,0),(725,350,200,100),0)
+                else:
+                    pygame.draw.rect(gameDisplay,(255,0,0),(725,350,200,100),0)
+                
+                text_surface, rect = font_50.render(("Farm"), (0, 0, 0))
+                gameDisplay.blit(text_surface, (780, 375))
+            
 
         
 
@@ -408,50 +439,12 @@ def draw(x,y,Obj,Type,height,width):
             gameDisplay.blit(Images["Forest1"],(x,y))
         if Type == "Forest Lv2":
             gameDisplay.blit(Images["Forest2"],(x,y))
-
-        if Type == "City":
-            pygame.draw.rect(gameDisplay,(0,128,0),(x,y,(640/width),(640/height)),0)
-            pygame.draw.rect(gameDisplay,(50,50,50),(x,y,(640/width),(640/height)),1)
-
-            #Buildings
-
-            pygame.draw.rect(gameDisplay,(100,30,0),(x+12,y+20,20,45),0)
-            pygame.draw.rect(gameDisplay,(60,30,0),(x+48,y+25,20,40),0)
-            pygame.draw.rect(gameDisplay,(80,30,0),(x+30,y+15,20,50),0)
-
-            pygame.draw.rect(gameDisplay,(10,10,10),(x+12,y+20,20,45),1)
-            pygame.draw.rect(gameDisplay,(10,10,10),(x+48,y+25,20,40),1)
-            pygame.draw.rect(gameDisplay,(10,10,10),(x+30,y+15,20,50),1)
-
-            for j in range(6):
-                for i in range(6):
-                    if i <= 1:
-                        pygame.draw.rect(gameDisplay,(25,25,25),(x+15+(i*10),y+30+(j*5),3,2),0)
-                    elif i <= 3:
-                        pygame.draw.rect(gameDisplay,(25,25,25),(x+14+(i*10),y+30+(j*5),3,2),0)
-                    else:
-                        pygame.draw.rect(gameDisplay,(25,25,25),(x+12+(i*10),y+30+(j*5),3,2),0)
-
-            
+        if Type.find("City") != -1:
+            gameDisplay.blit(Images["City"],(x,y))
         if Type == "Factory":
-            pygame.draw.rect(gameDisplay,(0,128,0),(x,y,(640/width),(640/height)),0)
-            pygame.draw.rect(gameDisplay,(50,50,50),(x,y,(640/width),(640/height)),1)
-
-            #Drawing Factories
-            pygame.draw.rect(gameDisplay,(50,50,50),(x+10,y+40,60,30),3)
-            pygame.draw.rect(gameDisplay,(50,50,50),(x+20,y+20,10,30),3)
-            pygame.draw.rect(gameDisplay,(50,50,50),(x+35,y+20,10,30),3)
-            pygame.draw.rect(gameDisplay,(50,50,50),(x+50,y+20,10,30),3)
-            pygame.draw.polygon(gameDisplay,(50,50,50),[(x+50,y+20),(x+59,y+20),(x+59,y+15)],3)
-            pygame.draw.polygon(gameDisplay,(50,50,50),[(x+35,y+20),(x+44,y+20),(x+44,y+15)],3)
-            pygame.draw.polygon(gameDisplay,(50,50,50),[(x+20,y+20),(x+29,y+20),(x+29,y+15)],3)
-            pygame.draw.rect(gameDisplay,(100,100,100),(x+20,y+20,10,30),0)
-            pygame.draw.rect(gameDisplay,(100,100,100),(x+35,y+20,10,30),0)
-            pygame.draw.rect(gameDisplay,(100,100,100),(x+50,y+20,10,30),0)
-            pygame.draw.polygon(gameDisplay,(100,100,100),[(x+50,y+20),(x+59,y+20),(x+59,y+15)],0)
-            pygame.draw.polygon(gameDisplay,(100,100,100),[(x+35,y+20),(x+44,y+20),(x+44,y+15)],0)
-            pygame.draw.polygon(gameDisplay,(100,100,100),[(x+20,y+20),(x+29,y+20),(x+29,y+15)],0)
-            pygame.draw.rect(gameDisplay,(150,150,150),(x+10,y+40,60,30),0)
+            gameDisplay.blit(Images["Factory"],(x,y))
+        if Type == "Farm":
+            gameDisplay.blit(Images["Farm"],(x,y))
 
         pygame.draw.rect(gameDisplay,(50,50,50),(x,y,(640/width),(640/height)),1)
 
@@ -475,12 +468,13 @@ def gen_Board(board,height,width):
                 elif percent <= 75:
                     board[j][i] = "Forest Lv1"
                 else:
-
                     board[j][i] = "Quarry Lv1"
     return board
 
 def MainMenu(time):
+    global MusicPaused
     run = True
+    screen = "Main"
 
     while run == True:
 
@@ -492,25 +486,64 @@ def MainMenu(time):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if pos[0] >= 400 and pos[0] <= 600 and pos[1] >= 600 and pos[1] <= 700:
+                if pos[0] >= 400 and pos[0] <= 600 and pos[1] >= 600 and pos[1] <= 700 and screen == "Main":
                     game_loop()
+                if pos[0] >= 625 and pos[0] <= 825 and pos[1] >= 600 and pos[1] <= 700 and screen == "Main":
+                    screen = "Options"
+                if pos[0] >= 775 and pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775 and screen == "Options":
+                    screen = "Main"
+                if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 50 and pos[1] <= 150 and screen == "Options":
+                    if MusicPaused == False:
+                        MusicPaused = True
+                        pygame.mixer.music.pause()
+                    else:
+                        MusicPaused = False
+                        pygame.mixer.music.unpause()
+
+        if screen == "Main":
+            text_surface, rect = font_150.render(("Grand Expansion"), (0, 0, 0))
+            gameDisplay.blit(text_surface, (85, 50))
+
+            if time != 0:
+                text_surface, rect = font_75.render(("Time: " + str(time)), (0, 0, 0))
+                gameDisplay.blit(text_surface, (380, 300))
 
 
-        text_surface, rect = font_150.render(("Grand Expansion"), (0, 0, 0))
-        gameDisplay.blit(text_surface, (85, 50))
+            if pos[0] >= 400 and pos[0] <= 600 and pos[1] >= 600 and pos[1] <= 700:
+                pygame.draw.rect(gameDisplay,(150,0,0),(400,600,200,100),0)
+            else:
+                pygame.draw.rect(gameDisplay,(255,0,0),(400,600,200,100),0)
 
-        if time != 0:
-            text_surface, rect = font_75.render(("Time: " + str(time)), (0, 0, 0))
-            gameDisplay.blit(text_surface, (380, 300))
+            text_surface, rect = font_50.render(("Play"), (0, 0, 0))
+            gameDisplay.blit(text_surface, (460, 630))
 
+            if pos[0] >= 625 and pos[0] <= 825 and pos[1] >= 600 and pos[1] <= 700:
+                pygame.draw.rect(gameDisplay,(150,0,0),(625,600,200,100),0)
+            else:
+                pygame.draw.rect(gameDisplay,(255,0,0),(625,600,200,100),0)
 
-        if pos[0] >= 400 and pos[0] <= 600 and pos[1] >= 600 and pos[1] <= 700:
-            pygame.draw.rect(gameDisplay,(150,0,0),(400,600,200,100),0)
-        else:
-            pygame.draw.rect(gameDisplay,(255,0,0),(400,600,200,100),0)
+            text_surface, rect = font_50.render(("Options"), (0, 0, 0))
+            gameDisplay.blit(text_surface, (670, 630))
+        if screen == "Options":
+            if pos[0] >= 775 and pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775:
+                pygame.draw.rect(gameDisplay,(150,0,0),(775,675,200,100),0)
+            else:
+                pygame.draw.rect(gameDisplay,(255,0,0),(775,675,200,100),0)
 
-        text_surface, rect = font_50.render(("Play"), (0, 0, 0))
-        gameDisplay.blit(text_surface, (460, 630))
+            text_surface, rect = font_50.render(("Exit"), (0, 0, 0))
+            gameDisplay.blit(text_surface, (835, 705))
+
+            if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 50 and pos[1] <= 150:
+                pygame.draw.rect(gameDisplay,(150,0,0),(200,50,200,100),0)
+            else:
+                pygame.draw.rect(gameDisplay,(255,0,0),(200,50,200,100),0)
+
+            if MusicPaused == False:
+                text_surface, rect = font_50.render(("Mute Music"), (0, 0, 0))
+                gameDisplay.blit(text_surface, (210, 80))
+            else:
+                text_surface, rect = font_40.render(("Unmute Music"), (0, 0, 0))
+                gameDisplay.blit(text_surface, (210, 86))
         
 
         pygame.display.flip()
@@ -526,15 +559,16 @@ def game_loop():
     board = gen_Board([[0] * height for _ in range(width)],height,width)
     CurSelection = [-1,-1]
     ResourceCount = {"Wood": 10, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0}
-    MaterialProduction = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0}
+    MaterialProduction = {"Wood": 200, "Stones": 200,"Food": 200,"Metal": 100,"Electricity": 200}
     MaterialsEarned = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0}
     Cooldown = time.process_time()
     UnUpgradable = ["Water","Grass","Quarry Lv3","Forest Lv3"]
-    UpgradeInfo = {"Map Upgrades": [],"City":["50 stones","1 food per second","1 food","1 metal"],"Forest Lv1":["10 wood","0 wood","1 wood"],"Quarry Lv1":["15 wood","0 stones", "1 stones"],"Forest Lv2":["40 wood","1 wood","5 wood"],"Quarry Lv2":["45 wood","20 stones","1 stones", "5 stones"]}
+    UpgradeInfo = {"Map Upgrades": [],"Forest Lv1":["10 wood","0 wood","1 wood"],"Quarry Lv1":["15 wood","0 stones", "1 stones"],"Forest Lv2":["40 wood","1 wood","5 wood"],"Quarry Lv2":["45 wood","20 stones","1 stones", "5 stones"]}
     Achievments = [{"Name": "Beginner","Description":"You gathered 100 wood","Reward":"Unlocked cities","wood": 100,"Finished": False,"Show Cooldown": 0}
                    ,{"Name": "Food Man","Description":"You gathered 50 food","Reward":"Unlocked Factories","wood": 300,"stones":100,"food":50,"Finished": False,"Show Cooldown": 0}
                    ,{"Name": "Heavy Metal","Description":"You made 100 metal","Reward":"Unlocked Electricity","metal": 100,"Finished": False,"Show Cooldown": 0}
-                   ,{"Name": "Shocking","Description":"You produced 100 Electricity","Reward": "Unlocked Electric Upgrades","Electricity": 100,"Finished": False,"Show Cooldown": 0}]
+                   ,{"Name": "Shocking","Description":"You produced 100 Electricity","Reward": "Unlocked Electric Upgrades","Electricity": 100,"Finished": False,"Show Cooldown": 0}
+                   ,{"Name": "Fast Materials","Description":"You got a Lvl4 Upgrade","Reward": "Unlocked Upgraded Factories","Finished": False,"Show Cooldown": 0}]
     ConfirmMessage = ""
     Confirming = False
     PreviousPos = [0,0]
@@ -645,12 +679,18 @@ def game_loop():
                         ResourceCount["Wood"] -= 15
                         MaterialProduction["Stones"] += 1
                         board[CurSelection[1]][CurSelection[0]] = "Quarry Lv2"
-                    if board[CurSelection[1]][CurSelection[0]] == "City" and ResourceCount["Food"] >= 1 and ResourceCount["Stones"] >= 50 and Achievments[1]["Finished"] == True:
+                    if board[CurSelection[1]][CurSelection[0]] == "CityFac" and ResourceCount["Food"] >= 1 and ResourceCount["Stones"] >= 50 and Achievments[1]["Finished"] == True:
                         ResourceCount["Stones"] -= 50
                         MaterialProduction["Metal"] += 1
                         MaterialProduction["Food"] -= 1
                         board[CurSelection[1]][CurSelection[0]] = "Factory"
-                        UnUpgradable.append("Factory")
+                    if board[CurSelection[1]][CurSelection[0]] == "City" and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650: 
+                        board[CurSelection[1]][CurSelection[0]] = "CityFac"
+                    if board[CurSelection[1]][CurSelection[0]] == "CityFar" and ResourceCount["Wood"] >= 100 and ResourceCount["Food"] >= 50 and Achievments[1]["Finished"] == True:
+                        ResourceCount["Wood"] -= 100
+                        ResourceCount["Food"] -= 50
+                        MaterialProduction["Food"] += 2
+                        board[CurSelection[1]][CurSelection[0]] = "Farm"
                     if board[CurSelection[1]][CurSelection[0]] == "Grass" and ResourceCount["Wood"] >= 50 and ResourceCount["Stones"] >= 20 and UnUpgradable[1] != "Grass":
                         ResourceCount["Wood"] -= 50
                         ResourceCount["Stones"] -= 20
@@ -661,6 +701,11 @@ def game_loop():
                         ResourceCount["Metal"] -= 50
                         MaterialProduction["Electricity"] += 1
                         board[CurSelection[1]][CurSelection[0]] = "Dam"
+
+                #Path Choices
+                if board[CurSelection[1]][CurSelection[0]] == "City" and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 350 and pos[1] <= 450:
+                    board[CurSelection[1]][CurSelection[0]] = "CityFar"
+                        
 
                 if CurSelection == [-1,-1] and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650 and ResourceCount["Wood"] >= 1000 and ResourceCount["Stones"] >= 500 and ResourceCount["Food"] >= 200 and ResourceCount["Metal"] >= 100 and ResourceCount["Electricity"] >= 50:
                     time2 = int((time.process_time() - StartTime))
