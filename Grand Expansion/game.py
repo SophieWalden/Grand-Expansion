@@ -106,17 +106,19 @@ def Achviement(Achviements):
                 UnUpgradable.pop(UnUpgradable.index("CityFac"))
                 UnUpgradable.pop(UnUpgradable.index("CityFar"))
 
-                UnUpgradable.append("Factory")
                 UnUpgradable.append("Farm")
+                UnUpgradable.append("Factory Su")
+                UnUpgradable.append("Factory")
+                UnUpgradable.append("Factory So")
                 UpgradeInfo["CityFar"] = ["100 Wood","50 food","1 Food","3 Food"]
                 UpgradeInfo["CityFac"] = ["50 stones","1 food per second","1 Food","1 Metal"]
         if count == 2:
             if Quest["metal"] <= MaterialsEarned["Metal"] and Quest["Finished"] == False:
                 Quest["Finished"] = True
                 Quest["Show Cooldown"] = 10
-                UnUpgradable.pop(UnUpgradable.index("Water"))
+                UnUpgradable.pop(UnUpgradable.index("Water Dam"))
                 UnUpgradable.append("Dam")
-                UpgradeInfo["Water"] = ["200 Wood","50 metal","0 Electricity","1 Electricity"]
+                UpgradeInfo["Water Dam"] = ["200 Wood","50 metal","0 Electricity","1 Electricity"]
         if count == 3:
             if Quest["Electricity"] <= MaterialsEarned["Electricity"] and Quest["Finished"] == False:
                 Quest["Finished"] = True
@@ -132,9 +134,19 @@ def Achviement(Achviements):
                 if Quest["Finished"] == False:
                     Quest["Finished"] = True
                     Quest["Show Cooldown"] = 10
-                    UnUpgradable.pop(UnUpgradable.index("Factory"))
-                    UnUpgradable.append("Super Factories")
-                    UpgradeInfo["Super Factories"] = ["100 Metal", "2 Electricity per second", "1 metal","5 Metal"]
+                    UnUpgradable.pop(UnUpgradable.index("Factory So"))
+                    UnUpgradable.pop(UnUpgradable.index("Factory Su"))
+                    UnUpgradable.append("Super Factory")
+                    UnUpgradable.append("Solar Power")
+                    UpgradeInfo["Factory Su"] = ["100 Metal", "2 Electricity per second", "1 metal","5 Metal"]
+                    UpgradeInfo["Factory So"] = ["100 Metal", "1 Food per second", "1 metal","3 Electricity"]
+        if count == 5:
+            if Quest["Finished"] == False and ResourceCount["Food"] >= 200:
+                Quest["Finished"] = True
+                Quest["Show Cooldown"] = 10
+                UnUpgradable.pop(UnUpgradable.index("Water Fish"))
+                UnUpgradable.append("Fisherman")
+                UpgradeInfo["Water Fish"] = ["100 Wood","25 metal","0 Food","2 Food"]
         count += 1
 
 
@@ -142,7 +154,7 @@ def Achviement(Achviements):
 
 
 def menu(board,selection):
-    global ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Unlocked, Count
+    global ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Unlocked, Count, Achviements
 
     #Drawing Menu
     pygame.draw.line(gameDisplay,(50,50,50),(0,160),(1000,160),5)
@@ -188,7 +200,7 @@ def menu(board,selection):
         gameDisplay.blit(text_surface, (420, 110))
 
     #Electricity
-    if UnUpgradable[0] != "Water":
+    if MaterialsEarned["Electricity"] >= 1:
         pygame.draw.rect(gameDisplay,(255,255,0),(505,15,50,50),0)
         text_surface, rect = font_30.render(("Electricity: "), (0, 0, 0))
         gameDisplay.blit(text_surface, (560, 30))
@@ -202,7 +214,7 @@ def menu(board,selection):
         if board[selection[1]][selection[0]] == "Grass":
             text_surface, rect = font_75.render(("Grass"), (0, 0, 0))
             gameDisplay.blit(text_surface, (750, 175))
-        if board[selection[1]][selection[0]] == "Water":
+        if board[selection[1]][selection[0]].find("Water") != -1:
             text_surface, rect = font_75.render(("Water"), (0, 0, 0))
             gameDisplay.blit(text_surface, (750, 175))
         if board[selection[1]][selection[0]] == "Forest Lv1" or board[selection[1]][selection[0]] == "Forest Lv2" or board[selection[1]][selection[0]] == "Forest Lv3":
@@ -217,13 +229,25 @@ def menu(board,selection):
         if board[selection[1]][selection[0]] == "CityFac" or board[selection[1]][selection[0]] == "CityFar":
             text_surface, rect = font_75.render(("City"), (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
-        if board[selection[1]][selection[0]] == "Factory":
+        if board[selection[1]][selection[0]].find("Factory ") != -1:
             text_surface, rect = font_75.render(("Factory"), (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
+        if board[selection[1]][selection[0]] == "Solar Power":
+            text_surface, rect = font_75.render(("Solar Power"), (0, 0, 0))
+            gameDisplay.blit(text_surface, (670, 175))
+        if board[selection[1]][selection[0]] == "Super Factory":
+            text_surface, rect = font_75.render(("Super Factory"), (0, 0, 0))
+            gameDisplay.blit(text_surface, (642, 175))
 
 
         #Button for upgrading
-        if board[selection[1]][selection[0]] != "City":
+        UpgradePaths = ["City","Water","Factory"]
+        stop = False
+        for item in UpgradePaths:
+            if board[selection[1]][selection[0]] == item:
+                stop = True
+
+        if stop == False:
             stop = False
             for item in UnUpgradable:
                 if item == board[selection[1]][selection[0]]:
@@ -280,6 +304,7 @@ def menu(board,selection):
                     else:
                         gameDisplay.blit(text_surface, (680, 500))
         else:
+            #City Upgrade path
             if board[selection[1]][selection[0]] == "City":
                 if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650:
                     pygame.draw.rect(gameDisplay,(150,0,0),(725,550,200,100),0)
@@ -296,6 +321,41 @@ def menu(board,selection):
                 
                 text_surface, rect = font_50.render(("Farm"), (0, 0, 0))
                 gameDisplay.blit(text_surface, (780, 375))
+
+            #Water Upgrade Paths
+            if board[selection[1]][selection[0]] == "Water":
+                if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650:
+                    pygame.draw.rect(gameDisplay,(150,0,0),(725,550,200,100),0)
+                else:
+                    pygame.draw.rect(gameDisplay,(255,0,0),(725,550,200,100),0)
+                
+                text_surface, rect = font_50.render(("Fisherman"), (0, 0, 0))
+                gameDisplay.blit(text_surface, (740, 575))
+
+                if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 350 and pos[1] <= 450:
+                    pygame.draw.rect(gameDisplay,(150,0,0),(725,350,200,100),0)
+                else:
+                    pygame.draw.rect(gameDisplay,(255,0,0),(725,350,200,100),0)
+                
+                text_surface, rect = font_50.render(("Dam"), (0, 0, 0))
+                gameDisplay.blit(text_surface, (780, 375))
+            #Factrory Paths
+            if board[selection[1]][selection[0]] == "Factory":
+                if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650:
+                    pygame.draw.rect(gameDisplay,(150,0,0),(725,550,200,100),0)
+                else:
+                    pygame.draw.rect(gameDisplay,(255,0,0),(725,550,200,100),0)
+                
+                text_surface, rect = font_35.render(("Super Factory"), (0, 0, 0))
+                gameDisplay.blit(text_surface, (740, 575))
+
+                if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 350 and pos[1] <= 450:
+                    pygame.draw.rect(gameDisplay,(150,0,0),(725,350,200,100),0)
+                else:
+                    pygame.draw.rect(gameDisplay,(255,0,0),(725,350,200,100),0)
+                
+                text_surface, rect = font_40.render(("Solar Power"), (0, 0, 0))
+                gameDisplay.blit(text_surface, (740, 375))
             
 
         
@@ -394,7 +454,7 @@ def draw(x,y,Obj,Type,height,width):
     if Obj == "Tile":
         if Type == "Grass":
             pygame.draw.rect(gameDisplay,(0,128,0),(x,y,(640/width),(640/height)),0)
-        if Type == "Water":
+        if Type.find("Water") != -1:
             if AnimationStage["Water"][0] == 1:
                 gameDisplay.blit(Images["Water1"],(x,y))
             if AnimationStage["Water"][0] == 2:
@@ -441,10 +501,16 @@ def draw(x,y,Obj,Type,height,width):
             gameDisplay.blit(Images["Forest2"],(x,y))
         if Type.find("City") != -1:
             gameDisplay.blit(Images["City"],(x,y))
-        if Type == "Factory":
+        if Type.find("Factory ") != -1 or Type == "Factory":
             gameDisplay.blit(Images["Factory"],(x,y))
         if Type == "Farm":
             gameDisplay.blit(Images["Farm"],(x,y))
+        if Type == "Fisherman":
+            gameDisplay.blit(Images["Fisherman"],(x,y))
+        if Type == "Solar Power":
+            gameDisplay.blit(Images["Solar power"],(x,y))
+        if Type == "Super Factory":
+            gameDisplay.blit(Images["Super Factory"],(x,y))
 
         pygame.draw.rect(gameDisplay,(50,50,50),(x,y,(640/width),(640/height)),1)
 
@@ -551,7 +617,7 @@ def MainMenu(time):
         
 
 def game_loop():
-    global ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, AnimationStage, Count
+    global ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, AnimationStage, Count, Achviements
     
     game_run = True
     height = 8
@@ -559,16 +625,17 @@ def game_loop():
     board = gen_Board([[0] * height for _ in range(width)],height,width)
     CurSelection = [-1,-1]
     ResourceCount = {"Wood": 10, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0}
-    MaterialProduction = {"Wood": 200, "Stones": 200,"Food": 200,"Metal": 100,"Electricity": 200}
+    MaterialProduction = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0}
     MaterialsEarned = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0}
     Cooldown = time.process_time()
-    UnUpgradable = ["Water","Grass","Quarry Lv3","Forest Lv3"]
+    UnUpgradable = ["Water","Grass","Quarry Lv3","Forest Lv3","Water Fish","Water Dam"]
     UpgradeInfo = {"Map Upgrades": [],"Forest Lv1":["10 wood","0 wood","1 wood"],"Quarry Lv1":["15 wood","0 stones", "1 stones"],"Forest Lv2":["40 wood","1 wood","5 wood"],"Quarry Lv2":["45 wood","20 stones","1 stones", "5 stones"]}
     Achievments = [{"Name": "Beginner","Description":"You gathered 100 wood","Reward":"Unlocked cities","wood": 100,"Finished": False,"Show Cooldown": 0}
                    ,{"Name": "Food Man","Description":"You gathered 50 food","Reward":"Unlocked Factories","wood": 300,"stones":100,"food":50,"Finished": False,"Show Cooldown": 0}
                    ,{"Name": "Heavy Metal","Description":"You made 100 metal","Reward":"Unlocked Electricity","metal": 100,"Finished": False,"Show Cooldown": 0}
                    ,{"Name": "Shocking","Description":"You produced 100 Electricity","Reward": "Unlocked Electric Upgrades","Electricity": 100,"Finished": False,"Show Cooldown": 0}
-                   ,{"Name": "Fast Materials","Description":"You got a Lvl4 Upgrade","Reward": "Unlocked Upgraded Factories","Finished": False,"Show Cooldown": 0}]
+                   ,{"Name": "Fast Materials","Description":"You got a Lvl4 Upgrade","Reward": "Unlocked Upgraded Factories","Finished": False,"Show Cooldown": 0}
+                   ,{"Name": "Stockpile", "Description": "Have 200 food at any time", "Reward": "Unlocked Fishermen", "Finished": False,"Show Cooldown": 0}]
     ConfirmMessage = ""
     Confirming = False
     PreviousPos = [0,0]
@@ -679,13 +746,31 @@ def game_loop():
                         ResourceCount["Wood"] -= 15
                         MaterialProduction["Stones"] += 1
                         board[CurSelection[1]][CurSelection[0]] = "Quarry Lv2"
+                    if board[CurSelection[1]][CurSelection[0]] == "Factory So" and ResourceCount["Metal"] >= 100 and ResourceCount["Electricity"] >= 2:
+                        ResourceCount["Metal"] -= 100
+                        MaterialProduction["Metal"] -= 1
+                        MaterialProduction["Electricity"] += 3
+                        board[CurSelection[1]][CurSelection[0]] = "Solar Power"
+                    if board[CurSelection[1]][CurSelection[0]] == "Factory Su" and ResourceCount["Metal"] >= 100 and ResourceCount["Electricity"] >= 2:
+                        ResourceCount["Metal"] -= 100
+                        MaterialProduction["Metal"] += 4
+                        board[CurSelection[1]][CurSelection[0]] = "Super Factory"
+                    if board[CurSelection[1]][CurSelection[0]] == "Factory" and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650: 
+                        board[CurSelection[1]][CurSelection[0]] = "Factory Su"
                     if board[CurSelection[1]][CurSelection[0]] == "CityFac" and ResourceCount["Food"] >= 1 and ResourceCount["Stones"] >= 50 and Achievments[1]["Finished"] == True:
                         ResourceCount["Stones"] -= 50
                         MaterialProduction["Metal"] += 1
                         MaterialProduction["Food"] -= 1
                         board[CurSelection[1]][CurSelection[0]] = "Factory"
+                    if board[CurSelection[1]][CurSelection[0]] == "Water Fish" and ResourceCount["Wood"] >= 100 and ResourceCount["Metal"] >= 25 and Achievments[5]["Finished"] == True:
+                        ResourceCount["Wood"] -= 100
+                        ResourceCount["Metal"] -= 25
+                        MaterialProduction["Food"] += 2
+                        board[CurSelection[1]][CurSelection[0]] = "Fisherman"
                     if board[CurSelection[1]][CurSelection[0]] == "City" and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650: 
                         board[CurSelection[1]][CurSelection[0]] = "CityFac"
+                    if board[CurSelection[1]][CurSelection[0]] == "Water" and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650: 
+                        board[CurSelection[1]][CurSelection[0]] = "Water Fish"
                     if board[CurSelection[1]][CurSelection[0]] == "CityFar" and ResourceCount["Wood"] >= 100 and ResourceCount["Food"] >= 50 and Achievments[1]["Finished"] == True:
                         ResourceCount["Wood"] -= 100
                         ResourceCount["Food"] -= 50
@@ -696,7 +781,7 @@ def game_loop():
                         ResourceCount["Stones"] -= 20
                         MaterialProduction["Food"] += 1
                         board[CurSelection[1]][CurSelection[0]] = "City"
-                    if board[CurSelection[1]][CurSelection[0]] == "Water" and ResourceCount["Wood"] >= 200 and ResourceCount["Metal"] >= 50 and Achievments[2]["Finished"] == True:
+                    if board[CurSelection[1]][CurSelection[0]] == "Water Dam" and ResourceCount["Wood"] >= 200 and ResourceCount["Metal"] >= 50 and Achievments[2]["Finished"] == True:
                         ResourceCount["Wood"] -= 200
                         ResourceCount["Metal"] -= 50
                         MaterialProduction["Electricity"] += 1
@@ -705,7 +790,11 @@ def game_loop():
                 #Path Choices
                 if board[CurSelection[1]][CurSelection[0]] == "City" and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 350 and pos[1] <= 450:
                     board[CurSelection[1]][CurSelection[0]] = "CityFar"
-                        
+                if board[CurSelection[1]][CurSelection[0]] == "Water" and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 350 and pos[1] <= 450:
+                    board[CurSelection[1]][CurSelection[0]] = "Water Dam"
+                if board[CurSelection[1]][CurSelection[0]] == "Factory" and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 350 and pos[1] <= 450:
+                    board[CurSelection[1]][CurSelection[0]] = "Factory So"
+                
 
                 if CurSelection == [-1,-1] and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650 and ResourceCount["Wood"] >= 1000 and ResourceCount["Stones"] >= 500 and ResourceCount["Food"] >= 200 and ResourceCount["Metal"] >= 100 and ResourceCount["Electricity"] >= 50:
                     time2 = int((time.process_time() - StartTime))
@@ -736,7 +825,7 @@ def game_loop():
         Count = {"Water": 0,"Dam": 0,"Forest Lv4": 0,"Quarry Lv4": 0}
         for j in range(height):
             for i in range(width):
-                if board[j][i] == "Water":
+                if board[j][i] == "Water" or board[j][i] == "Water Fish" or board[j][i] == "Water Dam":
                     Count["Water"] += 1
                 if board[j][i] == "Dam":
                     Count["Dam"] += 1
