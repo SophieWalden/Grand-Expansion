@@ -1,3 +1,4 @@
+#Importing all the modules
 try:
     import time, random, sys, os
 except:
@@ -10,9 +11,6 @@ except ImportError:
     sys.exit()
 from pygame import freetype
 
-#To do list:
-#Add things that are made with magic
-
 # Initialize the game engine
 pygame.init()
 
@@ -20,8 +18,12 @@ pygame.init()
 DisplayWidth,DisplayHeight = 1000, 800
 clock = pygame.time.Clock()
 
+#Making the window
 gameDisplay = pygame.display.set_mode((DisplayWidth,DisplayHeight))
 pygame.display.set_caption("Grand Expansion")
+
+#Getting all the text files ready
+font_20 = pygame.freetype.Font("Font.ttf",20)
 font_23 = pygame.freetype.Font("Font.ttf", 23)
 font_25 = pygame.freetype.Font("Font.ttf", 25)
 font_30 = pygame.freetype.Font("Font.ttf", 30)
@@ -32,7 +34,6 @@ font_75 = pygame.freetype.Font("Font.ttf", 75)
 font_150 = pygame.freetype.Font("Font.ttf", 150)
 
 #Loading the images
-
 def load_images(path_to_directory):
     images = {}
     for dirpath, dirnames, filenames in os.walk(path_to_directory):
@@ -47,12 +48,14 @@ global Images
 
 Images = load_images("Images")
 
+#Plays the music
 pygame.mixer.music.load('Sounds/Soundtrack.wav')
 pygame.mixer.music.set_volume(0.2)
 pygame.mixer.music.play(-1)
 global MusicPaused
 MusicPaused = False
 
+#Shorten is a function that takes a number and shortens it while still keeping the value because of the use of letters
 def shorten(Num):
     count = 0
     let = ""
@@ -79,12 +82,21 @@ def shorten(Num):
         Num += "B"
     if count == 4:
         Num += "T"
+    if count == 5:
+        Num += "q"
+    if count == 6:
+        Num += "Q"
+    if count == 7:
+        Num += "s"
+    if count == 8:
+        Num += "S"
 
     
 
     return Num
 
 
+#Checks for all the achviements
 def Achviement(Achviements):
     global ResourceCount, MaterialProduction, UnUpgradable, UpgradeInfo, MaterialsEarned, Unlocked, Count
 
@@ -153,6 +165,7 @@ def Achviement(Achviements):
     return Achviements
 
 
+#Draws the menus on the side and does some computing for producing resource
 def menu(board,selection):
     global ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Unlocked, Count, Achviements
 
@@ -206,7 +219,9 @@ def menu(board,selection):
         gameDisplay.blit(text_surface, (560, 30))
         text_surface, rect = font_35.render((shorten(ResourceCount["Electricity"])), (0, 0, 0))
         gameDisplay.blit(text_surface, (680, 27))
+
         
+    #Displays what you are selecting
     if selection != [-1,-1]:
         if board[selection[1]][selection[0]] == "Dam":
             text_surface, rect = font_75.render(("Waterwheel"), (0, 0, 0))
@@ -247,6 +262,7 @@ def menu(board,selection):
             if board[selection[1]][selection[0]] == item:
                 stop = True
 
+        #Displays Upgrading Info
         if stop == False:
             stop = False
             for item in UnUpgradable:
@@ -368,6 +384,8 @@ def menu(board,selection):
                 ResourceCount[Item] += MaterialProduction[Item]
                 MaterialsEarned[Item] += MaterialProduction[Item]
             else:
+                for i in range(Count["Super Factory"]):
+                    ResourceCount["Food"] += 3
                 if ResourceCount["Food"] >= MaterialProduction[Item]:
                     ResourceCount[Item] += MaterialProduction[Item]
                     MaterialsEarned[Item] += MaterialProduction[Item]
@@ -376,6 +394,7 @@ def menu(board,selection):
                     ResourceCount[Item] += ResourceCount["Food"]
                     MaterialsEarned[Item] += ResourceCount["Food"]
                     ResourceCount["Food"] -= ResourceCount["Food"]
+                
         if Count["Forest Lv4"] >= 1 and ResourceCount["Electricity"] > 0:
             if ResourceCount["Electricity"] >= Count["Forest Lv4"]:
                 ResourceCount["Electricity"] -= Count["Forest Lv4"]
@@ -405,6 +424,17 @@ def menu(board,selection):
     pygame.draw.rect(gameDisplay,(50,50,50),(650,685,150,50),3)
     text_surface, rect = font_35.render(("Restart"), (0, 0, 0))
     gameDisplay.blit(text_surface, (680, 700))
+
+
+    #Options
+
+    if pos[0] >= 650 and pos[0] <= 800 and pos[1] >= 740 and pos[1] <= 840:
+        pygame.draw.rect(gameDisplay,(100,100,100),(650,740,150,50),0)
+    else:
+        pygame.draw.rect(gameDisplay,(150,150,150),(650,740,150,50),0)
+    pygame.draw.rect(gameDisplay,(50,50,50),(650,740,150,50),3)
+    text_surface, rect = font_35.render(("Options"), (0, 0, 0))
+    gameDisplay.blit(text_surface, (680, 755))
 
     #Demolish Building
     if pos[0] >= 825 and pos[0] <= 975 and pos[1] >= 685 and pos[1] <= 735:
@@ -448,13 +478,14 @@ def menu(board,selection):
 
     return board
     
-
+#Draws all the tiles
 def draw(x,y,Obj,Type,height,width):
     global AnimationStage, MaterialProduction, Count, Images
     if Obj == "Tile":
         if Type == "Grass":
             pygame.draw.rect(gameDisplay,(0,128,0),(x,y,(640/width),(640/height)),0)
         if Type.find("Water") != -1:
+            #The Animation for water
             if AnimationStage["Water"][0] == 1:
                 gameDisplay.blit(Images["Water1"],(x,y))
             if AnimationStage["Water"][0] == 2:
@@ -471,6 +502,7 @@ def draw(x,y,Obj,Type,height,width):
                 AnimationStage["Water"][1] -= 0.025/Count["Water"]
 
         if Type == "Dam":
+            #The Animation for Waterwheels/Dams
             if AnimationStage["Dam"][0] == 1:
                 gameDisplay.blit(Images["Dam1"],(x,y))
             if AnimationStage["Dam"][0] == 2:
@@ -482,7 +514,8 @@ def draw(x,y,Obj,Type,height,width):
                     AnimationStage["Dam"][0] = 1
             else:
                 AnimationStage["Dam"][1] -= 0.05/Count["Dam"]
-            
+
+        #Drawing all the diffrent tiles
         if Type == "Quarry Lv1":
             gameDisplay.blit(Images["Quarry1"],(x,y))
         if Type == "Quarry Lv2":
@@ -512,16 +545,17 @@ def draw(x,y,Obj,Type,height,width):
         if Type == "Super Factory":
             gameDisplay.blit(Images["Super Factory"],(x,y))
 
+        #Drawing a little line around the tile to make a grid
         pygame.draw.rect(gameDisplay,(50,50,50),(x,y,(640/width),(640/height)),1)
 
         
             
             
-            
+    #Draws the green selection thing
     if Obj == "Selection":
         pygame.draw.rect(gameDisplay,(50,205,50),(x,y,(640/width),(640/height)),5)
     
-
+#Generates a board using a height and a width
 def gen_Board(board,height,width):
     for j in range(height):
         for i in range(width):
@@ -537,16 +571,61 @@ def gen_Board(board,height,width):
                     board[j][i] = "Quarry Lv1"
     return board
 
+
+#Is the Main menu of the game. This has a background that is seemlessly moving and the option to mute the music
 def MainMenu(time):
-    global MusicPaused
+    global MusicPaused, AnimationStage, Count
     run = True
     screen = "Main"
+    height = 20
+    width = 20
+    MenuBoard = gen_Board([[0] * height for _ in range(width)],height,width)
+    AnimationStage = {"Water": [1,0.5],"Dam": [1,0.5]}
+    x = 0
+    y = 0
+    
 
     while run == True:
 
         gameDisplay.fill((0,100,255))
-        pos = pygame.mouse.get_pos()
 
+        
+        
+        #Counting for animation speed
+        Count = {"Water": 0,"Dam": 0,"Forest Lv4": 0,"Quarry Lv4": 0,"Super Factory": 0}
+        for j in range(height):
+            for i in range(width):
+                if MenuBoard[j][i] == "Water" or MenuBoard[j][i] == "Water Fish" or MenuBoard[j][i] == "Water Dam":
+                    Count["Water"] += 1
+                if MenuBoard[j][i] == "Dam":
+                    Count["Dam"] += 1
+                if MenuBoard[j][i] == "Forest Lv4":
+                    Count["Forest Lv4"] += 1
+                if MenuBoard[j][i] == "Quarry Lv4":
+                    Count["Quarry Lv4"] += 1
+                if MenuBoard[j][i] == "Super Factory":
+                    Count["Super Factory"] += 1
+
+
+        #Drawing all the tiles plus some extra to make it loop seemlessly
+        for j in range(height):
+            for i in range(width):
+                draw(i * 80 + x,j * 80 + y,"Tile",MenuBoard[j][i],8,8)
+                draw(i * 80 + x + 1600,j * 80 + y,"Tile",MenuBoard[j][i],8,8)
+                draw(i * 80 + x,j * 80 + y + 1600,"Tile",MenuBoard[j][i],8,8)
+                draw(i * 80 + x + 1600,j * 80 + y + 1600,"Tile",MenuBoard[j][i],8,8)
+
+        #Moving around tiles on screen
+        x -= 5
+        y -= 5
+
+        if y < -1600:
+            y = 0
+            x = 0
+
+
+        pos = pygame.mouse.get_pos()
+        #Event checking mainly for clicking on the buttons
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -566,13 +645,25 @@ def MainMenu(time):
                         MusicPaused = False
                         pygame.mixer.music.unpause()
 
+                    
+        #Shows Main screen text and buttons
         if screen == "Main":
             text_surface, rect = font_150.render(("Grand Expansion"), (0, 0, 0))
             gameDisplay.blit(text_surface, (85, 50))
 
             if time != 0:
-                text_surface, rect = font_75.render(("Time: " + str(time)), (0, 0, 0))
-                gameDisplay.blit(text_surface, (380, 300))
+                if time != "Messed up because of importing and exporting":
+                    text_surface, rect = font_75.render(("Time: " + str(time)), (0, 0, 0))
+                    gameDisplay.blit(text_surface, (380, 300))
+                else:
+                    text_surface, rect = font_50.render(("Time: " + str(time)), (0, 0, 0))
+                    gameDisplay.blit(text_surface, (75, 300))
+
+
+            if pos[0] >= 175 and pos[0] <= 375 and pos[1] >= 600 and pos[1] <= 700:
+                pygame.draw.rect(gameDisplay,(150,0,0),(175,600,200,100),0)
+            else:
+                pygame.draw.rect(gameDisplay,(255,0,0),(175,600,200,100),0)
 
 
             if pos[0] >= 400 and pos[0] <= 600 and pos[1] >= 600 and pos[1] <= 700:
@@ -590,6 +681,8 @@ def MainMenu(time):
 
             text_surface, rect = font_50.render(("Options"), (0, 0, 0))
             gameDisplay.blit(text_surface, (670, 630))
+
+        #Shows the options menu
         if screen == "Options":
             if pos[0] >= 775 and pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775:
                 pygame.draw.rect(gameDisplay,(150,0,0),(775,675,200,100),0)
@@ -610,15 +703,15 @@ def MainMenu(time):
             else:
                 text_surface, rect = font_40.render(("Unmute Music"), (0, 0, 0))
                 gameDisplay.blit(text_surface, (210, 86))
-        
 
         pygame.display.flip()
-        clock.tick(60)
-        
+        clock.tick(120)
 
+#The main part of the game
 def game_loop():
-    global ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, AnimationStage, Count, Achviements
-    
+    global ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, AnimationStage, Count, Achviements, MusicPaused
+
+    #Declaring a ton of variables
     game_run = True
     height = 8
     width = 8
@@ -635,7 +728,8 @@ def game_loop():
                    ,{"Name": "Heavy Metal","Description":"You made 100 metal","Reward":"Unlocked Electricity","metal": 100,"Finished": False,"Show Cooldown": 0}
                    ,{"Name": "Shocking","Description":"You produced 100 Electricity","Reward": "Unlocked Electric Upgrades","Electricity": 100,"Finished": False,"Show Cooldown": 0}
                    ,{"Name": "Fast Materials","Description":"You got a Lvl4 Upgrade","Reward": "Unlocked Upgraded Factories","Finished": False,"Show Cooldown": 0}
-                   ,{"Name": "Stockpile", "Description": "Have 200 food at any time", "Reward": "Unlocked Fishermen", "Finished": False,"Show Cooldown": 0}]
+                   ,{"Name": "Stockpile", "Description": "Have 200 food at any time", "Reward": "Unlocked Fishermen", "Finished": False,"Show Cooldown": 0}
+                   ,{"Name": "Cheater","Description": "You kept changing some values in Importing/Exporting","Reward":"Negative Production","Finished": False,"Show Cooldown": 0}]
     ConfirmMessage = ""
     Confirming = False
     PreviousPos = [0,0]
@@ -646,7 +740,14 @@ def game_loop():
     hour = 0
     seconds = 0
     minutes = 0
-
+    TimeStart = 0
+    SaveMesses = 0
+    Secret = False
+    #Shh.. You don't need to know about this
+    Cheater = [[0,0] for _ in range(20)]
+    for item in Cheater:
+        item[0] = random.randint(0,950)
+        item[1] = random.randint(0,750)
 
     while game_run == True:
 
@@ -654,13 +755,16 @@ def game_loop():
         pos = pygame.mouse.get_pos()
 
         for event in pygame.event.get():
+            #Exiting
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            #Triggers when you press the mouse
             if event.type == pygame.MOUSEBUTTONDOWN:
+                #Checks for which tile you are selecting
                 if Confirming == False:
-                    xPos = int(pos[0]/(10 * width))
-                    yPos = int(pos[1]/(10 * height)) - 2
+                    xPos = int(pos[0]/((640/width)))
+                    yPos = int(pos[1]/(640/height)) - 2
                 if xPos >= 8:
                     xPos = PreviousPos[0]
                     yPos = PreviousPos[1]
@@ -676,6 +780,7 @@ def game_loop():
                 if pos[0] >= 570 and pos[0] <= 670 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True:
                     Confirming = False
 
+                #Demolishing Buildings
                 if pos[0] >= 320 and pos[0] <= 420 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True:
                     if board[yPos][xPos].find("Forest") != -1:
                         if board[yPos][xPos].find("2") != -1:
@@ -701,7 +806,8 @@ def game_loop():
                         board[yPos][xPos] = "Grass"
                     Confirming = False
 
-                if xPos <= 7 and yPos >= 0 and MenuClicking == False:
+                #Making the selection
+                if xPos <= height - 1 and yPos >= 0 and MenuClicking == False:
                     if CurSelection == [-1,-1] or CurSelection != [xPos,yPos]:
                         CurSelection = [xPos,yPos]
                     else:
@@ -713,12 +819,215 @@ def game_loop():
                 if pos[0] >= 650 and pos[0] <= 800 and pos[1] >= 685 and pos[1] <= 735:
                     game_loop()
 
+
+                #Showing Options
+                if pos[0] >= 650 and pos[0] <= 800 and pos[1] >= 740 and pos[1] <= 840:
+                    run = True
+
+                    #Runs the options window
+                    while run == True:
+                        gameDisplay.fill((150,150,150))
+                        pygame.draw.rect(gameDisplay,(50,50,50),(0,0,1000,800),15)
+
+
+                        #Handles Events
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                sys.exit()
+                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                #Exit Options menu
+                                if pos[0] >= 775 and pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775:
+                                    run = False
+                                #Pause/UnPause music
+                                if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 50 and pos[1] <= 150:
+                                    if MusicPaused == False:
+                                        MusicPaused = True
+                                        pygame.mixer.music.pause()
+                                    else:
+                                        MusicPaused = False
+                                        pygame.mixer.music.unpause()
+
+                                #Exports save data
+                                if pos[0] >= 600 and pos[0] <= 800 and pos[1] >= 50 and pos[1] <= 150:
+                                    Data = ""
+                                    ItemChecker = [ResourceCount,MaterialProduction,MaterialsEarned]
+                                    for Item in ItemChecker:
+                                        for item in Item:
+                                            Data += str(Item[item]) + "#"
+
+                                    Time = ""
+                        
+                                    for i in range(str(StartTime).index(".")+3):
+                                        Time += str(StartTime)[i]
+                                    Data += str(Time) + "#"
+                                    Time = ""
+                                    for i in range(str(time.process_time()).index(".")+3):
+                                        Time += str(time.process_time())[i]
+                                    Data += str(Time) + "#"
+                                    Dif = time.process_time() - int(StartTime)
+                                    for i in range(str(Dif).index(".")):
+                                        Time += str(Dif)[i]
+                                    Data += str(Time) + "#"
+                                    for quest in Achievments:
+                                        Data += str(quest["Finished"]) + "#"
+                                        Data += str(quest["Show Cooldown"]) + "#"
+
+                                    Data += str(SaveMesses) + "#"
+                                    
+                                    Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
+                                             ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
+                                             ,"CityFar","CityFac","Farm"]
+                                    for j in range(height):
+                                        for i in range(width):
+                                            Data += str(Tiles.index(board[j][i])) + "#"
+                                    
+                                    print(Data)
+
+                                #Import save Data:
+                                if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 175 and pos[1] <= 275 and Achievments[6]["Finished"] != True:
+                                    ask = input("Give me your data")
+                                    DataList = []
+
+
+                                    if ask.count("#") == 97:
+                                        count = 0
+                                        for i in range(97):
+                                            DataBit = ""
+                                            FindBit = True
+                                            while FindBit == True:
+                                                if ask[count] != "#":
+                                                    DataBit += ask[count]
+                                                else:
+                                                    FindBit = False
+                                                count += 1
+                                            DataList.append(DataBit)
+
+
+                                        Count = 0
+                                        ItemChecker = [ResourceCount,MaterialProduction,MaterialsEarned]
+                                        for Item in ItemChecker:
+                                            for item in Item:
+                                                        
+                                                Item[item] = int(DataList[Count])
+
+
+                                                
+                                                if int(Item[item]) >= 10000000:
+                                                    if SaveMesses == 0:
+                                                        print("Comeon, You and I both know that you didn't get that legit. Stop messing with saves or I will do something")
+                                                        SaveMesses += 1
+                                                    elif SaveMesses == 1:
+                                                        print("Why do you keep trying to mess around with this?")
+                                                        SaveMesses += 1
+                                                    elif SaveMesses == 2:
+                                                        print("Serousily Stop DOING THIS NOW!")
+                                                        SaveMesses += 1
+                                                    elif SaveMesses == 3:
+                                                        print("Fine, you want to do this the hard way, TAKE THIS (-1 Wood)")
+                                                        ResourceCount["Wood"] -= 1
+                                                        SaveMesses += 1
+                                                    elif SaveMesses == 4:
+                                                        print("That wasn't enough?")
+                                                        time.sleep(1)
+                                                        print("Ok ok ok...")
+                                                        time.sleep(1)
+                                                        print("Well you get a special achievment")
+                                                        Secret = True
+                                                        Achievments[6]["Finished"] = True
+                                                        Achievments[6]["Show Cooldown"] = 999999999999
+                                                        SaveMesses += 1
+                                                    else:
+                                                        print("You got a secret achievment was that not enough?")
+                                                        Secret = True
+                                                        Achievments[6]["Finished"] = True
+                                                        Achievments[6]["Show Cooldown"] = 999999999999
+                                                        SaveMesses += 1
+                                                Count += 1
+                                        StartTime = float(DataList[Count])
+                                        TimeStart = float(DataList[Count + 1]) - float(DataList[Count])
+                                        TimeWasted = float(DataList[Count + 2])
+                                        Count += 3
+
+                                        for quest in Achievments:
+                                            if Achievments.index(quest) != 6:
+                                                quest["Finished"] = DataList[Count]
+                                                quest["Show Cooldown"] = int(DataList[Count+1])
+                                            Count += 2
+
+                                        SaveMesses = DataList[Count]
+                                        Count += 1
+
+                                        Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
+                                                 ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
+                                                 ,"CityFar","CityFac","Farm"]
+                                        for j in range(height):
+                                            for i in range(width):
+                                                board[j][i] = Tiles[int(DataList[Count])]
+                                                Count += 1
+                                            
+                                    
+                                    
+                                                 
+                                        
+                                                    
+                                        
+                                    
+
+                        pos = pygame.mouse.get_pos()
+
+
+                        #Displays all the buttons
+
+                        if pos[0] >= 775 and pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775:
+                            pygame.draw.rect(gameDisplay,(150,0,0),(775,675,200,100),0)
+                        else:
+                            pygame.draw.rect(gameDisplay,(255,0,0),(775,675,200,100),0)
+
+                        text_surface, rect = font_50.render(("Exit"), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (835, 705))
+
+                        if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 50 and pos[1] <= 150:
+                            pygame.draw.rect(gameDisplay,(150,0,0),(200,50,200,100),0)
+                        else:
+                            pygame.draw.rect(gameDisplay,(255,0,0),(200,50,200,100),0)
+
+                        if MusicPaused == False:
+                            text_surface, rect = font_50.render(("Mute Music"), (0, 0, 0))
+                            gameDisplay.blit(text_surface, (210, 80))
+                        else:
+                            text_surface, rect = font_40.render(("Unmute Music"), (0, 0, 0))
+                            gameDisplay.blit(text_surface, (210, 86))
+
+                        if pos[0] >= 600 and pos[0] <= 800 and pos[1] >= 50 and pos[1] <= 150:
+                            pygame.draw.rect(gameDisplay,(150,0,0),(600,50,200,100),0)
+                        else:
+                            pygame.draw.rect(gameDisplay,(255,0,0),(600,50,200,100),0)
+
+                        text_surface, rect = font_40.render(("Export Data"), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (620, 80))
+
+                        if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 175 and pos[1] <= 275:
+                            pygame.draw.rect(gameDisplay,(150,0,0),(200,175,200,100),0)
+                        else:
+                            pygame.draw.rect(gameDisplay,(255,0,0),(200,175,200,100),0)
+
+                        text_surface, rect = font_40.render(("Import Data"), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (220, 205))
+                        
+
+                        
+
+                        pygame.display.flip()
+                        clock.tick(60)
+                        
+
                 #Demolishes Selected Building
                 if pos[0] >= 825 and pos[0] <= 975 and pos[1] >= 685 and pos[1] <= 735 and CurSelection != [-1,-1]:
                     Confirming = True
                     ConfirmMessage = "Are you sure you want to demolish the building?"
                         
-                #Upgrading
+                #All of the upgrades
                 if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650 and CurSelection != [-1,-1]:
                     if board[CurSelection[1]][CurSelection[0]] == "Forest Lv3" and ResourceCount["Metal"] >= 100 and ResourceCount["Electricity"] >= 1:
                        ResourceCount["Metal"] -= 100
@@ -795,9 +1104,11 @@ def game_loop():
                 if board[CurSelection[1]][CurSelection[0]] == "Factory" and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 350 and pos[1] <= 450:
                     board[CurSelection[1]][CurSelection[0]] = "Factory So"
                 
-
+                #Taking you back to mainscreen when you finish and calculates time
                 if CurSelection == [-1,-1] and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650 and ResourceCount["Wood"] >= 1000 and ResourceCount["Stones"] >= 500 and ResourceCount["Food"] >= 200 and ResourceCount["Metal"] >= 100 and ResourceCount["Electricity"] >= 50:
-                    time2 = int((time.process_time() - StartTime))
+                    time2 = int((time.process_time()+TimeStart - StartTime))
+                    if TimeStart != 0:
+                        MainMenu("Messed up because of importing and exporting")
                     hours = 0
                     minutes = 0
                     seconds = 0
@@ -822,7 +1133,7 @@ def game_loop():
                         MainMenu(str(seconds))
     
         #Counting Tiles for certain animations
-        Count = {"Water": 0,"Dam": 0,"Forest Lv4": 0,"Quarry Lv4": 0}
+        Count = {"Water": 0,"Dam": 0,"Forest Lv4": 0,"Quarry Lv4": 0,"Super Factory": 0}
         for j in range(height):
             for i in range(width):
                 if board[j][i] == "Water" or board[j][i] == "Water Fish" or board[j][i] == "Water Dam":
@@ -833,6 +1144,8 @@ def game_loop():
                     Count["Forest Lv4"] += 1
                 if board[j][i] == "Quarry Lv4":
                     Count["Quarry Lv4"] += 1
+                if board[j][i] == "Super Factory":
+                    Count["Super Factory"] += 1
 
         #Drawing all Tiles
         for j in range(height):
@@ -857,11 +1170,25 @@ def game_loop():
                 pygame.draw.rect(gameDisplay,(200,200,200),(300,700,400,100),0)
                 pygame.draw.rect(gameDisplay,(25,25,25),(300,700,400,100),5)
                 text_surface, rect = font_50.render((quest["Name"]), (0, 0, 0))
-                gameDisplay.blit(text_surface, (310, 710))
-                text_surface, rect = font_25.render((quest["Description"]), (0, 0, 0))
+                if Achievments.index(quest) != 6:
+                    gameDisplay.blit(text_surface, (310, 710))
+                else:
+                    gameDisplay.blit(text_surface, (310, 710))
+                    for item in Cheater:
+                        gameDisplay.blit(text_surface, (item[0], item[1]))
+                        item[1] += 5
+                        if item[1] >= 800:
+                            item[1] = 0
+                            item[0] = random.randint(0,950)
+                if Achievments.index(quest) != 6:
+                    text_surface, rect = font_25.render((quest["Description"]), (0, 0, 0))
+                else:
+                    text_surface, rect = font_20.render((quest["Description"]), (0, 0, 0))
                 gameDisplay.blit(text_surface, (310, 750))
                 text_surface, rect = font_25.render((quest["Reward"]), (0, 0, 0))
                 gameDisplay.blit(text_surface, (310, 775))
+            else:
+                quest["Show Cooldown"] = 0
 
 
         #Shows a confirm message
@@ -889,12 +1216,20 @@ def game_loop():
             gameDisplay.blit(text_surface, (610, 415))
 
             pygame.draw.rect(gameDisplay,(200,0,0),(570,400,100,50),3)
-                
+
+        #Easter Eggs(You probably could've have found this without looking through the code)
+        if Secret == True:
+            for item in MaterialProduction:
+                if MaterialProduction[item] > 0:
+                    MaterialProduction[item] *= -1
+                if MaterialProduction[item] == 0:
+                    MaterialProduction[item] = -9999999999
                 
 
         pygame.display.flip()
         clock.tick(60)
 
+    
 
 
 MainMenu(0)
