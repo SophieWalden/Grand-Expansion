@@ -107,64 +107,78 @@ def Achviement(Achviements):
             if Quest["wood"] <= MaterialsEarned["Wood"] and Quest["Finished"] == False:
                 Quest["Finished"] = True
                 Quest["Show Cooldown"] = 10
-                UnUpgradable.pop(UnUpgradable.index("Grass"))
-                UnUpgradable.append("CityFac")
-                UnUpgradable.append("City")
-                UnUpgradable.append("CityFar")
-                UpgradeInfo["Grass"] = ["50 Wood","20 Stones","0 Food","1 Food"]
+                AchievmentRewards(0)
         if count == 1:
             if Quest["food"] <= MaterialsEarned["Food"] and Quest["Finished"] == False:
                 Quest["Finished"] = True
                 Quest["Show Cooldown"] = 10
-                UnUpgradable.pop(UnUpgradable.index("CityFac"))
-                UnUpgradable.pop(UnUpgradable.index("CityFar"))
-
-                UnUpgradable.append("Farm")
-                UnUpgradable.append("Factory Su")
-                UnUpgradable.append("Factory")
-                UnUpgradable.append("Factory So")
-                UpgradeInfo["CityFar"] = ["100 Wood","50 food","1 Food","3 Food"]
-                UpgradeInfo["CityFac"] = ["50 stones","1 food per second","1 Food","1 Metal"]
+                AchievmentRewards(1)
         if count == 2:
             if Quest["metal"] <= MaterialsEarned["Metal"] and Quest["Finished"] == False:
                 Quest["Finished"] = True
                 Quest["Show Cooldown"] = 10
-                UnUpgradable.pop(UnUpgradable.index("Water Dam"))
-                UnUpgradable.append("Dam")
-                UpgradeInfo["Water Dam"] = ["200 Wood","50 metal","0 Electricity","1 Electricity"]
+                AchievmentRewards(2)
         if count == 3:
             if Quest["Electricity"] <= MaterialsEarned["Electricity"] and Quest["Finished"] == False:
                 Quest["Finished"] = True
                 Quest["Show Cooldown"] = 10
-                UnUpgradable.pop(UnUpgradable.index("Forest Lv3"))
-                UnUpgradable.append("Forest Lv4")
-                UnUpgradable.pop(UnUpgradable.index("Quarry Lv3"))
-                UnUpgradable.append("Quarry Lv4")
-                UpgradeInfo["Forest Lv3"] = ["100 Metal","1 Electricity per second","5 wood","15 wood"]
-                UpgradeInfo["Quarry Lv3"] = ["150 Metal","1 Electricity per second","5 stones","15 stones"]
+                AchievmentRewards(3)
         if count == 4:
             if Count["Forest Lv4"] > 0 or Count["Quarry Lv4"] > 0:
                 if Quest["Finished"] == False:
                     Quest["Finished"] = True
                     Quest["Show Cooldown"] = 10
-                    UnUpgradable.pop(UnUpgradable.index("Factory So"))
-                    UnUpgradable.pop(UnUpgradable.index("Factory Su"))
-                    UnUpgradable.append("Super Factory")
-                    UnUpgradable.append("Solar Power")
-                    UpgradeInfo["Factory Su"] = ["100 Metal", "2 Electricity per second", "1 metal","5 Metal"]
-                    UpgradeInfo["Factory So"] = ["100 Metal", "1 Food per second", "1 metal","3 Electricity"]
+                    AchievmentRewards(4)
         if count == 5:
             if Quest["Finished"] == False and ResourceCount["Food"] >= 200:
                 Quest["Finished"] = True
                 Quest["Show Cooldown"] = 10
-                UnUpgradable.pop(UnUpgradable.index("Water Fish"))
-                UnUpgradable.append("Fisherman")
-                UpgradeInfo["Water Fish"] = ["100 Wood","25 metal","0 Food","2 Food"]
+                AchievmentRewards(5)
         count += 1
 
 
     return Achviements
 
+def AchievmentRewards(Num):
+    global ResourceCount, MaterialProduction, UnUpgradable, UpgradeInfo, MaterialsEarned, Unlocked, Count
+
+    if Num == 0:
+        UnUpgradable.pop(UnUpgradable.index("Grass"))
+        UnUpgradable.append("CityFac")
+        UnUpgradable.append("City")
+        UnUpgradable.append("CityFar")
+        UpgradeInfo["Grass"] = ["50 Wood","20 Stones","0 Food","1 Food"]
+    if Num == 1:
+        UnUpgradable.pop(UnUpgradable.index("CityFac"))
+        UnUpgradable.pop(UnUpgradable.index("CityFar"))
+        UnUpgradable.append("Farm")
+        UnUpgradable.append("Factory Su")
+        UnUpgradable.append("Factory")
+        UnUpgradable.append("Factory So")
+        UpgradeInfo["CityFar"] = ["100 Wood","50 food","1 Food","3 Food"]
+        UpgradeInfo["CityFac"] = ["50 stones","1 food per second","1 Food","1 Metal"]
+    if Num == 2:
+        UnUpgradable.pop(UnUpgradable.index("Water Dam"))
+        UnUpgradable.append("Dam")
+        UpgradeInfo["Water Dam"] = ["200 Wood","50 metal","0 Electricity","1 Electricity"]
+    if Num == 3:
+        UnUpgradable.pop(UnUpgradable.index("Forest Lv3"))
+        UnUpgradable.append("Forest Lv4")
+        UnUpgradable.pop(UnUpgradable.index("Quarry Lv3"))
+        UnUpgradable.append("Quarry Lv4")
+        UpgradeInfo["Forest Lv3"] = ["100 Metal","1 Electricity per second","5 wood","15 wood"]
+        UpgradeInfo["Quarry Lv3"] = ["150 Metal","1 Electricity per second","5 stones","15 stones"]
+    if Num == 4:
+        UnUpgradable.pop(UnUpgradable.index("Factory So"))
+        UnUpgradable.pop(UnUpgradable.index("Factory Su"))
+        UnUpgradable.append("Super Factory")
+        UnUpgradable.append("Solar Power")
+        UpgradeInfo["Factory Su"] = ["100 Metal", "2 Electricity per second", "1 metal","5 Metal"]
+        UpgradeInfo["Factory So"] = ["100 Metal", "1 Food per second", "1 metal","3 Electricity"]
+    if Num == 5:
+        UnUpgradable.pop(UnUpgradable.index("Water Fish"))
+        UnUpgradable.append("Fisherman")
+        UpgradeInfo["Water Fish"] = ["100 Wood","25 metal","0 Food","2 Food"]
 
 #Draws the menus on the side and does some computing for producing resource
 def menu(board,selection):
@@ -476,6 +490,8 @@ def menu(board,selection):
         for tileRow in board:
             for tile in tileRow:
                 Earned += Value[Tiles.index(tile)]
+        Earned += int(ResourceCount["Wood"]/1000) + int(ResourceCount["Stones"]/500) + int(ResourceCount["Food"]/200) + int(ResourceCount["Metal"]/100) + int(ResourceCount["Electricity"]/50)
+
         text_surface, rect = font_50.render(("Prestige (+" + str(Earned) + ")"), (0, 0, 0))
         gameDisplay.blit(text_surface, (690, 180))
         text_surface, rect = font_50.render(("Cost: "), (0, 0, 0))
@@ -664,11 +680,13 @@ def MainMenu(time):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pos[0] >= 400 and pos[0] <= 600 and pos[1] >= 600 and pos[1] <= 700 and screen == "Main":
-                    game_loop(8,8,0)
+                    game_loop(8,8,0,False)
                 if pos[0] >= 625 and pos[0] <= 825 and pos[1] >= 600 and pos[1] <= 700 and screen == "Main":
                     screen = "Options"
                 if pos[0] >= 775 and pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775 and screen == "Options":
                     screen = "Main"
+                if pos[0] >= 175 and pos[0] <= 375 and pos[1] >= 600 and pos[1] <= 700 and screen == "Main":
+                    game_loop(8,8,0,True)
                 if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 50 and pos[1] <= 150 and screen == "Options":
                     if MusicPaused == False:
                         MusicPaused = True
@@ -703,11 +721,11 @@ def MainMenu(time):
             else:
                 pygame.draw.rect(gameDisplay,(255,0,0),(400,600,200,100),0)
 
-            text_surface, rect = font_50.render(("Play"), (0, 0, 0))
-            gameDisplay.blit(text_surface, (460, 630))
+            text_surface, rect = font_50.render(("New Game"), (0, 0, 0))
+            gameDisplay.blit(text_surface, (420, 630))
 
-            text_surface, rect = font_30.render(("Just here for OCD"), (0, 0, 0))
-            gameDisplay.blit(text_surface, (190, 630))
+            text_surface, rect = font_50.render(("Continue"), (0, 0, 0))
+            gameDisplay.blit(text_surface, (200, 630))
 
             if pos[0] >= 625 and pos[0] <= 825 and pos[1] >= 600 and pos[1] <= 700:
                 pygame.draw.rect(gameDisplay,(150,0,0),(625,600,200,100),0)
@@ -739,11 +757,12 @@ def MainMenu(time):
                 text_surface, rect = font_40.render(("Unmute Music"), (0, 0, 0))
                 gameDisplay.blit(text_surface, (210, 86))
 
+
         pygame.display.flip()
         clock.tick(120)
 
 #The main part of the game
-def game_loop(height,width,prestige):
+def game_loop(height,width,prestige,LoadSave):
     global ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, AnimationStage, Count, Achviements, MusicPaused, Images, Mult
 
     #Declaring a ton of variables
@@ -761,8 +780,7 @@ def game_loop(height,width,prestige):
                    ,{"Name": "Heavy Metal","Description":"You made 100 metal","Reward":"Unlocked Electricity","metal": 100,"Finished": False,"Show Cooldown": 0}
                    ,{"Name": "Shocking","Description":"You produced 100 Electricity","Reward": "Unlocked Electric Upgrades","Electricity": 100,"Finished": False,"Show Cooldown": 0}
                    ,{"Name": "Fast Materials","Description":"You got a Lvl4 Upgrade","Reward": "Unlocked Upgraded Factories","Finished": False,"Show Cooldown": 0}
-                   ,{"Name": "Stockpile", "Description": "Have 200 food at any time", "Reward": "Unlocked Fishermen", "Finished": False,"Show Cooldown": 0}
-                   ,{"Name": "Cheater","Description": "You kept changing some values in Importing/Exporting","Reward":"Negative Production","Finished": False,"Show Cooldown": 0}]
+                   ,{"Name": "Stockpile", "Description": "Have 200 food at any time", "Reward": "Unlocked Fishermen", "Finished": False,"Show Cooldown": 0}]
     Images = []
     Images = load_images("Images",height,width)
     ConfirmMessage = ""
@@ -778,11 +796,65 @@ def game_loop(height,width,prestige):
     TimeStart = 0
     SaveMesses = 0
     Secret = False
-    #Shh.. You don't need to know about this
-    Cheater = [[0,0] for _ in range(20)]
-    for item in Cheater:
-        item[0] = random.randint(0,950)
-        item[1] = random.randint(0,750)
+    SaveCooldown = time.process_time() + 30
+
+    if LoadSave == True:
+        SaveFile = open("Save File/SaveFile.txt","r")
+        ask = SaveFile.readline()
+        DataList = []
+        print(ask.count("#"))
+        if ask.count("#") >= 90:
+            count = 0
+            for i in range(ask.count("#")):
+                DataBit = ""
+                FindBit = True
+                while FindBit == True:
+                    if ask[count] != "#":
+                        DataBit += ask[count]
+                    else:
+                        FindBit = False
+                    count += 1
+                DataList.append(DataBit)
+
+
+            Count = 0
+            if DataList[Count] == "Beta1.6":
+                Count += 1
+                ItemChecker = [ResourceCount,MaterialProduction,MaterialsEarned]
+                for Item in ItemChecker:
+                    for item in Item:
+                                                            
+                        Item[item] = int(DataList[Count])          
+                        Count += 1
+
+                for item in Mult:
+                    Mult[item] = int(DataList[Count])
+                    Count += 1
+
+                for quest in Achievments:
+                    if Achievments.index(quest) != 6:
+                        quest["Finished"] = DataList[Count] 
+                        if quest["Finished"] == "True":
+                            AchievmentRewards(Achievments.index(quest))
+                            quest["Finished"] = True
+                        else:
+                            quest["Finished"] = False
+                        quest["Show Cooldown"] = int(DataList[Count+1])
+                    Count += 2
+
+                height = int(DataList[Count])
+                width = int(DataList[Count + 1])
+                Count += 2
+                Images = load_images("Images",height,width)
+                board = [[0] * height for _ in range(width)]
+                                            
+                Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
+                        ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
+                            ,"CityFar","CityFac","Farm"]
+                for j in range(height):
+                    for i in range(width):
+                        board[j][i] = Tiles[int(DataList[Count])]
+                        Count += 1
 
     while game_run == True:
 
@@ -864,7 +936,7 @@ def game_loop(height,width,prestige):
 
                 #Restarts the game
                 if pos[0] >= 650 and pos[0] <= 800 and pos[1] >= 685 and pos[1] <= 735:
-                    game_loop(height+2,width+2,prestige)
+                    game_loop(8,8,0,False)
 
                 #Prestige shop
                 if pos[0] >= 825 and pos[0] <= 975 and pos[1] >= 740 and pos[1] <= 840:
@@ -1001,6 +1073,35 @@ def game_loop(height,width,prestige):
                                         MusicPaused = False
                                         pygame.mixer.music.unpause()
 
+                                #Saves your data to a save file
+                                if pos[0] >= 600 and pos[0] <= 800 and pos[1] >= 175 and pos[1] <= 275:
+                                    Data = ""
+                                    Data += "Beta1.6" + "#"
+                                    ItemChecker = [ResourceCount,MaterialProduction,MaterialsEarned]
+                                    for Item in ItemChecker:
+                                        for item in Item:
+                                            Data += str(Item[item]) + "#"
+
+                                    for item in Mult:
+                                        Data += str(Mult[item]) + "#"
+
+                                    for quest in Achievments:
+                                        Data += str(quest["Finished"]) + "#"
+                                        Data += str(int(quest["Show Cooldown"])) + "#"
+
+                                    Data += str(height) + "#"
+                                    Data += str(width) + "#"
+
+                                                            
+                                    Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
+                                            ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
+                                            ,"CityFar","CityFac","Farm"]
+                                    for j in range(height):
+                                        for i in range(width):
+                                            Data += str(Tiles.index(board[j][i])) + "#"
+                                    SaveFile = open("Save File/SaveFile.txt","w")
+                                    SaveFile.write(Data)        
+                            
                                 #Exports save data
                                 if pos[0] >= 600 and pos[0] <= 800 and pos[1] >= 50 and pos[1] <= 150:
                                     Data = ""
@@ -1019,7 +1120,6 @@ def game_loop(height,width,prestige):
                                     Data += str(height) + "#"
                                     Data += str(width) + "#"
 
-                                    Data += str(SaveMesses) + "#"
                                     
                                     Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
                                              ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
@@ -1058,36 +1158,6 @@ def game_loop(height,width,prestige):
 
 
                                                 
-                                                if int(Item[item]) >= 10000000000000:
-                                                    if SaveMesses == 0:
-                                                        print("Comeon, You and I both know that you didn't get that legit. Stop messing with saves or I will do something")
-                                                        SaveMesses += 1
-                                                    elif SaveMesses == 1:
-                                                        print("Why do you keep trying to mess around with this?")
-                                                        SaveMesses += 1
-                                                    elif SaveMesses == 2:
-                                                        print("Serousily Stop DOING THIS NOW!")
-                                                        SaveMesses += 1
-                                                    elif SaveMesses == 3:
-                                                        print("Fine, you want to do this the hard way, TAKE THIS (-1 Wood)")
-                                                        ResourceCount["Wood"] -= 1
-                                                        SaveMesses += 1
-                                                    elif SaveMesses == 4:
-                                                        print("That wasn't enough?")
-                                                        time.sleep(1)
-                                                        print("Ok ok ok...")
-                                                        time.sleep(1)
-                                                        print("Well you get a special achievment")
-                                                        Secret = True
-                                                        Achievments[6]["Finished"] = True
-                                                        Achievments[6]["Show Cooldown"] = 999999999999
-                                                        SaveMesses += 1
-                                                    else:
-                                                        print("You got a secret achievment was that not enough?")
-                                                        Secret = True
-                                                        Achievments[6]["Finished"] = True
-                                                        Achievments[6]["Show Cooldown"] = 999999999999
-                                                        SaveMesses += 1
                                                 Count += 1
 
                                         for item in Mult:
@@ -1097,17 +1167,20 @@ def game_loop(height,width,prestige):
                                         for quest in Achievments:
                                             if Achievments.index(quest) != 6:
                                                 quest["Finished"] = DataList[Count]
+                                                if quest["Finished"] == "True":
+                                                    AchievmentRewards(Achievments.index(quest))
+                                                    quest["Finished"] = True
+                                                else:
+                                                    quest["Finished"] = False
                                                 quest["Show Cooldown"] = int(DataList[Count+1])
                                             Count += 2
 
                                         height = int(DataList[Count])
                                         width = int(DataList[Count + 1])
+                                        Images = load_images("Images",height,width)
                                         Count += 2
                                         board = [[0] * height for _ in range(width)]
-
-                                        SaveMesses = DataList[Count]
-                                        Count += 1
-
+                                        
                                         Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
                                                  ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
                                                  ,"CityFar","CityFac","Farm"]
@@ -1164,7 +1237,14 @@ def game_loop(height,width,prestige):
 
                         text_surface, rect = font_40.render(("Import Data"), (0, 0, 0))
                         gameDisplay.blit(text_surface, (220, 205))
-                        
+
+                        if pos[0] >= 600 and pos[0] <= 800 and pos[1] >= 175 and pos[1] <= 275:
+                            pygame.draw.rect(gameDisplay,(150,0,0),(600,175,200,100),0)
+                        else:
+                            pygame.draw.rect(gameDisplay,(255,0,0),(600,175,200,100),0)
+
+                        text_surface, rect = font_40.render(("Save Game"), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (630, 205))
 
                         
 
@@ -1264,35 +1344,8 @@ def game_loop(height,width,prestige):
                     for tileRow in board:
                         for tile in tileRow:
                             Earned += Value[Tiles.index(tile)]
-                    game_loop(height+2,width+2,prestige + Earned)
-
-
-                    #Converting Time(Not in use at the moment)
-                    time2 = int((time.process_time()+TimeStart - StartTime))
-                    if TimeStart != 0:
-                        MainMenu("Messed up because of importing and exporting")
-                    hours = 0
-                    minutes = 0
-                    seconds = 0
-                    while time2 >= 3600:
-                        time2 -= 3600
-                        hours += 1
-                    while time2 >= 60:
-                        time2 -= 60
-                        minutes += 1
-                    while time2 >= 1:
-                        time2 -= 1
-                        seconds += 1
-                    if minutes < 10 and hours > 0:
-                        minutes = "0" + str(minutes)
-                    if seconds < 10 and minutes > 0:
-                        seconds = "0" + str(seconds)
-                    if hours != 0:
-                        MainMenu(str(hours) + ":" + str(minutes) + ":" + str(seconds))
-                    if minutes != 0:
-                        MainMenu(str(minutes) + ":" + str(seconds))
-                    else:
-                        MainMenu(str(seconds))
+                    Earned += int(ResourceCount["Wood"]/1000) + int(ResourceCount["Stones"]/500) + int(ResourceCount["Food"]/200) + int(ResourceCount["Metal"]/100) + int(ResourceCount["Electricity"]/50)
+                    game_loop(height+2,width+2,prestige + Earned,False)
     
         #Counting Tiles for certain animations
         Count = {"Water": 0,"Dam": 0,"Forest Lv4": 0,"Quarry Lv4": 0,"Super Factory": 0}
@@ -1379,15 +1432,41 @@ def game_loop(height,width,prestige):
 
             pygame.draw.rect(gameDisplay,(200,0,0),(570,400,100,50),3)
 
-        #Easter Eggs(You probably could've have found this without looking through the code)
-        if Secret == True:
-            for item in MaterialProduction:
-                if MaterialProduction[item] > 0:
-                    MaterialProduction[item] *= -1
-                if MaterialProduction[item] == 0:
-                    MaterialProduction[item] = -9999999999
-                
 
+        #Auto Save
+        if time.process_time() - SaveCooldown >= 0:
+            Data = ""
+            Data += "Beta1.6" + "#"
+            ItemChecker = [ResourceCount,MaterialProduction,MaterialsEarned]
+            for Item in ItemChecker:
+                for item in Item:
+                    Data += str(Item[item]) + "#"
+
+            for item in Mult:
+                Data += str(Mult[item]) + "#"
+
+            for quest in Achievments:
+                Data += str(quest["Finished"]) + "#"
+                Data += str(int(quest["Show Cooldown"])) + "#"
+
+            Data += str(height) + "#"
+            Data += str(width) + "#"
+
+                                    
+            Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
+                    ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
+                    ,"CityFar","CityFac","Farm"]
+            for j in range(height):
+                for i in range(width):
+                    Data += str(Tiles.index(board[j][i])) + "#"
+            SaveFile = open("Save File/SaveFile.txt","w")
+            SaveFile.write(Data)
+
+            SaveCooldown = time.process_time() + 30
+
+            
+
+                
         pygame.display.flip()
         clock.tick(60)
 
