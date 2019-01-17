@@ -292,7 +292,7 @@ def game_loop(height,width,prestige,LoadSave):
     board = gen_Board([[0] * height for _ in range(width)],height,width)
     CurSelection = [-1,-1]
     ResourceCount = {"Wood": 10, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0,"Prestige": prestige}
-    MaterialProduction = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0, "Prestige": 0}
+    MaterialProduction = {"Wood": 999, "Stones": 999,"Food": 9999,"Metal": 999,"Electricity": 999, "Prestige": 0}
     MaterialsEarned = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0,"Prestige": prestige}
     Cooldown = time.process_time()
     UnUpgradable = ["Water","Grass","Quarry Lv3","Forest Lv3","Water Fish","Water Dam"]
@@ -319,6 +319,7 @@ def game_loop(height,width,prestige,LoadSave):
     SaveMesses = 0
     Secret = False
     SaveCooldown = time.process_time() + 30
+    MusicPaused = False
 
     if LoadSave == True:
         SaveFile = open("Save File/SaveFile.txt","r")
@@ -956,6 +957,7 @@ def game_loop(height,width,prestige,LoadSave):
 
         #Auto Save
         if time.process_time() - SaveCooldown >= 0:
+            print(1)
             Data = ""
             Data += "Beta1.6" + "#"
             ItemChecker = [ResourceCount,MaterialProduction,MaterialsEarned]
@@ -994,4 +996,4 @@ def game_loop(height,width,prestige,LoadSave):
     
 
 
-MainMenu.HomeScreen(pygame, gameDisplay,[font_40,font_50,font_150], clock)
+MainMenu.HomeScreen(pygame, gameDisplay,[font_40,font_50,font_150], clock, MusicPaused)
