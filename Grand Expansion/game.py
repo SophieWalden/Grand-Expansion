@@ -34,19 +34,20 @@ font_75 = pygame.freetype.Font("Font.ttf", 75)
 font_150 = pygame.freetype.Font("Font.ttf", 150)
 
 #Loading the images
-def load_images(path_to_directory):
+def load_images(path_to_directory,height,width):
     images = {}
     for dirpath, dirnames, filenames in os.walk(path_to_directory):
         for name in filenames:
             if name.endswith('.png'):
                 key = name[:-4]
                 img = pygame.image.load(os.path.join(dirpath, name)).convert()
+                img = pygame.transform.scale(img,(int(640/width),int(640/height)))
                 images[key] = img
     return images
 
-global Images
-
-Images = load_images("Images")
+#Multipliers for Prestige
+global Mult
+Mult = {"Wood": 1, "Stones": 1, "Food": 1, "Metal": 1, "Electricity": 1,"Prestige": 1}
 
 #Plays the music
 pygame.mixer.music.load('Sounds/Soundtrack.wav')
@@ -167,7 +168,7 @@ def Achviement(Achviements):
 
 #Draws the menus on the side and does some computing for producing resource
 def menu(board,selection):
-    global ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Unlocked, Count, Achviements
+    global ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Unlocked, Count, Achviements, Mult
 
     #Drawing Menu
     pygame.draw.line(gameDisplay,(50,50,50),(0,160),(1000,160),5)
@@ -219,6 +220,14 @@ def menu(board,selection):
         gameDisplay.blit(text_surface, (560, 30))
         text_surface, rect = font_35.render((shorten(ResourceCount["Electricity"])), (0, 0, 0))
         gameDisplay.blit(text_surface, (680, 27))
+
+    #Prestige
+    if MaterialsEarned["Prestige"] >= 1:
+        pygame.draw.rect(gameDisplay,(150,0,150),(505,95,50,50),0)
+        text_surface, rect = font_40.render(("Prestige: "), (0, 0, 0))
+        gameDisplay.blit(text_surface, (560, 105))
+        text_surface, rect = font_25.render((shorten(ResourceCount["Prestige"])), (0, 0, 0))
+        gameDisplay.blit(text_surface, (685, 113))
 
         
     #Displays what you are selecting
@@ -381,33 +390,33 @@ def menu(board,selection):
     if time.process_time() - Cooldown >= 1:
         for Item in ResourceCount:
             if Item != "Metal":
-                ResourceCount[Item] += MaterialProduction[Item]
-                MaterialsEarned[Item] += MaterialProduction[Item]
+                ResourceCount[Item] += MaterialProduction[Item] * Mult[Item]
+                MaterialsEarned[Item] += MaterialProduction[Item] * Mult[Item]
             else:
                 for i in range(Count["Super Factory"]):
-                    ResourceCount["Food"] += 3
-                if ResourceCount["Food"] >= MaterialProduction[Item]:
-                    ResourceCount[Item] += MaterialProduction[Item]
-                    MaterialsEarned[Item] += MaterialProduction[Item]
-                    ResourceCount["Food"] -= MaterialProduction[Item]
+                    ResourceCount["Food"] += 3 * Mult["Food"]
+                if ResourceCount["Food"]  * Mult["Food"] >= MaterialProduction[Item] * Mult[Item]:
+                    ResourceCount[Item] += MaterialProduction[Item] * Mult[Item]
+                    MaterialsEarned[Item] += MaterialProduction[Item] * Mult[Item]
+                    ResourceCount["Food"] -= MaterialProduction[Item] * Mult[Item]
                 else:
-                    ResourceCount[Item] += ResourceCount["Food"]
-                    MaterialsEarned[Item] += ResourceCount["Food"]
-                    ResourceCount["Food"] -= ResourceCount["Food"]
+                    ResourceCount[Item] += ResourceCount["Food"] * Mult["Food"]
+                    MaterialsEarned[Item] += ResourceCount["Food"] * Mult["Food"]
+                    ResourceCount["Food"] -= ResourceCount["Food"] * Mult["Food"]
                 
         if Count["Forest Lv4"] >= 1 and ResourceCount["Electricity"] > 0:
-            if ResourceCount["Electricity"] >= Count["Forest Lv4"]:
-                ResourceCount["Electricity"] -= Count["Forest Lv4"]
+            if ResourceCount["Electricity"] * Mult["Electricity"] >= Count["Forest Lv4"]:
+                ResourceCount["Electricity"] -= int(Count["Forest Lv4"]/Mult["Electricity"])
             else:
-                num = Count["Forest Lv4"] - ResourceCount["Electricity"]
-                ResourceCount["Wood"] -= 15 * num
+                num = Count["Forest Lv4"] - (ResourceCount["Electricity"] * Mult["Electricity"])
+                ResourceCount["Wood"] -= 15 * num * Mult["Wood"]
                 ResourceCount["Electricity"] = 0 
         if Count["Quarry Lv4"] >= 1 and ResourceCount["Electricity"] > 0:
-            if ResourceCount["Electricity"] >= Count["Quarry Lv4"]:
-                ResourceCount["Electricity"] -= Count["Quarry Lv4"]
+            if ResourceCount["Electricity"] * Mult["Electricity"]  >= Count["Quarry Lv4"]:
+                ResourceCount["Electricity"] -= int(Count["Quarry Lv4"]/Mult["Electricity"])
             else:
-                num = Count["Quarry Lv4"] - ResourceCount["Electricity"]
-                ResourceCount["Stones"] -= 15 * num
+                num = Count["Quarry Lv4"] - (ResourceCount["Electricity"] * Mult["Electricity"])
+                ResourceCount["Stones"] -= 15 * num * Mult["Stones"]
                 ResourceCount["Electricity"] = 0 
                 
         Cooldown = time.process_time()
@@ -436,6 +445,16 @@ def menu(board,selection):
     text_surface, rect = font_35.render(("Options"), (0, 0, 0))
     gameDisplay.blit(text_surface, (680, 755))
 
+    #Prestige Shops
+
+    if pos[0] >= 825 and pos[0] <= 975 and pos[1] >= 740 and pos[1] <= 840:
+        pygame.draw.rect(gameDisplay,(100,100,100),(825,740,150,50),0)
+    else:
+        pygame.draw.rect(gameDisplay,(150,150,150),(825,740,150,50),0)
+    pygame.draw.rect(gameDisplay,(50,50,50),(825,740,150,50),3)
+    text_surface, rect = font_30.render(("Prestige Shop"), (0, 0, 0))
+    gameDisplay.blit(text_surface, (832.5, 755))
+
     #Demolish Building
     if pos[0] >= 825 and pos[0] <= 975 and pos[1] >= 685 and pos[1] <= 735:
         pygame.draw.rect(gameDisplay,(100,100,100),(825,685,150,50),0)
@@ -449,8 +468,16 @@ def menu(board,selection):
     #Menu Upgrades(Finishing the game)
 
     if selection == [-1,-1]:
-        text_surface, rect = font_75.render(("Finish Game"), (0, 0, 0))
-        gameDisplay.blit(text_surface, (670, 180))
+        Earned = 0
+        Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
+        ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
+        ,"CityFar","CityFac","Farm"]
+        Value = [0,1,2,2,2,3,3,0,0,1,2,0,0,1,2,0,0,0,1,2,1,1,2]
+        for tileRow in board:
+            for tile in tileRow:
+                Earned += Value[Tiles.index(tile)]
+        text_surface, rect = font_50.render(("Prestige (+" + str(Earned) + ")"), (0, 0, 0))
+        gameDisplay.blit(text_surface, (690, 180))
         text_surface, rect = font_50.render(("Cost: "), (0, 0, 0))
         gameDisplay.blit(text_surface, (770, 240))
         text_surface, rect = font_50.render(("1k wood"), (0, 0, 0))
@@ -553,7 +580,10 @@ def draw(x,y,Obj,Type,height,width):
             
     #Draws the green selection thing
     if Obj == "Selection":
-        pygame.draw.rect(gameDisplay,(50,205,50),(x,y,(640/width),(640/height)),5)
+        if int(5/(int(height/2)-3)) != 0:
+            pygame.draw.rect(gameDisplay,(50,205,50),(x,y,(640/width),(640/height)),int(5/(int(height/2)-3)) )
+        else:
+            pygame.draw.rect(gameDisplay,(50,205,50),(x,y,(640/width),(640/height)),1)
     
 #Generates a board using a height and a width
 def gen_Board(board,height,width):
@@ -574,11 +604,13 @@ def gen_Board(board,height,width):
 
 #Is the Main menu of the game. This has a background that is seemlessly moving and the option to mute the music
 def MainMenu(time):
-    global MusicPaused, AnimationStage, Count
+    global MusicPaused, AnimationStage, Count, Images
     run = True
     screen = "Main"
     height = 20
     width = 20
+    Images = []
+    Images = load_images("Images",8,8)
     MenuBoard = gen_Board([[0] * height for _ in range(width)],height,width)
     AnimationStage = {"Water": [1,0.5],"Dam": [1,0.5]}
     x = 0
@@ -616,8 +648,8 @@ def MainMenu(time):
                 draw(i * 80 + x + 1600,j * 80 + y + 1600,"Tile",MenuBoard[j][i],8,8)
 
         #Moving around tiles on screen
-        x -= 5
-        y -= 5
+        x -= 2
+        y -= 2
 
         if y < -1600:
             y = 0
@@ -632,7 +664,7 @@ def MainMenu(time):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pos[0] >= 400 and pos[0] <= 600 and pos[1] >= 600 and pos[1] <= 700 and screen == "Main":
-                    game_loop()
+                    game_loop(8,8,0)
                 if pos[0] >= 625 and pos[0] <= 825 and pos[1] >= 600 and pos[1] <= 700 and screen == "Main":
                     screen = "Options"
                 if pos[0] >= 775 and pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775 and screen == "Options":
@@ -674,6 +706,9 @@ def MainMenu(time):
             text_surface, rect = font_50.render(("Play"), (0, 0, 0))
             gameDisplay.blit(text_surface, (460, 630))
 
+            text_surface, rect = font_30.render(("Just here for OCD"), (0, 0, 0))
+            gameDisplay.blit(text_surface, (190, 630))
+
             if pos[0] >= 625 and pos[0] <= 825 and pos[1] >= 600 and pos[1] <= 700:
                 pygame.draw.rect(gameDisplay,(150,0,0),(625,600,200,100),0)
             else:
@@ -689,7 +724,7 @@ def MainMenu(time):
             else:
                 pygame.draw.rect(gameDisplay,(255,0,0),(775,675,200,100),0)
 
-            text_surface, rect = font_50.render(("Exit"), (0, 0, 0))
+            text_surface, rect = font_50.render(("Back"), (0, 0, 0))
             gameDisplay.blit(text_surface, (835, 705))
 
             if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 50 and pos[1] <= 150:
@@ -708,18 +743,16 @@ def MainMenu(time):
         clock.tick(120)
 
 #The main part of the game
-def game_loop():
-    global ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, AnimationStage, Count, Achviements, MusicPaused
+def game_loop(height,width,prestige):
+    global ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, AnimationStage, Count, Achviements, MusicPaused, Images, Mult
 
     #Declaring a ton of variables
     game_run = True
-    height = 8
-    width = 8
     board = gen_Board([[0] * height for _ in range(width)],height,width)
     CurSelection = [-1,-1]
-    ResourceCount = {"Wood": 10, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0}
-    MaterialProduction = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0}
-    MaterialsEarned = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0}
+    ResourceCount = {"Wood": 10, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0,"Prestige": prestige}
+    MaterialProduction = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0, "Prestige": 0}
+    MaterialsEarned = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0,"Prestige": prestige}
     Cooldown = time.process_time()
     UnUpgradable = ["Water","Grass","Quarry Lv3","Forest Lv3","Water Fish","Water Dam"]
     UpgradeInfo = {"Map Upgrades": [],"Forest Lv1":["10 wood","0 wood","1 wood"],"Quarry Lv1":["15 wood","0 stones", "1 stones"],"Forest Lv2":["40 wood","1 wood","5 wood"],"Quarry Lv2":["45 wood","20 stones","1 stones", "5 stones"]}
@@ -730,6 +763,8 @@ def game_loop():
                    ,{"Name": "Fast Materials","Description":"You got a Lvl4 Upgrade","Reward": "Unlocked Upgraded Factories","Finished": False,"Show Cooldown": 0}
                    ,{"Name": "Stockpile", "Description": "Have 200 food at any time", "Reward": "Unlocked Fishermen", "Finished": False,"Show Cooldown": 0}
                    ,{"Name": "Cheater","Description": "You kept changing some values in Importing/Exporting","Reward":"Negative Production","Finished": False,"Show Cooldown": 0}]
+    Images = []
+    Images = load_images("Images",height,width)
     ConfirmMessage = ""
     Confirming = False
     PreviousPos = [0,0]
@@ -764,8 +799,20 @@ def game_loop():
                 #Checks for which tile you are selecting
                 if Confirming == False:
                     xPos = int(pos[0]/((640/width)))
-                    yPos = int(pos[1]/(640/height)) - 2
-                if xPos >= 8:
+                    yPos = pos[1]/(640/height) - int(160/(640/height))
+                    if height == 10:
+                        if yPos - 0.5 < int(yPos):
+                            #Less then
+                            yPos = int(yPos)
+                        else:
+                            #Greater then
+                            yPos = int(yPos) + 1
+                        for i in range(int((height-8)/2)):
+                            yPos -= 1
+                    else:
+                        yPos = int(yPos)
+
+                if xPos >= height:
                     xPos = PreviousPos[0]
                     yPos = PreviousPos[1]
                     MenuClicking = True
@@ -817,8 +864,114 @@ def game_loop():
 
                 #Restarts the game
                 if pos[0] >= 650 and pos[0] <= 800 and pos[1] >= 685 and pos[1] <= 735:
-                    game_loop()
+                    game_loop(height+2,width+2,prestige)
 
+                #Prestige shop
+                if pos[0] >= 825 and pos[0] <= 975 and pos[1] >= 740 and pos[1] <= 840:
+                    run = True
+                    cost = [5,15,25,50,150,500,1000,2500,10000,25000,75000,250000,1000000,3000000,10000000,50000000,175000000,650000000,1500000000]
+
+                    while run == True:
+                        gameDisplay.fill((150,150,150))
+                        pygame.draw.rect(gameDisplay,(50,50,50),(0,0,1000,800),15)
+                        pos = pygame.mouse.get_pos()
+
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                sys.exit()
+                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                if pos[0] >= 775 and pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775:
+                                    run = False
+                                if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 25 and pos[1] <= 125 and ResourceCount["Prestige"] >= cost[Mult["Wood"]-1]:
+                                    ResourceCount["Prestige"] -= cost[Mult["Wood"]-1]
+                                    Mult["Wood"] += 1
+                                if pos[0] >= 600 and pos[0] <= 800 and pos[1] >= 25 and pos[1] <= 125 and ResourceCount["Prestige"] >= cost[Mult["Stones"]-1]:
+                                    ResourceCount["Prestige"] -= cost[Mult["Stones"]-1]
+                                    Mult["Stones"] += 1
+                                if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 150 and pos[1] <= 250 and ResourceCount["Prestige"] >= cost[Mult["Food"]-1]:
+                                    ResourceCount["Prestige"] -= cost[Mult["Food"]-1]
+                                    Mult["Food"] += 1
+                                if pos[0] >= 600 and pos[0] <= 800 and pos[1] >= 150 and pos[1] <= 250 and ResourceCount["Prestige"] >= cost[Mult["Metal"]-1]:
+                                    ResourceCount["Prestige"] -= cost[Mult["Metal"]-1]
+                                    Mult["Metal"] += 1
+                                if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 275 and pos[1] <= 375 and ResourceCount["Prestige"] >= cost[Mult["Electricity"]-1]:
+                                    ResourceCount["Prestige"] -= cost[Mult["Electricity"]-1]
+                                    Mult["Electricity"] += 1
+
+                        #Displaying amount of prestige
+                        text_surface, rect = font_40.render(("Prestige: " + str(ResourceCount["Prestige"])), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (415, 35))
+
+                        #Wood Upgrade   
+                        if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 25 and pos[1] <= 125:
+                            pygame.draw.rect(gameDisplay,(150,0,0),(200,25,200,100),0)
+                        else:
+                            pygame.draw.rect(gameDisplay,(255,0,0),(200,25,200,100),0)
+                        pygame.draw.rect(gameDisplay,(200,0,0),(200,25,200,100),3)
+                        text_surface, rect = font_50.render(("Wood x" + str(Mult["Wood"] + 1)), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (235, 35))
+                        text_surface, rect = font_50.render(("Cost: " + str(shorten(cost[Mult["Wood"]-1]))), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (235, 75))
+
+                        #Stones Upgrade   
+                        if pos[0] >= 600 and pos[0] <= 800 and pos[1] >= 25 and pos[1] <= 125:
+                            pygame.draw.rect(gameDisplay,(150,0,0),(600,25,200,100),0)
+                        else:
+                            pygame.draw.rect(gameDisplay,(255,0,0),(600,25,200,100),0)
+                        pygame.draw.rect(gameDisplay,(200,0,0),(600,25,200,100),3)
+                        text_surface, rect = font_50.render(("Stones x" + str(Mult["Stones"] + 1)), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (620, 35))
+                        text_surface, rect = font_50.render(("Cost: " + str(shorten(cost[Mult["Stones"]-1]))), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (635, 75))
+
+                        #Food Upgrade   
+                        if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 150 and pos[1] <= 250:
+                            pygame.draw.rect(gameDisplay,(150,0,0),(200,150,200,100),0)
+                        else:
+                            pygame.draw.rect(gameDisplay,(255,0,0),(200,150,200,100),0)
+                        pygame.draw.rect(gameDisplay,(200,0,0),(200,150,200,100),3)
+                        text_surface, rect = font_50.render(("Food x" + str(Mult["Food"] + 1)), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (235, 160))
+                        text_surface, rect = font_50.render(("Cost: " + str(shorten(cost[Mult["Food"]-1]))), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (225, 200))
+
+                        #Metal Upgrade   
+                        if pos[0] >= 600 and pos[0] <= 800 and pos[1] >= 150 and pos[1] <= 250:
+                            pygame.draw.rect(gameDisplay,(150,0,0),(600,150,200,100),0)
+                        else:
+                            pygame.draw.rect(gameDisplay,(255,0,0),(600,150,200,100),0)
+                        pygame.draw.rect(gameDisplay,(200,0,0),(600,150,200,100),3)
+                        text_surface, rect = font_50.render(("Metal x" + str(Mult["Metal"] + 1)), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (620, 160))
+                        text_surface, rect = font_50.render(("Cost: " + str(shorten(cost[Mult["Metal"]-1]))), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (635, 200))
+
+                        #Electricity Upgrade   
+                        if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 275 and pos[1] <= 375:
+                            pygame.draw.rect(gameDisplay,(150,0,0),(200,275,200,100),0)
+                        else:
+                            pygame.draw.rect(gameDisplay,(255,0,0),(200,275,200,100),0)
+                        pygame.draw.rect(gameDisplay,(200,0,0),(200,275,200,100),3)
+                        text_surface, rect = font_40.render(("Electricity x" + str(Mult["Electricity"] + 1)), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (205, 290))
+                        text_surface, rect = font_50.render(("Cost: " + str(shorten(cost[Mult["Electricity"]-1]))), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (225, 325))
+                        
+
+                        #Back button
+                        if pos[0] >= 775 and pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775:
+                            pygame.draw.rect(gameDisplay,(150,0,0),(775,675,200,100),0)
+                        else:
+                            pygame.draw.rect(gameDisplay,(255,0,0),(775,675,200,100),0)
+
+                        text_surface, rect = font_50.render(("Back"), (0, 0, 0))
+                        gameDisplay.blit(text_surface, (835, 705))
+
+                        pygame.display.update()
+                        clock.tick(20)
+                        
+        
 
                 #Showing Options
                 if pos[0] >= 650 and pos[0] <= 800 and pos[1] >= 740 and pos[1] <= 840:
@@ -856,22 +1009,15 @@ def game_loop():
                                         for item in Item:
                                             Data += str(Item[item]) + "#"
 
-                                    Time = ""
-                        
-                                    for i in range(str(StartTime).index(".")+3):
-                                        Time += str(StartTime)[i]
-                                    Data += str(Time) + "#"
-                                    Time = ""
-                                    for i in range(str(time.process_time()).index(".")+3):
-                                        Time += str(time.process_time())[i]
-                                    Data += str(Time) + "#"
-                                    Dif = time.process_time() - int(StartTime)
-                                    for i in range(str(Dif).index(".")):
-                                        Time += str(Dif)[i]
-                                    Data += str(Time) + "#"
+                                    for item in Mult:
+                                        Data += str(Mult[item]) + "#"
+
                                     for quest in Achievments:
                                         Data += str(quest["Finished"]) + "#"
-                                        Data += str(quest["Show Cooldown"]) + "#"
+                                        Data += str(int(quest["Show Cooldown"])) + "#"
+
+                                    Data += str(height) + "#"
+                                    Data += str(width) + "#"
 
                                     Data += str(SaveMesses) + "#"
                                     
@@ -889,10 +1035,9 @@ def game_loop():
                                     ask = input("Give me your data")
                                     DataList = []
 
-
-                                    if ask.count("#") == 97:
+                                    if ask.count("#") >= 105:
                                         count = 0
-                                        for i in range(97):
+                                        for i in range(ask.count("#")):
                                             DataBit = ""
                                             FindBit = True
                                             while FindBit == True:
@@ -913,7 +1058,7 @@ def game_loop():
 
 
                                                 
-                                                if int(Item[item]) >= 10000000:
+                                                if int(Item[item]) >= 10000000000000:
                                                     if SaveMesses == 0:
                                                         print("Comeon, You and I both know that you didn't get that legit. Stop messing with saves or I will do something")
                                                         SaveMesses += 1
@@ -944,16 +1089,21 @@ def game_loop():
                                                         Achievments[6]["Show Cooldown"] = 999999999999
                                                         SaveMesses += 1
                                                 Count += 1
-                                        StartTime = float(DataList[Count])
-                                        TimeStart = float(DataList[Count + 1]) - float(DataList[Count])
-                                        TimeWasted = float(DataList[Count + 2])
-                                        Count += 3
+
+                                        for item in Mult:
+                                            Mult[item] = int(DataList[Count])
+                                            Count += 1
 
                                         for quest in Achievments:
                                             if Achievments.index(quest) != 6:
                                                 quest["Finished"] = DataList[Count]
                                                 quest["Show Cooldown"] = int(DataList[Count+1])
                                             Count += 2
+
+                                        height = int(DataList[Count])
+                                        width = int(DataList[Count + 1])
+                                        Count += 2
+                                        board = [[0] * height for _ in range(width)]
 
                                         SaveMesses = DataList[Count]
                                         Count += 1
@@ -984,7 +1134,7 @@ def game_loop():
                         else:
                             pygame.draw.rect(gameDisplay,(255,0,0),(775,675,200,100),0)
 
-                        text_surface, rect = font_50.render(("Exit"), (0, 0, 0))
+                        text_surface, rect = font_50.render(("Back"), (0, 0, 0))
                         gameDisplay.blit(text_surface, (835, 705))
 
                         if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 50 and pos[1] <= 150:
@@ -1106,6 +1256,18 @@ def game_loop():
                 
                 #Taking you back to mainscreen when you finish and calculates time
                 if CurSelection == [-1,-1] and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650 and ResourceCount["Wood"] >= 1000 and ResourceCount["Stones"] >= 500 and ResourceCount["Food"] >= 200 and ResourceCount["Metal"] >= 100 and ResourceCount["Electricity"] >= 50:
+                    Earned = 0
+                    Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
+                    ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
+                    ,"CityFar","CityFac","Farm"]
+                    Value = [0,1,2,2,2,3,3,0,0,1,2,0,0,1,2,0,0,0,1,2,1,1,2]
+                    for tileRow in board:
+                        for tile in tileRow:
+                            Earned += Value[Tiles.index(tile)]
+                    game_loop(height+2,width+2,prestige + Earned)
+
+
+                    #Converting Time(Not in use at the moment)
                     time2 = int((time.process_time()+TimeStart - StartTime))
                     if TimeStart != 0:
                         MainMenu("Messed up because of importing and exporting")
