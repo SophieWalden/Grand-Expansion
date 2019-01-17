@@ -78,9 +78,9 @@ def menu(board,selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPro
     #Metal
     if MaterialsEarned["Metal"] >= 1:
         pygame.draw.rect(gameDisplay,(125,125,125),(255,95,50,50),0)
-        text_surface, rect = font_50.render(("Metal: "), (0, 0, 0))
+        text_surface, rect = Fonts[5].render(("Metal: "), (0, 0, 0))
         gameDisplay.blit(text_surface, (310, 100))
-        text_surface, rect = font_35.render((shorten(ResourceCount["Metal"])), (0, 0, 0))
+        text_surface, rect = Fonts[3].render((shorten(ResourceCount["Metal"])), (0, 0, 0))
         gameDisplay.blit(text_surface, (420, 110))
 
     #Electricity
