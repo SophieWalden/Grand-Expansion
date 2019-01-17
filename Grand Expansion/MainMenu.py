@@ -101,7 +101,7 @@ def HomeScreen(pygame, gameDisplay, Fonts, clock):
                 if pos[0] >= 775 and pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775 and screen == "Options":
                     screen = "Main"
                 if pos[0] >= 175 and pos[0] <= 375 and pos[1] >= 600 and pos[1] <= 700 and screen == "Main":
-                    game_loop(8,8,0,True)
+                    Main.game_loop(8,8,0,True)
                 if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 50 and pos[1] <= 150 and screen == "Options":
                     if MusicPaused == False:
                         MusicPaused = True
