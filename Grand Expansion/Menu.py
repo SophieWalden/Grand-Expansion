@@ -1,6 +1,9 @@
 
 #This is the file for all the code used in displaying values in the menu
 
+def TextMove(Str):
+    return -1 * (5 * len(str(Str)))
+
 def shorten(Num):
     count = 0
     let = ""
@@ -163,10 +166,17 @@ def menu(board,selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPro
                     text_surface, rect = Fonts[5].render((str(UpgradeInfo[board[selection[1]][selection[0]]][1])), (0, 0, 0))
                 else:
                     text_surface, rect = Fonts[5].render((str(UpgradeInfo[board[selection[1]][selection[0]]][2])), (0, 0, 0))
-                if board[selection[1]][selection[0]] != "Water":
-                    gameDisplay.blit(text_surface, (750, 325))
+                
+                if len(UpgradeInfo[board[selection[1]][selection[0]]]) == 3:
+                    if len(UpgradeInfo[board[selection[1]][selection[0]]][1]) >= 10:
+                        gameDisplay.blit(text_surface, (710, 325))
+                    else:
+                        gameDisplay.blit(text_surface, (730, 325))
                 else:
-                    gameDisplay.blit(text_surface, (730, 325))
+                    if len(UpgradeInfo[board[selection[1]][selection[0]]][2]) >= 10:
+                        gameDisplay.blit(text_surface, (710, 325))
+                    else:
+                        gameDisplay.blit(text_surface, (730, 325))
 
                 pygame.draw.line(gameDisplay,(50,50,50),(640,400),(1000,400),5)
                 if len(UpgradeInfo[board[selection[1]][selection[0]]]) == 3:
@@ -174,30 +184,30 @@ def menu(board,selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPro
                     gameDisplay.blit(text_surface, (670, 450))
                 else:
                     if board[selection[1]][selection[0]] != "Water":
-                        text_surface, rect = Fonts[5].render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][3])), (0, 0, 0))
+                        text_surface, rect = Fonts[3].render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][3])), (0, 0, 0))
                     else:
-                        text_surface, rect = Fonts[4].render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][3])), (0, 0, 0))
+                        text_surface, rect = Fonts[3].render(("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][3])), (0, 0, 0))
 
-                    if board[selection[1]][selection[0]] != "CityFac":
-                        gameDisplay.blit(text_surface, (660, 410))
-                    else:
-                        gameDisplay.blit(text_surface, (670, 410))
+                    gameDisplay.blit(text_surface, (670, 410))
 
                        
                 if len(UpgradeInfo[board[selection[1]][selection[0]]]) == 3:
                     text_surface, rect = Fonts[5].render(("Cost: " + str(UpgradeInfo[board[selection[1]][selection[0]]][0])), (0, 0, 0))
                     gameDisplay.blit(text_surface, (710, 500))
                 else:
-                    text_surface, rect = Fonts[5].render(("Cost: " + str(UpgradeInfo[board[selection[1]][selection[0]]][0])), (0, 0, 0))
-                    if board[selection[1]][selection[0]] != "CityFac":
-                        gameDisplay.blit(text_surface, (710, 450))
+                    if len(str(UpgradeInfo[board[selection[1]][selection[0]]][0])) >= 10:
+                        text_surface, rect = Fonts[3].render(("Cost: " + str(UpgradeInfo[board[selection[1]][selection[0]]][0])), (0, 0, 0))
                     else:
-                        gameDisplay.blit(text_surface, (700, 450))
-                    text_surface, rect = Fonts[5].render((str(UpgradeInfo[board[selection[1]][selection[0]]][1])), (0, 0, 0))
-                    if board[selection[1]][selection[0]] != "CityFac":
-                        gameDisplay.blit(text_surface, (740, 500))
+                        text_surface, rect = Fonts[5].render(("Cost: " + str(UpgradeInfo[board[selection[1]][selection[0]]][0])), (0, 0, 0))
+                    gameDisplay.blit(text_surface, (700, 450))
+                    if len(str(UpgradeInfo[board[selection[1]][selection[0]]][1])) >= 10:
+                        text_surface, rect = Fonts[3].render((str(UpgradeInfo[board[selection[1]][selection[0]]][1])), (0, 0, 0))
                     else:
-                        gameDisplay.blit(text_surface, (680, 500))
+                        text_surface, rect = Fonts[5].render((str(UpgradeInfo[board[selection[1]][selection[0]]][1])), (0, 0, 0))
+                    if len(str(UpgradeInfo[board[selection[1]][selection[0]]][1])) >= 10:
+                        gameDisplay.blit(text_surface, (660, 500))
+                    else:
+                        gameDisplay.blit(text_surface, (720, 500))
         else:
             #City Upgrade path
             if board[selection[1]][selection[0]] == "City":
