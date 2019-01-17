@@ -33,8 +33,8 @@ def gen_Board(board,height,width):
     return board
 
 #Main Menu
-def HomeScreen(pygame, gameDisplay, Fonts, clock):
-    global MusicPaused, AnimationStage, Count, Images
+def HomeScreen(pygame, gameDisplay, Fonts, clock, MusicPaused):
+    global AnimationStage, Count, Images
     import Main
     run = True
     screen = "Main"
