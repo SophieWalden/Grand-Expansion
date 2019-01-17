@@ -292,7 +292,7 @@ def game_loop(height,width,prestige,LoadSave):
     board = gen_Board([[0] * height for _ in range(width)],height,width)
     CurSelection = [-1,-1]
     ResourceCount = {"Wood": 10, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0,"Prestige": prestige}
-    MaterialProduction = {"Wood": 999, "Stones": 999,"Food": 9999,"Metal": 999,"Electricity": 999, "Prestige": 0}
+    MaterialProduction = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0, "Prestige": 0}
     MaterialsEarned = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0,"Prestige": prestige}
     Cooldown = time.process_time()
     UnUpgradable = ["Water","Grass","Quarry Lv3","Forest Lv3","Water Fish","Water Dam"]
