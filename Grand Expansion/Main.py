@@ -424,6 +424,22 @@ def game_loop(height,width,prestige,LoadSave):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+                
+            #Moving your selection with the keys
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    if CurSelection != [-1,-1] and CurSelection[0] != 0:
+                        CurSelection[0] -= 1
+                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    if CurSelection != [-1,-1] and CurSelection[0] != width - 1:
+                        CurSelection[0] += 1
+                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                    if CurSelection != [-1,-1] and CurSelection[1] != 0:
+                        CurSelection[1] -= 1
+                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                    if CurSelection != [-1,-1] and CurSelection[1] != height - 1:
+                        CurSelection[1] += 1
+                
             #Triggers when you press the mouse
             if event.type == pygame.MOUSEBUTTONDOWN:
                 #Checks for which tile you are selecting
