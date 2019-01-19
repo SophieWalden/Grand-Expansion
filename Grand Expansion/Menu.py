@@ -41,7 +41,7 @@ def shorten(Num):
 
     return Num
 
-def menu(board,selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achviements, Mult):
+def menu(board,selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achviements, Mult, PrestigeCount, AscendCount):
     import time
     #Drawing Menu
     pygame.draw.line(gameDisplay,(50,50,50),(0,160),(1000,160),5)
@@ -101,6 +101,23 @@ def menu(board,selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPro
         gameDisplay.blit(text_surface, (560, 105))
         text_surface, rect = Fonts[1].render((shorten(ResourceCount["Prestige"])), (0, 0, 0))
         gameDisplay.blit(text_surface, (685, 113))
+
+    #Mandorium
+    if PrestigeCount >= 3:
+        pygame.draw.rect(gameDisplay,(3,63,99),(755,15,50,50),0)
+        text_surface, rect = Fonts[3].render(("Mandorium: "), (0, 0, 0))
+        gameDisplay.blit(text_surface, (810, 30))
+        text_surface, rect = Fonts[1].render((shorten(ResourceCount["Mandorium"])), (0, 0, 0))
+        gameDisplay.blit(text_surface, (945, 37))
+
+    #Ascension
+    if AscendCount >= 1:
+        pygame.draw.rect(gameDisplay,(0,150,99),(755,95,50,50),0)
+        text_surface, rect = Fonts[3].render(("Ascends: "), (0, 0, 0))
+        gameDisplay.blit(text_surface, (810, 105))
+        text_surface, rect = Fonts[1].render((str(AscendCount)), (0, 0, 0))
+        gameDisplay.blit(text_surface, (915, 110))
+
 
         
     #Displays what you are selecting
@@ -358,7 +375,7 @@ def menu(board,selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPro
                 Earned += Value[Tiles.index(tile)]
         Earned += int(ResourceCount["Wood"]/1000) + int(ResourceCount["Stones"]/500) + int(ResourceCount["Food"]/200) + int(ResourceCount["Metal"]/100) + int(ResourceCount["Electricity"]/50)
 
-        text_surface, rect = Fonts[5].render(("Prestige (+" + str(Earned) + ")"), (0, 0, 0))
+        text_surface, rect = Fonts[5].render(("Rebirth (+" + str(Earned) + ")"), (0, 0, 0))
         gameDisplay.blit(text_surface, (690, 180))
         text_surface, rect = Fonts[5].render(("Cost: "), (0, 0, 0))
         gameDisplay.blit(text_surface, (770, 240))
