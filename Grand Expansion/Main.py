@@ -16,13 +16,20 @@ try:
 except ImportError:
     print("You don't have the extra files")
     sys.exit()
-
 # Initialize the game engine
 pygame.init()
 
 
-DisplayWidth,DisplayHeight = 1000, 800
+DisplayWidth, DisplayHeight = 1000, 800
 clock = pygame.time.Clock()
+
+#Prestige Count
+global PrestigeCount
+PrestigeCount = 0
+global MinerBought
+MinerBought = False
+global AscendCount
+AscendCount = 0
 
 #Making the window
 gameDisplay = pygame.display.set_mode((DisplayWidth,DisplayHeight))
@@ -35,6 +42,7 @@ font_25 = pygame.freetype.Font("Font.ttf", 25)
 font_30 = pygame.freetype.Font("Font.ttf", 30)
 font_35 = pygame.freetype.Font("Font.ttf", 35)
 font_40 = pygame.freetype.Font("Font.ttf", 40)
+font_45 = pygame.freetype.Font("Font.ttf", 45)
 font_50 = pygame.freetype.Font("Font.ttf", 50)
 font_75 = pygame.freetype.Font("Font.ttf", 75)
 font_150 = pygame.freetype.Font("Font.ttf", 150)
@@ -53,7 +61,7 @@ def load_images(path_to_directory,height,width):
 
 #Multipliers for Prestige
 global Mult
-Mult = {"Wood": 1, "Stones": 1, "Food": 1, "Metal": 1, "Electricity": 1,"Prestige": 1}
+Mult = {"Wood": 1, "Stones": 1, "Food": 1, "Metal": 1, "Electricity": 1,"Prestige": 1, "Mandorium": 1}
 
 #Map Level
 global MapLevel
@@ -107,7 +115,7 @@ def shorten(Num):
 
 #Checks for all the achviements
 def Achviement(Achviements):
-    global ResourceCount, MaterialProduction, UnUpgradable, UpgradeInfo, MaterialsEarned, Unlocked, Count
+    global ResourceCount, MaterialProduction, UnUpgradable, UpgradeInfo, MaterialsEarned, Unlocked, Count, PrestigeCount
 
     count = 0
     for Quest in Achviements:
@@ -142,6 +150,10 @@ def Achviement(Achviements):
                 Quest["Finished"] = True
                 Quest["Show Cooldown"] = 10
                 AchievmentRewards(5)
+        if count == 6:
+            if Quest["Finished"] == False and PrestigeCount >= 3:
+                Quest["Finished"] = True
+                Quest["Show Cooldown"] = 10
         count += 1
 
 
@@ -318,15 +330,15 @@ def boardUpSize(board,height,width):
 
 #The main part of the game
 def game_loop(height,width,prestige,LoadSave):
-    global ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, AnimationStage, Count, Achviements, MusicPaused, Images, Mult, MapLevel
+    global AscendCount, MinerBought, ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, AnimationStage, Count, Achviements, MusicPaused, Images, Mult, MapLevel, PrestigeCount
 
     #Declaring a ton of variables
     game_run = True
     board = gen_Board([[0] * height for _ in range(width)],height,width)
     CurSelection = [-1,-1]
-    ResourceCount = {"Wood": 10, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0,"Prestige": prestige}
-    MaterialProduction = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0, "Prestige": 0}
-    MaterialsEarned = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0,"Prestige": prestige}
+    ResourceCount = {"Wood": 10, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0,"Prestige": prestige, "Mandorium": 0}
+    MaterialProduction = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0, "Prestige": 0, "Mandorium": 0}
+    MaterialsEarned = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0,"Prestige": prestige, "Mandorium": 0}
     Cooldown = time.process_time()
     UnUpgradable = ["Water","Grass","Quarry Lv3","Forest Lv3","Water Fish","Water Dam"]
     UpgradeInfo = {"Map Upgrades": [],"Forest Lv1":["10 wood","0 wood","1 wood"],"Quarry Lv1":["15 wood","0 stones", "1 stones"],"Forest Lv2":["40 wood","1 wood","5 wood"],"Quarry Lv2":["45 wood","20 stones","1 stones", "5 stones"]}
@@ -335,7 +347,8 @@ def game_loop(height,width,prestige,LoadSave):
                    ,{"Name": "Heavy Metal","Description":"You made 100 metal","Reward":"Unlocked Electricity","metal": 100,"Finished": False,"Show Cooldown": 0}
                    ,{"Name": "Shocking","Description":"You produced 100 Electricity","Reward": "Unlocked Electric Upgrades","Electricity": 100,"Finished": False,"Show Cooldown": 0}
                    ,{"Name": "Fast Materials","Description":"You got a Lvl4 Upgrade","Reward": "Unlocked Upgraded Factories","Finished": False,"Show Cooldown": 0}
-                   ,{"Name": "Stockpile", "Description": "Have 200 food at any time", "Reward": "Unlocked Fishermen", "Finished": False,"Show Cooldown": 0}]
+                   ,{"Name": "Stockpile", "Description": "Have 200 food at any time", "Reward": "Unlocked Fishermen", "Finished": False,"Show Cooldown": 0}
+                   ,{"Name": "Restarter", "Description": "You rebirthed 3 times", "Reward": "Unlocked Mandorium","Finished": False, "Show Cooldown": 0}]
     Images = []
     Images = load_images("Images",height,width)
     ConfirmMessage = ""
@@ -354,13 +367,20 @@ def game_loop(height,width,prestige,LoadSave):
     SaveCooldown = time.process_time() + 30
     cost = [5,15]
     cost2 = [10]
+    for i in range(MapLevel+1):
+        cost2.append(cost2[len(cost2)-1]*10)
+    HighMult = 0
+    for item in Mult:
+        if Mult[item] >= HighMult:
+            HighMult = Mult[item]
+    for i in range(HighMult):
+        cost.append(cost[len(cost)-1] * 3)
     Saving = 0
 
     if LoadSave == True:
         SaveFile = open("Save File/SaveFile.txt","r")
         ask = SaveFile.readline()
         DataList = []
-        print(ask.count("#"))
         if ask.count("#") >= 90:
             count = 0
             for i in range(ask.count("#")):
@@ -405,6 +425,12 @@ def game_loop(height,width,prestige,LoadSave):
                 Count += 2
                 Images = load_images("Images",height,width)
                 board = [[0] * height for _ in range(width)]
+
+                PrestigeCount = int(DataList[Count])
+                AscendCount = int(DataList[Count+1])
+                MinerBought = int(DataList[Count+2])
+
+                Count += 3
                                             
                 Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
                         ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
@@ -413,6 +439,42 @@ def game_loop(height,width,prestige,LoadSave):
                     for i in range(width):
                         board[j][i] = Tiles[int(DataList[Count])]
                         Count += 1
+
+
+    #Saves data(Useful for Prestiges)
+    Saving = 3
+    Data = ""
+    Data += "Beta1.6" + "#"
+    ItemChecker = [ResourceCount,MaterialProduction,MaterialsEarned]
+    for Item in ItemChecker:
+        for item in Item:
+            Data += str(Item[item]) + "#"
+
+    for item in Mult:
+        Data += str(Mult[item]) + "#"
+
+    for quest in Achievments:
+        Data += str(quest["Finished"]) + "#"
+        Data += str(int(quest["Show Cooldown"])) + "#"
+
+    Data += str(height) + "#"
+    Data += str(width) + "#"
+
+    Data += str(PrestigeCount) + "#"
+    Data += str(AscendCount) + "#"
+    Data += str(MinerBought)
+    
+    
+                                    
+    Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
+            ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
+            ,"CityFar","CityFac","Farm"]
+    for j in range(height):
+        for i in range(width):
+            Data += str(Tiles.index(board[j][i])) + "#"
+    SaveFile = open("Save File/SaveFile.txt","w")
+    SaveFile.write(Data)
+
 
     while game_run == True:
 
@@ -424,7 +486,7 @@ def game_loop(height,width,prestige,LoadSave):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-                
+
             #Moving your selection with the keys
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a or event.key == pygame.K_LEFT:
@@ -466,14 +528,21 @@ def game_loop(height,width,prestige,LoadSave):
                     yPos = PreviousPos[1]
                     MenuClicking = True
                 PreviousPos = [xPos,yPos]
-                
+
+                if pos[0] >= 445 and pos[0] <= 545 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True and ConfirmMessage == "You have collected 10k Mandorium":
+                    PrestigeCount = 0
+                    for item in Mult:
+                        Mult[item] *= 10
+                    AscendCount += 1
+                    MinerBought = False
+                    game_loop(8,8,0,False)
 
                 #Yes or no for Demolishing Buildings
-                if pos[0] >= 570 and pos[0] <= 670 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True:
+                if pos[0] >= 570 and pos[0] <= 670 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True and ConfirmMessage != "You have collected 10k Mandorium":
                     Confirming = False
 
                 #Demolishing Buildings
-                if pos[0] >= 320 and pos[0] <= 420 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True:
+                if pos[0] >= 320 and pos[0] <= 420 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True and ConfirmMessage != "You have collected 10k Mandorium":
                     if board[yPos][xPos].find("Forest") != -1:
                         if board[yPos][xPos].find("2") != -1:
                             MaterialProduction["Wood"] -= 1
@@ -551,6 +620,10 @@ def game_loop(height,width,prestige,LoadSave):
                                     cost2.append(cost2[MapLevel] * 10)
                                     MapLevel += 1
                                     Images = load_images("Images",height,width)
+                                if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 400 and pos[1] <= 500 and PrestigeCount >= 3 and ResourceCount["Prestige"] >= 10000 and MinerBought == False:
+                                    MinerBought = True
+                                    ResourceCount["Prestige"] -= 10000
+                                    MaterialProduction["Mandorium"] += 100
 
                         #Adds things to cost
                         highMult = 0
@@ -570,7 +643,7 @@ def game_loop(height,width,prestige,LoadSave):
                         else:
                             pygame.draw.rect(gameDisplay,(255,0,0),(200,25,200,100),0)
                         pygame.draw.rect(gameDisplay,(200,0,0),(200,25,200,100),3)
-                        text_surface, rect = font_50.render(("Wood x" + str(Mult["Wood"] + 1)), (0, 0, 0))
+                        text_surface, rect = font_45.render(("Wood x" + str(Mult["Wood"] + 1)), (0, 0, 0))
                         gameDisplay.blit(text_surface, (235, 35))
                         text_surface, rect = font_40.render(("Cost: " + str(shorten(cost[Mult["Wood"]-1]))), (0, 0, 0))
                         gameDisplay.blit(text_surface, (235, 75))
@@ -581,7 +654,7 @@ def game_loop(height,width,prestige,LoadSave):
                         else:
                             pygame.draw.rect(gameDisplay,(255,0,0),(600,25,200,100),0)
                         pygame.draw.rect(gameDisplay,(200,0,0),(600,25,200,100),3)
-                        text_surface, rect = font_50.render(("Stones x" + str(Mult["Stones"] + 1)), (0, 0, 0))
+                        text_surface, rect = font_45.render(("Stones x" + str(Mult["Stones"] + 1)), (0, 0, 0))
                         gameDisplay.blit(text_surface, (620, 35))
                         text_surface, rect = font_40.render(("Cost: " + str(shorten(cost[Mult["Stones"]-1]))), (0, 0, 0))
                         gameDisplay.blit(text_surface, (635, 75))
@@ -592,7 +665,7 @@ def game_loop(height,width,prestige,LoadSave):
                         else:
                             pygame.draw.rect(gameDisplay,(255,0,0),(200,150,200,100),0)
                         pygame.draw.rect(gameDisplay,(200,0,0),(200,150,200,100),3)
-                        text_surface, rect = font_50.render(("Food x" + str(Mult["Food"] + 1)), (0, 0, 0))
+                        text_surface, rect = font_45.render(("Food x" + str(Mult["Food"] + 1)), (0, 0, 0))
                         gameDisplay.blit(text_surface, (235, 160))
                         text_surface, rect = font_40.render(("Cost: " + str(shorten(cost[Mult["Food"]-1]))), (0, 0, 0))
                         gameDisplay.blit(text_surface, (225, 200))
@@ -603,7 +676,7 @@ def game_loop(height,width,prestige,LoadSave):
                         else:
                             pygame.draw.rect(gameDisplay,(255,0,0),(600,150,200,100),0)
                         pygame.draw.rect(gameDisplay,(200,0,0),(600,150,200,100),3)
-                        text_surface, rect = font_50.render(("Metal x" + str(Mult["Metal"] + 1)), (0, 0, 0))
+                        text_surface, rect = font_45.render(("Metal x" + str(Mult["Metal"] + 1)), (0, 0, 0))
                         gameDisplay.blit(text_surface, (620, 160))
                         text_surface, rect = font_40.render(("Cost: " + str(shorten(cost[Mult["Metal"]-1]))), (0, 0, 0))
                         gameDisplay.blit(text_surface, (635, 200))
@@ -614,7 +687,7 @@ def game_loop(height,width,prestige,LoadSave):
                         else:
                             pygame.draw.rect(gameDisplay,(255,0,0),(200,275,200,100),0)
                         pygame.draw.rect(gameDisplay,(200,0,0),(200,275,200,100),3)
-                        text_surface, rect = font_40.render(("Electricity x" + str(Mult["Electricity"] + 1)), (0, 0, 0))
+                        text_surface, rect = font_35.render(("Electricity x" + str(Mult["Electricity"] + 1)), (0, 0, 0))
                         gameDisplay.blit(text_surface, (205, 290))
                         text_surface, rect = font_40.render(("Cost: " + str(shorten(cost[Mult["Electricity"]-1]))), (0, 0, 0))
                         gameDisplay.blit(text_surface, (225, 325))
@@ -629,6 +702,22 @@ def game_loop(height,width,prestige,LoadSave):
                         gameDisplay.blit(text_surface, (615, 290))
                         text_surface, rect = font_40.render(("Cost: " + str(shorten(cost2[MapLevel]))), (0, 0, 0))
                         gameDisplay.blit(text_surface, (625, 325))
+
+                        #Mandorium Miner
+                        if PrestigeCount >= 3:
+                            if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 400 and pos[1] <= 500:
+                                pygame.draw.rect(gameDisplay,(150,0,0),(200,400,200,100),0)
+                            else:
+                                pygame.draw.rect(gameDisplay,(255,0,0),(200,400,200,100),0)
+                            pygame.draw.rect(gameDisplay,(200,0,0),(200,400,200,100),3)
+                            text_surface, rect = font_30.render(("Mandorium Miner"), (0, 0, 0))
+                            gameDisplay.blit(text_surface, (215, 425))
+                            if MinerBought == False:
+                                text_surface, rect = font_40.render(("Cost: 10k" ), (0, 0, 0))
+                            else:
+                                text_surface, rect = font_40.render(("Bought" ), (0, 0, 0))
+                            gameDisplay.blit(text_surface, (235, 450))
+
 
                         #Back button
                         if pos[0] >= 775 and pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775:
@@ -691,7 +780,12 @@ def game_loop(height,width,prestige,LoadSave):
                                     Data += str(height) + "#"
                                     Data += str(width) + "#"
 
-                                                            
+                                    Data += str(PrestigeCount) + "#"
+                                    Data += str(AscendCount) + "#"
+                                    Data += str(MinerBought)
+                                    
+                                    
+                                                                    
                                     Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
                                             ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
                                             ,"CityFar","CityFac","Farm"]
@@ -699,11 +793,12 @@ def game_loop(height,width,prestige,LoadSave):
                                         for i in range(width):
                                             Data += str(Tiles.index(board[j][i])) + "#"
                                     SaveFile = open("Save File/SaveFile.txt","w")
-                                    SaveFile.write(Data)        
+                                    SaveFile.write(Data)   
                             
                                 #Exports save data
                                 if pos[0] >= 600 and pos[0] <= 800 and pos[1] >= 50 and pos[1] <= 150:
                                     Data = ""
+                                    Data += "Beta1.6" + "#"
                                     ItemChecker = [ResourceCount,MaterialProduction,MaterialsEarned]
                                     for Item in ItemChecker:
                                         for item in Item:
@@ -719,10 +814,15 @@ def game_loop(height,width,prestige,LoadSave):
                                     Data += str(height) + "#"
                                     Data += str(width) + "#"
 
+                                    Data += str(PrestigeCount) + "#"
+                                    Data += str(AscendCount) + "#"
+                                    Data += str(MinerBought)
                                     
+                                    
+                                                                    
                                     Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
-                                             ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
-                                             ,"CityFar","CityFac","Farm"]
+                                            ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
+                                            ,"CityFar","CityFac","Farm"]
                                     for j in range(height):
                                         for i in range(width):
                                             Data += str(Tiles.index(board[j][i])) + "#"
@@ -944,6 +1044,7 @@ def game_loop(height,width,prestige,LoadSave):
                         for tile in tileRow:
                             Earned += Value[Tiles.index(tile)]
                     Earned += int(ResourceCount["Wood"]/1000) + int(ResourceCount["Stones"]/500) + int(ResourceCount["Food"]/200) + int(ResourceCount["Metal"]/100) + int(ResourceCount["Electricity"]/50)
+                    PrestigeCount += 1
                     game_loop(height,width,prestige + Earned,False)
     
         #Counting Tiles for certain animations
@@ -972,7 +1073,7 @@ def game_loop(height,width,prestige,LoadSave):
 
 
         #This is my try at making multiple files. It looks very ineffecient and probably bad to use. 
-        board, ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achviements, Mult = Menu.menu(board,CurSelection, pygame, gameDisplay,[font_23,font_25,font_30,font_35,font_40,font_50,font_75,font_150],ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achievments, Mult)
+        board, ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achviements, Mult = Menu.menu(board,CurSelection, pygame, gameDisplay,[font_23,font_25,font_30,font_35,font_40,font_50,font_75,font_150],ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achievments, Mult, PrestigeCount, AscendCount)
         #Achvievment Check
         Achviement(Achievments)
 
@@ -983,20 +1084,7 @@ def game_loop(height,width,prestige,LoadSave):
                 pygame.draw.rect(gameDisplay,(200,200,200),(300,700,400,100),0)
                 pygame.draw.rect(gameDisplay,(25,25,25),(300,700,400,100),5)
                 text_surface, rect = font_50.render((quest["Name"]), (0, 0, 0))
-                if Achievments.index(quest) != 6:
-                    gameDisplay.blit(text_surface, (310, 710))
-                else:
-                    gameDisplay.blit(text_surface, (310, 710))
-                    for item in Cheater:
-                        gameDisplay.blit(text_surface, (item[0], item[1]))
-                        item[1] += 5
-                        if item[1] >= 800:
-                            item[1] = 0
-                            item[0] = random.randint(0,950)
-                if Achievments.index(quest) != 6:
-                    text_surface, rect = font_25.render((quest["Description"]), (0, 0, 0))
-                else:
-                    text_surface, rect = font_20.render((quest["Description"]), (0, 0, 0))
+                text_surface, rect = font_25.render((quest["Description"]), (0, 0, 0))
                 gameDisplay.blit(text_surface, (310, 750))
                 text_surface, rect = font_25.render((quest["Reward"]), (0, 0, 0))
                 gameDisplay.blit(text_surface, (310, 775))
@@ -1008,27 +1096,48 @@ def game_loop(height,width,prestige,LoadSave):
         if Confirming == True:
             pygame.draw.rect(gameDisplay,(150,150,150),(300,300,400,200),0)
             pygame.draw.rect(gameDisplay,(50,50,50),(300,300,400,200),5)
-            text_surface, rect = font_23.render((ConfirmMessage), (0, 0, 0))
-            gameDisplay.blit(text_surface, (315, 350))
-
-            if pos[0] >= 320 and pos[0] <= 420 and pos[1] >= 400 and pos[1] <= 450:
-                pygame.draw.rect(gameDisplay,(0,100,0),(320,400,100,50),0)
+            if ConfirmMessage != "You have collected 10k Mandorium":
+                text_surface, rect = font_23.render((ConfirmMessage), (0, 0, 0))
+                gameDisplay.blit(text_surface, (315, 350))
             else:
-                pygame.draw.rect(gameDisplay,(0,150,0),(320,400,100,50),0)
+                text_surface, rect = font_23.render((ConfirmMessage), (0, 0, 0))
+                gameDisplay.blit(text_surface, (365, 350))
+                text_surface, rect = font_23.render(("You will now ascend"), (0, 0, 0))
+                gameDisplay.blit(text_surface, (405, 370))
 
-            pygame.draw.rect(gameDisplay,(0,200,0),(320,400,100,50),3)
 
-            if pos[0] >= 570 and pos[0] <= 670 and pos[1] >= 400 and pos[1] <= 450:
-                pygame.draw.rect(gameDisplay,(100,0,0),(570,400,100,50),0)
+            if ConfirmMessage != "You have collected 10k Mandorium":
+                if pos[0] >= 320 and pos[0] <= 420 and pos[1] >= 400 and pos[1] <= 450:
+                    pygame.draw.rect(gameDisplay,(0,100,0),(320,400,100,50),0)
+                else:
+                    pygame.draw.rect(gameDisplay,(0,150,0),(320,400,100,50),0)
+
+                pygame.draw.rect(gameDisplay,(0,200,0),(320,400,100,50),3)
+
+                if pos[0] >= 570 and pos[0] <= 670 and pos[1] >= 400 and pos[1] <= 450:
+                    pygame.draw.rect(gameDisplay,(100,0,0),(570,400,100,50),0)
+                else:
+                    pygame.draw.rect(gameDisplay,(150,0,0),(570,400,100,50),0)
+
+                pygame.draw.rect(gameDisplay,(200,0,0),(570,400,100,50),3)
+
+                text_surface, rect = font_23.render(("Yes"), (0, 0, 0))
+                gameDisplay.blit(text_surface, (355, 415))
+                text_surface, rect = font_23.render(("No"), (0, 0, 0))
+                gameDisplay.blit(text_surface, (610, 415))
             else:
-                pygame.draw.rect(gameDisplay,(150,0,0),(570,400,100,50),0)
+                if pos[0] >= 445 and pos[0] <= 545 and pos[1] >= 400 and pos[1] <= 450:
+                    pygame.draw.rect(gameDisplay,(0,100,0),(445,400,100,50),0)
+                else:
+                    pygame.draw.rect(gameDisplay,(0,150,0),(445,400,100,50),0)
 
-            text_surface, rect = font_23.render(("Yes"), (0, 0, 0))
-            gameDisplay.blit(text_surface, (355, 415))
-            text_surface, rect = font_23.render(("No"), (0, 0, 0))
-            gameDisplay.blit(text_surface, (610, 415))
+                pygame.draw.rect(gameDisplay,(0,200,0),(445,400,100,50),3)
 
-            pygame.draw.rect(gameDisplay,(200,0,0),(570,400,100,50),3)
+                text_surface, rect = font_23.render(("Proceed"), (0, 0, 0))
+                gameDisplay.blit(text_surface, (465, 415))
+
+            CurSelection = [-1,-1]
+            
 
 
         #Auto Save
@@ -1051,7 +1160,12 @@ def game_loop(height,width,prestige,LoadSave):
             Data += str(height) + "#"
             Data += str(width) + "#"
 
-                                    
+            Data += str(PrestigeCount) + "#"
+            Data += str(AscendCount) + "#"
+            Data += str(MinerBought)
+            
+            
+                                            
             Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
                     ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
                     ,"CityFar","CityFac","Farm"]
@@ -1067,8 +1181,16 @@ def game_loop(height,width,prestige,LoadSave):
             text_surface, rect = font_40.render(("Saving"), (0, 0, 0))
             gameDisplay.blit(text_surface, (10, 760))
             Saving -= 0.05
+
+        #A Miner from the prestige shop
+        if MinerBought == True:
+            MaterialProduction["Mandorium"] = 100
+            Mult["Mandoirum"] = 1
             
 
+        if ResourceCount["Mandorium"] >= 10000:
+            Confirming = True
+            ConfirmMessage = "You have collected 10k Mandorium"
                 
         pygame.display.flip()
         clock.tick(60)
