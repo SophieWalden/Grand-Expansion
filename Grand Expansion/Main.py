@@ -428,9 +428,15 @@ def game_loop(height,width,prestige,LoadSave):
 
                 PrestigeCount = int(DataList[Count])
                 AscendCount = int(DataList[Count+1])
-                MinerBought = int(DataList[Count+2])
+                MinerBought = DataList[Count+2]
+                MusicPaused = DataList[Count+3]
+                if MusicPaused == "True":
+                    pygame.mixer.music.pause()
+                    MusicPaused = True
+                else:
+                    MusicPaused = False
 
-                Count += 3
+                Count += 4
                                             
                 Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
                         ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
@@ -462,7 +468,8 @@ def game_loop(height,width,prestige,LoadSave):
 
     Data += str(PrestigeCount) + "#"
     Data += str(AscendCount) + "#"
-    Data += str(MinerBought)
+    Data += str(MinerBought) + "#"
+    Data += str(MusicPaused) + "#"
     
     
                                     
@@ -782,7 +789,7 @@ def game_loop(height,width,prestige,LoadSave):
 
                                     Data += str(PrestigeCount) + "#"
                                     Data += str(AscendCount) + "#"
-                                    Data += str(MinerBought)
+                                    Data += str(MinerBought) + "#"
                                     
                                     
                                                                     
@@ -816,7 +823,8 @@ def game_loop(height,width,prestige,LoadSave):
 
                                     Data += str(PrestigeCount) + "#"
                                     Data += str(AscendCount) + "#"
-                                    Data += str(MinerBought)
+                                    Data += str(MinerBought) + "#"
+                                    Data += str(MusicPaused) + "#"
                                     
                                     
                                                                     
@@ -834,7 +842,7 @@ def game_loop(height,width,prestige,LoadSave):
                                     ask = input("Give me your data")
                                     DataList = []
 
-                                    if ask.count("#") >= 105:
+                                    if ask.count("#") >= 90:
                                         count = 0
                                         for i in range(ask.count("#")):
                                             DataBit = ""
@@ -849,44 +857,55 @@ def game_loop(height,width,prestige,LoadSave):
 
 
                                         Count = 0
-                                        ItemChecker = [ResourceCount,MaterialProduction,MaterialsEarned]
-                                        for Item in ItemChecker:
-                                            for item in Item:
-                                                        
-                                                Item[item] = int(DataList[Count])
-
-
-                                                
-                                                Count += 1
-
-                                        for item in Mult:
-                                            Mult[item] = int(DataList[Count])
+                                        if DataList[Count] == "Beta1.6":
                                             Count += 1
+                                            ItemChecker = [ResourceCount,MaterialProduction,MaterialsEarned]
+                                            for Item in ItemChecker:
+                                                for item in Item:
+                                                                                        
+                                                    Item[item] = int(DataList[Count])          
+                                                    Count += 1
 
-                                        for quest in Achievments:
-                                            if Achievments.index(quest) != 6:
-                                                quest["Finished"] = DataList[Count]
-                                                if quest["Finished"] == "True":
-                                                    AchievmentRewards(Achievments.index(quest))
-                                                    quest["Finished"] = True
-                                                else:
-                                                    quest["Finished"] = False
-                                                quest["Show Cooldown"] = int(DataList[Count+1])
-                                            Count += 2
-
-                                        height = int(DataList[Count])
-                                        width = int(DataList[Count + 1])
-                                        Images = load_images("Images",height,width)
-                                        Count += 2
-                                        board = [[0] * height for _ in range(width)]
-                                        
-                                        Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
-                                                 ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
-                                                 ,"CityFar","CityFac","Farm"]
-                                        for j in range(height):
-                                            for i in range(width):
-                                                board[j][i] = Tiles[int(DataList[Count])]
+                                            for item in Mult:
+                                                Mult[item] = int(DataList[Count])
                                                 Count += 1
+
+                                            for quest in Achievments:
+                                                if Achievments.index(quest) != 6:
+                                                    quest["Finished"] = DataList[Count] 
+                                                    if quest["Finished"] == "True":
+                                                        AchievmentRewards(Achievments.index(quest))
+                                                        quest["Finished"] = True
+                                                    else:
+                                                        quest["Finished"] = False
+                                                    quest["Show Cooldown"] = int(DataList[Count+1])
+                                                Count += 2
+
+                                            height = int(DataList[Count])
+                                            width = int(DataList[Count + 1])
+                                            Count += 2
+                                            Images = load_images("Images",height,width)
+                                            board = [[0] * height for _ in range(width)]
+
+                                            PrestigeCount = int(DataList[Count])
+                                            AscendCount = int(DataList[Count+1])
+                                            MinerBought = DataList[Count+2]
+                                            MusicPaused = DataList[Count+3]
+                                            if MusicPaused == "True":
+                                                pygame.mixer.music.pause()
+                                                MusicPaused = True
+                                            else:
+                                                MusicPaused = False
+
+                                            Count += 4
+                                                                        
+                                            Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
+                                                    ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
+                                                        ,"CityFar","CityFac","Farm"]
+                                            for j in range(height):
+                                                for i in range(width):
+                                                    board[j][i] = Tiles[int(DataList[Count])]
+                                                    Count += 1
                                             
                                     
                                     
@@ -1162,7 +1181,8 @@ def game_loop(height,width,prestige,LoadSave):
 
             Data += str(PrestigeCount) + "#"
             Data += str(AscendCount) + "#"
-            Data += str(MinerBought)
+            Data += str(MinerBought) + "#"
+            Data += str(MusicPaused) + "#"
             
             
                                             
