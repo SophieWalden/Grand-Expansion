@@ -152,15 +152,15 @@ def menu(board, selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPr
             gameDisplay.blit(text_surface, (730, 175))
 
         if board[selection[1]][selection[0]].find("Factory ") != -1:
-            text_surface, rect = Fonts[6].render(("Factory"), (0, 0, 0))
+            text_surface, rect = Fonts[6].render("Factory", (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
 
         if board[selection[1]][selection[0]] == "Solar_Power":
-            text_surface, rect = Fonts[6].render(("Solar_Power"), (0, 0, 0))
+            text_surface, rect = Fonts[6].render("Solar_Power", (0, 0, 0))
             gameDisplay.blit(text_surface, (670, 175))
 
         if board[selection[1]][selection[0]] == "Super_Factory":
-            text_surface, rect = Fonts[6].render(("Super_Factory"), (0, 0, 0))
+            text_surface, rect = Fonts[6].render("Super_Factory", (0, 0, 0))
             gameDisplay.blit(text_surface, (642, 175))
 
         # Button for upgrading
@@ -244,6 +244,11 @@ def menu(board, selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPr
                         gameDisplay.blit(text_surface, (720, 500))
         else:
             # City Upgrade path
+            # Template
+            # if pos[0] >= ### -> Mouse Selection X Layer
+            # and pos[0] <= ### -> Mouse Selection Y Layer
+            # and pos[1] >= ### -> Mouse X Layer Disengage Cutoff
+            # and pos[1] <= ### -> Mouse Y Layer Disengage Cutoff
             if board[selection[1]][selection[0]] == "City":
                 if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650:
                     pygame.draw.rect(gameDisplay, (150, 0, 0), (725, 550, 200, 100), 0)
@@ -253,14 +258,23 @@ def menu(board, selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPr
                 text_surface, rect = Fonts[5].render("Factory", (0, 0, 0))
                 gameDisplay.blit(text_surface, (760, 575))
 
-                if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 350 and pos[1] <= 450:
-                    pygame.draw.rect(gameDisplay, (150, 0, 0), (725, 350, 200, 100), 0)
-
+                # Farm Button
+                if pos[0] >= 20 and pos[0] <= 925 and pos[1] >= 20 and pos[1] <= 450:
+                    pygame.draw.rect(gameDisplay, (150, 0, 0), (725, 250, 200, 100), 0)
                 else:
-                    pygame.draw.rect(gameDisplay, (255, 0, 0), (725, 350, 200, 100), 0)
+                    pygame.draw.rect(gameDisplay, (255, 0, 0), (725, 250, 200, 100), 0)
 
                 text_surface, rect = Fonts[5].render("Farm", (0, 0, 0))
-                gameDisplay.blit(text_surface, (780, 375))
+                gameDisplay.blit(text_surface, (780, 280))
+
+                # Power Button
+                if pos[0] >= 425 and pos[0] <= 925 and pos[1] >= 450 and pos[1] <= 550:
+                    pygame.draw.rect(gameDisplay, (150, 0, 0), (725, 400, 200, 100), 0)
+                else:
+                    pygame.draw.rect(gameDisplay, (255, 0, 0), (725, 400, 200, 100), 0)
+
+                text_surface, rect = Fonts[5].render("Power", (0, 0, 0))
+                gameDisplay.blit(text_surface, (770, 420))
 
 
             # Water Upgrade Paths

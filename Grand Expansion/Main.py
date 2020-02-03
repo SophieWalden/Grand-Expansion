@@ -44,7 +44,7 @@ MapLevel = 0
 
 # Plays the music
 pygame.mixer.music.load('Sounds/Soundtrack.wav')
-pygame.mixer.music.set_volume(0.2)
+pygame.mixer.music.set_volume(0)
 pygame.mixer.music.play(-1)
 global MusicPaused
 MusicPaused = False
@@ -551,33 +551,33 @@ def game_loop(height, width, prestige, LoadSave):
                         != "You have collected 10k Mandorium":
                     Confirming = False
 
-                # Demolishing Buildings
-                if pos[0] >= 320 and pos[0] <= 420 and pos[1] >= 400 and pos[
-                    1] <= 450 and Confirming == True and ConfirmMessage \
-                        != "You have collected 10k Mandorium":
-                    if board[yPos][xPos].find("Forest") != -1:
-                        if board[yPos][xPos].find("2") != -1:
-                            MaterialProduction["Wood"] -= 1
-                        if board[yPos][xPos].find("3") != -1:
-                            MaterialProduction["Wood"] -= 5
-                        if board[yPos][xPos].find("4") != -1:
-                            MaterialProduction["Wood"] -= 15
-                        board[yPos][xPos] = "Forest Lv1"
-                    if board[yPos][xPos].find("Quarry") != -1:
-                        if board[yPos][xPos].find("2") != -1:
-                            MaterialProduction["Stones"] -= 1
-                        if board[yPos][xPos].find("3") != -1:
-                            MaterialProduction["Stones"] -= 5
-                        if board[yPos][xPos].find("4") != -1:
-                            MaterialProduction["Stones"] -= 15
-                        board[yPos][xPos] = "Quarry Lv1"
-                    if board[yPos][xPos].find("City") != -1 or board[yPos][xPos].find("Factory") != -1:
-                        if board[yPos][xPos].find("City") != -1:
-                            MaterialProduction["Food"] -= 1
-                        if board[yPos][xPos].find("Factory") != -1:
-                            MaterialProduction["Metal"] -= 1
-                        board[yPos][xPos] = "Grass"
-                    Confirming = False
+                    # Demolishing Buildings
+                    if pos[0] >= 320 and pos[0] <= 420 and pos[1] >= 400 and pos[
+                        1] <= 450 and Confirming == True and ConfirmMessage \
+                            != "You have collected 10k Mandorium":
+                        if board[yPos][xPos].find("Forest") != -1:
+                            if board[yPos][xPos].find("2") != -1:
+                                MaterialProduction["Wood"] -= 1
+                            if board[yPos][xPos].find("3") != -1:
+                                MaterialProduction["Wood"] -= 5
+                            if board[yPos][xPos].find("4") != -1:
+                                MaterialProduction["Wood"] -= 15
+                            board[yPos][xPos] = "Forest Lv1"
+                        if board[yPos][xPos].find("Quarry") != -1:
+                            if board[yPos][xPos].find("2") != -1:
+                                MaterialProduction["Stones"] -= 1
+                            if board[yPos][xPos].find("3") != -1:
+                                MaterialProduction["Stones"] -= 5
+                            if board[yPos][xPos].find("4") != -1:
+                                MaterialProduction["Stones"] -= 15
+                            board[yPos][xPos] = "Quarry Lv1"
+                        if board[yPos][xPos].find("City") != -1 or board[yPos][xPos].find("Factory") != -1:
+                            if board[yPos][xPos].find("City") != -1:
+                                MaterialProduction["Food"] -= 1
+                            if board[yPos][xPos].find("Factory") != -1:
+                                MaterialProduction["Metal"] -= 1
+                            board[yPos][xPos] = "Grass"
+                        Confirming = False
 
                 # Making the selection
                 if xPos <= height - 1 and yPos >= 0 and MenuClicking == False:
@@ -855,7 +855,6 @@ def game_loop(height, width, prestige, LoadSave):
                                     for j in range(height):
                                         for i in range(width):
                                             Data += str(Tiles.index(board[j][i])) + "#"
-
                                     print(Data)
 
                                 # Import save Data:
