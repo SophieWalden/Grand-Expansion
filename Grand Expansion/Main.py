@@ -553,7 +553,8 @@ def game_loop(height,width,prestige,LoadSave):
                     MenuClicking = True
                 PreviousPos = [xPos,yPos]
 
-                if pos[0] >= 445 and pos[0] <= 545 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True and ConfirmMessage == "You have collected 10k Mandorium":
+                if pos[0] >= 445 and pos[0] <= 545 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True and \
+                        ConfirmMessage == "You have collected 10k Mandorium":
                     PrestigeCount = 0
                     for item in Mult:
                         Mult[item] *= 10
@@ -562,11 +563,13 @@ def game_loop(height,width,prestige,LoadSave):
                     game_loop(8,8,0,False)
 
                 #Yes or no for Demolishing Buildings
-                if pos[0] >= 570 and pos[0] <= 670 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True and ConfirmMessage != "You have collected 10k Mandorium":
+                if pos[0] >= 570 and pos[0] <= 670 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True and ConfirmMessage \
+                        != "You have collected 10k Mandorium":
                     Confirming = False
 
                 #Demolishing Buildings
-                if pos[0] >= 320 and pos[0] <= 420 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True and ConfirmMessage != "You have collected 10k Mandorium":
+                if pos[0] >= 320 and pos[0] <= 420 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True and ConfirmMessage \
+                        != "You have collected 10k Mandorium":
                     if board[yPos][xPos].find("Forest") != -1:
                         if board[yPos][xPos].find("2") != -1:
                             MaterialProduction["Wood"] -= 1
@@ -644,7 +647,8 @@ def game_loop(height,width,prestige,LoadSave):
                                     cost2.append(cost2[MapLevel] * 10)
                                     MapLevel += 1
                                     Images = load_images("Images",height,width)
-                                if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 400 and pos[1] <= 500 and PrestigeCount >= 3 and ResourceCount["Prestige"] >= 10000 and MinerBought == False:
+                                if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 400 and pos[1] <= 500 and PrestigeCount >= 3 and \
+                                        ResourceCount["Prestige"] >= 10000 and MinerBought == False:
                                     MinerBought = True
                                     ResourceCount["Prestige"] -= 10000
                                     MaterialProduction["Mandorium"] += 100
@@ -810,9 +814,11 @@ def game_loop(height,width,prestige,LoadSave):
                                     
                                     
                                                                     
-                                    Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
-                                            ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
+                                    Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory",
+                                             "Forest Lv1","Forest Lv2","Forest Lv3","Forest Lv4","Quarry Lv1","Quarry Lv2",
+                                             "Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
                                             ,"CityFar","CityFac","Farm"]
+
                                     for j in range(height):
                                         for i in range(width):
                                             Data += str(Tiles.index(board[j][i])) + "#"
@@ -845,9 +851,11 @@ def game_loop(height,width,prestige,LoadSave):
                                     
                                     
                                                                     
-                                    Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
-                                            ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
+                                    Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory",
+                                             "Forest Lv1","Forest Lv2","Forest Lv3","Forest Lv4","Quarry Lv1","Quarry Lv2",
+                                             "Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
                                             ,"CityFar","CityFac","Farm"]
+
                                     for j in range(height):
                                         for i in range(width):
                                             Data += str(Tiles.index(board[j][i])) + "#"
@@ -871,7 +879,6 @@ def game_loop(height,width,prestige,LoadSave):
                                                     FindBit = False
                                                 count += 1
                                             DataList.append(DataBit)
-
 
                                         Count = 0
                                         if DataList[Count] == "Beta1.6":
@@ -916,24 +923,16 @@ def game_loop(height,width,prestige,LoadSave):
 
                                             Count += 4
                                                                         
-                                            Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
-                                                    ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
+                                            Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory",
+                                                     "Forest Lv1","Forest Lv2","Forest Lv3","Forest Lv4","Quarry Lv1",
+                                                     "Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
                                                         ,"CityFar","CityFac","Farm"]
                                             for j in range(height):
                                                 for i in range(width):
                                                     board[j][i] = Tiles[int(DataList[Count])]
                                                     Count += 1
-                                            
-                                    
-                                    
-                                                 
-                                        
-                                                    
-                                        
-                                    
 
                         pos = pygame.mouse.get_pos()
-
 
                         #Displays all the buttons
 
@@ -981,7 +980,6 @@ def game_loop(height,width,prestige,LoadSave):
                         text_surface, rect = font_40.render(("Save Game"), (0, 0, 0))
                         gameDisplay.blit(text_surface, (630, 205))
 
-                        
 
                         pygame.display.flip()
                         clock.tick(60)
@@ -992,6 +990,7 @@ def game_loop(height,width,prestige,LoadSave):
                     Confirming = True
                     ConfirmMessage = "Are you sure you want to demolish the building?"
                         
+                # Will need to re-check & fix readability
                 #All of the upgrades
                 if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650 and CurSelection != [-1,-1]:
                     if board[CurSelection[1]][CurSelection[0]] == "Forest Lv3" and ResourceCount["Metal"] >= 100 and ResourceCount["Electricity"] >= 1:
@@ -1031,12 +1030,14 @@ def game_loop(height,width,prestige,LoadSave):
                         board[CurSelection[1]][CurSelection[0]] = "Super Factory"
                     if board[CurSelection[1]][CurSelection[0]] == "Factory" and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650: 
                         board[CurSelection[1]][CurSelection[0]] = "Factory Su"
-                    if board[CurSelection[1]][CurSelection[0]] == "CityFac" and ResourceCount["Food"] >= 1 and ResourceCount["Stones"] >= 50 and Achievments[1]["Finished"] == True:
+                    if board[CurSelection[1]][CurSelection[0]] == "CityFac" and ResourceCount["Food"] >= 1 and ResourceCount["Stones"] >= 50 \
+                            and Achievments[1]["Finished"] == True:
                         ResourceCount["Stones"] -= 50
                         MaterialProduction["Metal"] += 1
                         MaterialProduction["Food"] -= 1
                         board[CurSelection[1]][CurSelection[0]] = "Factory"
-                    if board[CurSelection[1]][CurSelection[0]] == "Water Fish" and ResourceCount["Wood"] >= 100 and ResourceCount["Metal"] >= 25 and Achievments[5]["Finished"] == True:
+                    if board[CurSelection[1]][CurSelection[0]] == "Water Fish" and ResourceCount["Wood"] >= 100 and ResourceCount["Metal"] >= 25 \
+                            and Achievments[5]["Finished"] == True:
                         ResourceCount["Wood"] -= 100
                         ResourceCount["Metal"] -= 25
                         MaterialProduction["Food"] += 2
@@ -1045,17 +1046,20 @@ def game_loop(height,width,prestige,LoadSave):
                         board[CurSelection[1]][CurSelection[0]] = "CityFac"
                     if board[CurSelection[1]][CurSelection[0]] == "Water" and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650: 
                         board[CurSelection[1]][CurSelection[0]] = "Water Fish"
-                    if board[CurSelection[1]][CurSelection[0]] == "CityFar" and ResourceCount["Wood"] >= 100 and ResourceCount["Food"] >= 50 and Achievments[1]["Finished"] == True:
+                    if board[CurSelection[1]][CurSelection[0]] == "CityFar" and ResourceCount["Wood"] >= 100 and ResourceCount["Food"] >= 50 \
+                            and Achievments[1]["Finished"] == True:
                         ResourceCount["Wood"] -= 100
                         ResourceCount["Food"] -= 50
                         MaterialProduction["Food"] += 2
                         board[CurSelection[1]][CurSelection[0]] = "Farm"
-                    if board[CurSelection[1]][CurSelection[0]] == "Grass" and ResourceCount["Wood"] >= 50 and ResourceCount["Stones"] >= 20 and UnUpgradable[1] != "Grass":
+                    if board[CurSelection[1]][CurSelection[0]] == "Grass" and ResourceCount["Wood"] >= 50 and ResourceCount["Stones"] >= 20 \
+                            and UnUpgradable[1] != "Grass":
                         ResourceCount["Wood"] -= 50
                         ResourceCount["Stones"] -= 20
                         MaterialProduction["Food"] += 1
                         board[CurSelection[1]][CurSelection[0]] = "City"
-                    if board[CurSelection[1]][CurSelection[0]] == "Water Dam" and ResourceCount["Wood"] >= 200 and ResourceCount["Metal"] >= 50 and Achievments[2]["Finished"] == True:
+                    if board[CurSelection[1]][CurSelection[0]] == "Water Dam" and ResourceCount["Wood"] >= 200 and ResourceCount["Metal"] >= 50 \
+                            and Achievments[2]["Finished"] == True:
                         ResourceCount["Wood"] -= 200
                         ResourceCount["Metal"] -= 50
                         MaterialProduction["Electricity"] += 1
@@ -1070,7 +1074,9 @@ def game_loop(height,width,prestige,LoadSave):
                     board[CurSelection[1]][CurSelection[0]] = "Factory So"
                 
                 #Taking you back to mainscreen when you finish and calculates time
-                if CurSelection == [-1,-1] and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650 and ResourceCount["Wood"] >= 1000 and ResourceCount["Stones"] >= 500 and ResourceCount["Food"] >= 200 and ResourceCount["Metal"] >= 100 and ResourceCount["Electricity"] >= 50:
+                if CurSelection == [-1,-1] and pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 550 and pos[1] <= 650 and ResourceCount["Wood"] >= 1000 \
+                        and ResourceCount["Stones"] >= 500 and ResourceCount["Food"] >= 200 and ResourceCount["Metal"] >= 100 \
+                        and ResourceCount["Electricity"] >= 50:
                     Earned = 0
                     Tiles = ["Grass","City","Factory","Factory Su","Factory So","Solar Power","Super Factory","Forest Lv1","Forest Lv2","Forest Lv3"
                     ,"Forest Lv4","Quarry Lv1","Quarry Lv2","Quarry Lv3","Quarry Lv4","Water","Water Dam","Water Fish","Fisherman","Dam"
@@ -1079,7 +1085,8 @@ def game_loop(height,width,prestige,LoadSave):
                     for tileRow in board:
                         for tile in tileRow:
                             Earned += Value[Tiles.index(tile)]
-                    Earned += int(ResourceCount["Wood"]/1000) + int(ResourceCount["Stones"]/500) + int(ResourceCount["Food"]/200) + int(ResourceCount["Metal"]/100) + int(ResourceCount["Electricity"]/50)
+                    Earned += int(ResourceCount["Wood"]/1000) + int(ResourceCount["Stones"]/500) + int(ResourceCount["Food"]/200) + \
+                              int(ResourceCount["Metal"]/100) + int(ResourceCount["Electricity"]/50)
                     PrestigeCount += 1
                     game_loop(height,width,prestige + Earned,False)
     
@@ -1109,7 +1116,10 @@ def game_loop(height,width,prestige,LoadSave):
 
 
         #This is my try at making multiple files. It looks very ineffecient and probably bad to use. 
-        board, ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achviements, Mult = Menu.menu(board,CurSelection, pygame, gameDisplay,[font_23,font_25,font_30,font_35,font_40,font_50,font_75,font_150],ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achievments, Mult, PrestigeCount, AscendCount)
+        board, ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achviements, \
+        Mult = Menu.menu(board,CurSelection, pygame, gameDisplay,[font_23,font_25,font_30,font_35,font_40,font_50,font_75,font_150],
+                         ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achievments,
+                         Mult, PrestigeCount, AscendCount)
         #Achvievment Check
         Achviement(Achievments)
 

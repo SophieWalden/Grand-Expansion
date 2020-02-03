@@ -13,9 +13,19 @@
                | Description: v# description |
                | --------------------------- |
  ----------------------------    ----------------------------   ------------------------- ------------------------------
- --v1 Aquired Fork: Aquired Fork from  8BitToaster ->  https://github.com/CyborgVillager/Grand-Expansion.
+ v1 Aquired Fork: Aquired Fork from  8BitToaster ->  https://github.com/CyborgVillager/Grand-Expansion.
                     will be updating this to handle custom ai, and be assisting in the devlopment.
 
                     Edit: Edit some changes, mostly visual to help aid in making changes/ readable, will be fixing
                     it over the course of this project lifespan.
-                        -Updated ReadMe.md
+                        -Updated ReadMe.md'
+
+
+ --v2 Tidying Up: Tidying up the code at the moment, before get to modifying it. I'm pretty stoked about this, my excitment
+                    on seeing this mini program grow is gonna be a blast!!.
+
+                    Besides that the main objectives is to clean up the code:
+                     line 993-1074 @ Main.py requires work on readability
+                      -line 300 @ Menu.py -> speed to gather resources
+                        Once the program gets a bit more finalize will be increasing the time it takes to gather resource
+                        this will also includes for a number of factors that will contribute to the speed as well.

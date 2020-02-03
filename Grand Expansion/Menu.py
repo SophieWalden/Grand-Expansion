@@ -41,7 +41,8 @@ def shorten(Num):
 
     return Num
 
-def menu(board,selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achviements, Mult, PrestigeCount, AscendCount):
+def menu(board,selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialProduction, Cooldown, UnUpgradable,
+         UpgradeInfo, MaterialsEarned, Count, Achviements, Mult, PrestigeCount, AscendCount):
     import time
     #Drawing Menu
     pygame.draw.line(gameDisplay,(50,50,50),(0,160),(1000,160),5)
@@ -120,35 +121,46 @@ def menu(board,selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPro
 
 
         
-    #Displays what you are selecting
+    #Displays User's Mouse Selection
     if selection != [-1,-1]:
         if board[selection[1]][selection[0]] == "Dam":
             text_surface, rect = Fonts[6].render(("Waterwheel"), (0, 0, 0))
             gameDisplay.blit(text_surface, (665, 175))
+
         if board[selection[1]][selection[0]] == "Grass":
             text_surface, rect = Fonts[6].render(("Grass"), (0, 0, 0))
             gameDisplay.blit(text_surface, (750, 175))
+
         if board[selection[1]][selection[0]].find("Water") != -1:
             text_surface, rect = Fonts[6].render(("Water"), (0, 0, 0))
             gameDisplay.blit(text_surface, (750, 175))
-        if board[selection[1]][selection[0]] == "Forest Lv1" or board[selection[1]][selection[0]] == "Forest Lv2" or board[selection[1]][selection[0]] == "Forest Lv3":
+
+        if board[selection[1]][selection[0]] == "Forest Lv1" or board[selection[1]][selection[0]] == "Forest Lv2" or \
+                board[selection[1]][selection[0]] == "Forest Lv3":
             text_surface, rect = Fonts[6].render(("Forest"), (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
-        if board[selection[1]][selection[0]] == "Quarry Lv1" or board[selection[1]][selection[0]] == "Quarry Lv2" or board[selection[1]][selection[0]] == "Quarry Lv3":
+
+        if board[selection[1]][selection[0]] == "Quarry Lv1" or board[selection[1]][selection[0]] == "Quarry Lv2" or \
+                board[selection[1]][selection[0]] == "Quarry Lv3":
             text_surface, rect = Fonts[6].render(("Quarry"), (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
+
         if board[selection[1]][selection[0]] == "City":
             text_surface, rect = Fonts[6].render(("Upgrade Path"), (0, 0, 0))
             gameDisplay.blit(text_surface, (660, 175))
+
         if board[selection[1]][selection[0]] == "CityFac" or board[selection[1]][selection[0]] == "CityFar":
             text_surface, rect = Fonts[6].render(("City"), (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
+
         if board[selection[1]][selection[0]].find("Factory ") != -1:
             text_surface, rect = Fonts[6].render(("Factory"), (0, 0, 0))
             gameDisplay.blit(text_surface, (730, 175))
+
         if board[selection[1]][selection[0]] == "Solar Power":
             text_surface, rect = Fonts[6].render(("Solar Power"), (0, 0, 0))
             gameDisplay.blit(text_surface, (670, 175))
+
         if board[selection[1]][selection[0]] == "Super Factory":
             text_surface, rect = Fonts[6].render(("Super Factory"), (0, 0, 0))
             gameDisplay.blit(text_surface, (642, 175))
@@ -284,7 +296,8 @@ def menu(board,selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPro
 
 
     #Adding all the things produced
-    if time.process_time() - Cooldown >= 1:
+    #  Line 300 Speed for Resource Gather
+    if time.process_time() - Cooldown >= 0:
         for Item in ResourceCount:
             if Item != "Metal":
                 ResourceCount[Item] += MaterialProduction[Item] * Mult[Item]
@@ -373,7 +386,8 @@ def menu(board,selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPro
         for tileRow in board:
             for tile in tileRow:
                 Earned += Value[Tiles.index(tile)]
-        Earned += int(ResourceCount["Wood"]/1000) + int(ResourceCount["Stones"]/500) + int(ResourceCount["Food"]/200) + int(ResourceCount["Metal"]/100) + int(ResourceCount["Electricity"]/50)
+        Earned += int(ResourceCount["Wood"]/1000) + int(ResourceCount["Stones"]/500) + int(ResourceCount["Food"]/200) +\
+                  int(ResourceCount["Metal"]/100) + int(ResourceCount["Electricity"]/50)
 
         text_surface, rect = Fonts[5].render(("Rebirth (+" + str(Earned) + ")"), (0, 0, 0))
         gameDisplay.blit(text_surface, (690, 180))

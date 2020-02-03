@@ -3,7 +3,7 @@
 > Special thanks to 8BitToaster for creating the respo ->
 Link: [8BitToaster/Grand-Expansion](https://github.com/8BitToaster/Grand-Expansion)
 
-Will be modifying it the handle A.i & improving the concept of this mini civ game. 
+Will be modifying it to handle the A.i & improving the concept of this mini civ game. 
 Most likely be implementing a couple of my custom projects to help speed up the process a bit.
 
 Besides that feel free to check out the code, tweak it and have fun. As long your finding ways on 
