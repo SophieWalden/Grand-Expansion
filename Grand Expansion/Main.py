@@ -330,25 +330,42 @@ def boardUpSize(board,height,width):
 
 #The main part of the game
 def game_loop(height,width,prestige,LoadSave):
-    global AscendCount, MinerBought, ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, AnimationStage, Count, Achviements, MusicPaused, Images, Mult, MapLevel, PrestigeCount
+    global AscendCount, MinerBought, ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned,\
+        AnimationStage, Count, Achviements, MusicPaused, Images, Mult, MapLevel, PrestigeCount
 
-    #Declaring a ton of variables
+    #Declaring the values for resources
     game_run = True
     board = gen_Board([[0] * height for _ in range(width)],height,width)
     CurSelection = [-1,-1]
-    ResourceCount = {"Wood": 10, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0,"Prestige": prestige, "Mandorium": 0}
+    ResourceCount = {"Wood": 10, "Stones": 10,"Food": 5,"Metal": 4,"Electricity": 0,"Prestige": prestige, "Mandorium": 0}
     MaterialProduction = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0, "Prestige": 0, "Mandorium": 0}
     MaterialsEarned = {"Wood": 0, "Stones": 0,"Food": 0,"Metal": 0,"Electricity": 0,"Prestige": prestige, "Mandorium": 0}
     Cooldown = time.process_time()
     UnUpgradable = ["Water","Grass","Quarry Lv3","Forest Lv3","Water Fish","Water Dam"]
-    UpgradeInfo = {"Map Upgrades": [],"Forest Lv1":["10 wood","0 wood","1 wood"],"Quarry Lv1":["15 wood","0 stones", "1 stones"],"Forest Lv2":["40 wood","1 wood","5 wood"],"Quarry Lv2":["45 wood","20 stones","1 stones", "5 stones"]}
-    Achievments = [{"Name": "Beginner","Description":"You gathered 100 wood","Reward":"Unlocked cities","wood": 100,"Finished": False,"Show Cooldown": 0}
-                   ,{"Name": "Food Man","Description":"You gathered 50 food","Reward":"Unlocked Factories","wood": 300,"stones":100,"food":50,"Finished": False,"Show Cooldown": 0}
-                   ,{"Name": "Heavy Metal","Description":"You made 100 metal","Reward":"Unlocked Electricity","metal": 100,"Finished": False,"Show Cooldown": 0}
-                   ,{"Name": "Shocking","Description":"You produced 100 Electricity","Reward": "Unlocked Electric Upgrades","Electricity": 100,"Finished": False,"Show Cooldown": 0}
-                   ,{"Name": "Fast Materials","Description":"You got a Lvl4 Upgrade","Reward": "Unlocked Upgraded Factories","Finished": False,"Show Cooldown": 0}
-                   ,{"Name": "Stockpile", "Description": "Have 200 food at any time", "Reward": "Unlocked Fishermen", "Finished": False,"Show Cooldown": 0}
-                   ,{"Name": "Restarter", "Description": "You rebirthed 3 times", "Reward": "Unlocked Mandorium","Finished": False, "Show Cooldown": 0}]
+    UpgradeInfo = {"Map Upgrades": [],"Forest Lv1":["10 wood","0 wood","1 wood"],"Quarry Lv1":["15 wood","0 stones", "1 stones"],
+                   "Forest Lv2":["40 wood","1 wood","5 wood"],"Quarry Lv2":["45 wood","20 stones","1 stones", "5 stones"]}
+
+    Achievments = [{"Name": "Beginner","Description":"You gathered 100 wood","Reward":"Unlocked cities","wood": 100,
+                    "Finished": False,"Show Cooldown": 0}
+
+                   ,{"Name": "Food Man","Description":"You gathered 50 food","Reward":"Unlocked Factories","wood": 300,
+                     "stones":100,"food":50,"Finished": False,"Show Cooldown": 0}
+
+                   ,{"Name": "Heavy Metal","Description":"You made 100 metal","Reward":"Unlocked Electricity",
+                     "metal": 100,"Finished": False,"Show Cooldown": 0}
+
+                   ,{"Name": "Shocking","Description":"You produced 100 Electricity","Reward": "Unlocked Electric Upgrades",
+                     "Electricity": 100,"Finished": False,"Show Cooldown": 0}
+
+                   ,{"Name": "Fast Materials","Description":"You got a Lvl4 Upgrade","Reward": "Unlocked Upgraded Factories",
+                     "Finished": False,"Show Cooldown": 0}
+
+                   ,{"Name": "Stockpile", "Description": "Have 200 food at any time", "Reward": "Unlocked Fishermen",
+                     "Finished": False,"Show Cooldown": 0}
+
+                   ,{"Name": "Restarter", "Description": "You rebirthed 3 times", "Reward": "Unlocked Mandorium",
+                     "Finished": False, "Show Cooldown": 0}]
+    # Tile Images
     Images = []
     Images = load_images("Images",height,width)
     ConfirmMessage = ""
