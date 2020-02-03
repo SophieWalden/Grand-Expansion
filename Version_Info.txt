@@ -44,8 +44,10 @@ v3 Tidy Up/Modify: Made a source folder to contain the fonts & source modules. A
 
 ----------------------------    ----------------------------   ------------------------- ------------------------------
 v4 Font Source Edit : Modified Font to import source_modules instead of having 2-3 files having the same info
---v5 Commenting Menu.py: Studied #City Upgrade @ line 246 and made a template for future use
+v5 Commenting Menu.py: Studied #City Upgrade @ line 246 and made a template for future use
                          # if pos[0] >= ### -> Mouse Selection X Layer
                           -  # and pos[0] <= ### -> Mouse Selection Y Layer
                           -  # and pos[1] >= ### -> Mouse X Layer Disengage Cutoff
                           -  # and pos[1] <= ### -> Mouse Y Layer Disengage Cutoff
+
+                     --v5.5 Edit: Included 'Power' Button for Solar Power @ #City Upgrade
