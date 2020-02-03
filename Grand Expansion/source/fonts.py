@@ -1,5 +1,5 @@
-import pygame
-from pygame import freetype
+from source_modules import *
+
 
 # Getting all the text files ready
 font_20 = pygame.freetype.Font("Font.ttf", 20)

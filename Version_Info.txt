@@ -31,7 +31,7 @@
                         this will also includes for a number of factors that will contribute to the speed as well.
 
 
---v3 Tidy Up/Modify: Made a source folder to contain the fonts & source modules. Also modified the images -> Solar Power
+v3 Tidy Up/Modify: Made a source folder to contain the fonts & source modules. Also modified the images -> Solar Power
                         & Super Factory to Solar_Power & Super_Factory. Modified the rest of the program to compensate
                         for this change.
                         Will be working on fixing the issue with upgrading the factory.
@@ -40,3 +40,7 @@
                         After that will be working on a new upgrade under the classifcaiton for 'Power'. This will be
                         used for Solar Power & any other power sources that can be used to obtain electricity.
                         While the factory will be obtaining metals
+
+
+----------------------------    ----------------------------   ------------------------- ------------------------------
+--v4 Font Source Edit : Modified Font to import source_modules instead of having 2-3 files having the same info

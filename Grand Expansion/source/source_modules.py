@@ -1,4 +1,6 @@
 # Importing all the modules
+from pygame import freetype
+
 try:
     import time, random, sys, os
 except ImportError:
