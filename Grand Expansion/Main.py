@@ -1,4 +1,5 @@
 from source_modules import *
+
 # Initialize the game engine
 pygame.init()
 
@@ -36,11 +37,12 @@ def load_images(path_to_directory, height, width):
 
 # Multipliers for Prestige
 global Mult
-Mult = {"Wood": 1, "Stones": 1, "Food": 1, "Metal": 1, "Electricity": 1, "Prestige": 1, "Mandorium": 1}
+# Temp Multi
+Mult = {"Wood": 6, "Stones": 6, "Food": 6, "Metal": 6, "Electricity": 6, "Prestige": 6, "Mandorium": 6}
 
 # Map Level
 global MapLevel
-MapLevel = 0
+MapLevel = 2
 
 # Plays the music
 pygame.mixer.music.load('Sounds/Soundtrack.wav')
@@ -142,6 +144,7 @@ def AchievmentRewards(Num):
         UnUpgradable.pop(UnUpgradable.index("Grass"))
         UnUpgradable.append("CityFac")
         UnUpgradable.append("City")
+        UnUpgradable.append("Farm")
         UnUpgradable.append("CityFar")
         UpgradeInfo["Grass"] = ["50 Wood", "20 Stones", "0 Food", "1 Food"]
     if Num == 1:
@@ -563,6 +566,7 @@ def game_loop(height, width, prestige, LoadSave):
                             if board[yPos][xPos].find("4") != -1:
                                 MaterialProduction["Wood"] -= 15
                             board[yPos][xPos] = "Forest Lv1"
+
                         if board[yPos][xPos].find("Quarry") != -1:
                             if board[yPos][xPos].find("2") != -1:
                                 MaterialProduction["Stones"] -= 1
@@ -571,6 +575,7 @@ def game_loop(height, width, prestige, LoadSave):
                             if board[yPos][xPos].find("4") != -1:
                                 MaterialProduction["Stones"] -= 15
                             board[yPos][xPos] = "Quarry Lv1"
+
                         if board[yPos][xPos].find("City") != -1 or board[yPos][xPos].find("Factory") != -1:
                             if board[yPos][xPos].find("City") != -1:
                                 MaterialProduction["Food"] -= 1
@@ -613,23 +618,23 @@ def game_loop(height, width, prestige, LoadSave):
                                     "Prestige"] >= cost[Mult["Wood"] - 1]:
                                     ResourceCount["Prestige"] -= cost[Mult["Wood"] - 1]
                                     Mult["Wood"] += 1
-                                if pos[0] >= 600 and pos[0] <= 800 and pos[1] >= 25 and pos[1] <= 125 and ResourceCount[
+                                if 600 <= pos[0] <= 800 and pos[1] >= 25 and pos[1] <= 125 and ResourceCount[
                                     "Prestige"] >= cost[Mult["Stones"] - 1]:
                                     ResourceCount["Prestige"] -= cost[Mult["Stones"] - 1]
                                     Mult["Stones"] += 1
-                                if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 150 and pos[1] <= 250 and \
+                                if 200 <= pos[0] <= 400 and pos[1] >= 150 and pos[1] <= 250 and \
                                         ResourceCount["Prestige"] >= cost[Mult["Food"] - 1]:
                                     ResourceCount["Prestige"] -= cost[Mult["Food"] - 1]
                                     Mult["Food"] += 1
-                                if pos[0] >= 600 and pos[0] <= 800 and pos[1] >= 150 and pos[1] <= 250 and \
+                                if 600 <= pos[0] <= 800 and pos[1] >= 150 and pos[1] <= 250 and \
                                         ResourceCount["Prestige"] >= cost[Mult["Metal"] - 1]:
                                     ResourceCount["Prestige"] -= cost[Mult["Metal"] - 1]
                                     Mult["Metal"] += 1
-                                if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 275 and pos[1] <= 375 and \
+                                if 200 <= pos[0] <= 400 and pos[1] >= 275 and pos[1] <= 375 and \
                                         ResourceCount["Prestige"] >= cost[Mult["Electricity"] - 1]:
                                     ResourceCount["Prestige"] -= cost[Mult["Electricity"] - 1]
                                     Mult["Electricity"] += 1
-                                if pos[0] >= 600 and pos[0] <= 800 and pos[1] >= 275 and pos[1] <= 375 and \
+                                if 600 <= pos[0] <= 800 and pos[1] >= 275 and pos[1] <= 375 and \
                                         ResourceCount["Prestige"] >= cost2[MapLevel]:
                                     ResourceCount["Prestige"] -= cost2[MapLevel]
                                     height += 2

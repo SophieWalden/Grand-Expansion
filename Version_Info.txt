@@ -50,4 +50,8 @@ v5 Commenting Menu.py: Studied #City Upgrade @ line 246 and made a template for 
                           -  # and pos[1] >= ### -> Mouse X Layer Disengage Cutoff
                           -  # and pos[1] <= ### -> Mouse Y Layer Disengage Cutoff
 
-                     --v5.5 Edit: Included 'Power' Button for Solar Power @ #City Upgrade
+                     v5.5 Edit: Included 'Power' Button for Solar Power @ #City Upgrade
+
+
+--v6 City/Farm Modify: will be modifying on the structure of a farm -> City, will be fixing the button issue with
+                        Farm, then will work on the factory settings
