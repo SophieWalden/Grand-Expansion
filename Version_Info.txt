@@ -61,6 +61,9 @@ v7 Added Soundtrack: Added a an ambient soundtrack ambient-guitar-x1-loop-mode.m
                         Link: https://freesound.org/people/frankum/sounds/393520/
 
 
---v8 Updated Wood Gathering Images: created a bit modern wood cutting image to suit the city image. From the looks of it
+v8 Updated Wood Gathering Images: created a bit modern wood cutting image to suit the city image. From the looks of it
                                     this game is based around the modern era due to the cities image. WIll update the
                                     other images to suit the time period.
+
+                                    --v8.5 Edit: will have to work on making my forest edit a bit better, as of now its a bit
+                                    'blobish' will have to make it a bit more wild/untamed for future updates.
