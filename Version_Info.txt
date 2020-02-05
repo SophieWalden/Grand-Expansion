@@ -53,5 +53,9 @@ v5 Commenting Menu.py: Studied #City Upgrade @ line 246 and made a template for 
                      v5.5 Edit: Included 'Power' Button for Solar Power @ #City Upgrade
 
 
---v6 City/Farm Modify: will be modifying on the structure of a farm -> City, will be fixing the button issue with
+v6 City/Farm Modify: will be modifying on the structure of a farm -> City, will be fixing the button issue with
                         Farm, then will work on the factory settings
+
+--v7 Added Soundtrack: Added a an ambient soundtrack ambient-guitar-x1-loop-mode.mp4 to be played.
+                        Its created from frankum @ Freesound
+                        Link: https://freesound.org/people/frankum/sounds/393520/

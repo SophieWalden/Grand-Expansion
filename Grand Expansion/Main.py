@@ -45,8 +45,8 @@ global MapLevel
 MapLevel = 2
 
 # Plays the music
-pygame.mixer.music.load('Sounds/Soundtrack.wav')
-pygame.mixer.music.set_volume(0)
+pygame.mixer.music.load('Sounds/ambient-guitar-x1-loop-mode.mp3')
+pygame.mixer.music.set_volume(.2)
 pygame.mixer.music.play(-1)
 global MusicPaused
 MusicPaused = False
