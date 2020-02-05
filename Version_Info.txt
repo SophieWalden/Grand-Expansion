@@ -56,6 +56,11 @@ v5 Commenting Menu.py: Studied #City Upgrade @ line 246 and made a template for 
 v6 City/Farm Modify: will be modifying on the structure of a farm -> City, will be fixing the button issue with
                         Farm, then will work on the factory settings
 
---v7 Added Soundtrack: Added a an ambient soundtrack ambient-guitar-x1-loop-mode.mp4 to be played.
+v7 Added Soundtrack: Added a an ambient soundtrack ambient-guitar-x1-loop-mode.mp4 to be played.
                         Its created from frankum @ Freesound
                         Link: https://freesound.org/people/frankum/sounds/393520/
+
+
+--v8 Updated Wood Gathering Images: created a bit modern wood cutting image to suit the city image. From the looks of it
+                                    this game is based around the modern era due to the cities image. WIll update the
+                                    other images to suit the time period.
