@@ -220,22 +220,22 @@ def draw(x, y, Obj, Type, height, width, Images, AnimationStage, Count):
                 AnimationStage["Dam"][1] -= 10 / Count["Dam"]
 
 
-        if Type.find("Fisherman") != -1:
+        if Type.find("Fisherman0") != -1:
             # The Animation for fisherman
-            if AnimationStage["Fisherman"][0] == 1:
+            if AnimationStage["Fisherman0"][0] == 1:
                 gameDisplay.blit(Images["Fisherman1"], (x, y))
-            if AnimationStage["Fisherman"][0] == 2:
+            if AnimationStage["Fisherman0"][0] == 2:
                 gameDisplay.blit(Images["Fisherman2"], (x, y))
-            if AnimationStage["Fisherman"][0] == 3:
+            if AnimationStage["Fisherman0"][0] == 3:
                 gameDisplay.blit(Images["Fisherman2"], (x, y))
 
-            if AnimationStage["Fisherman"][1] <= 0:
-                AnimationStage["Fisherman"][0] += 1
-                AnimationStage["Fisherman"][1] = 0.5
-                if AnimationStage["Fisherman"][0] == 4:
-                    AnimationStage["Fisherman"][0] = 1
+            if AnimationStage["Fisherman0"][1] <= 0:
+                AnimationStage["Fisherman0"][0] += 1
+                AnimationStage["Fisherman0"][1] = 0.5
+                if AnimationStage["Fisherman0"][0] == 4:
+                    AnimationStage["Fisherman0"][0] = 1
             else:
-                AnimationStage["Fisherman"][1] -= 0.5/ Count["Fisherman"]
+                AnimationStage["Fisherman0"][1] -= 0.5/ Count["Fisherman0"]
 
 
 
