@@ -79,5 +79,7 @@ v11 Quarry 3-4 Updated <-x_x->: Quarry3-4 Updated, updated fishing boats to have
                                     if the player decided to transform a lake into a fishing spot. Will work on finding
                                     a solution.
 
---v12 Updated Text Info <-x_x->: Updated text info @ Menu.py line 125 WaterWheel -> Dam, to fit in with the modern theme.
+v12 Updated Text Info <-x_x->: Updated text info @ Menu.py line 125 WaterWheel -> Dam, to fit in with the modern theme.
                                 Fishing Bug still prevalent <-x_x->
+
+                                --v12.5 Edit <-x_x->: Fixed typo for mining vechs
