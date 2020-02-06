@@ -1,5 +1,5 @@
 # This is the file for all the code used in displaying values in the menu
-
+from source_modules import *
 def TextMove(Str):
     return -1 * (5 * len(str(Str)))
 
@@ -398,7 +398,7 @@ def menu(board, selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPr
         Tiles = ["Grass", "City", "Factory", "Factory Su", "Factory So", "Solar_Power", "Super_Factory", "Forest Lv1",
                  "Forest Lv2", "Forest Lv3"
             , "Forest Lv4", "Quarry Lv1", "Quarry Lv2", "Quarry Lv3", "Quarry Lv4", "Water", "Water Dam", "Water Fish",
-                 "Fisherman", "Dam"
+                 "Fisherman0", "Dam"
             , "CityFar", "CityFac", "Farm"]
         Value = [0, 1, 2, 2, 2, 3, 3, 0, 0, 1, 2, 0, 0, 1, 2, 0, 0, 0, 1, 2, 1, 1, 2]
         for tileRow in board:

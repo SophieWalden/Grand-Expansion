@@ -72,5 +72,9 @@ V9 Updated Resource Gathering Images: Updated Dam - animation, to include a dam,
                                         updated fisherman to fishing boat. modified dam animation to simulate dam
                                         releasing water/storing it.
 ----------------------------    ----------------------------   ------------------------- ------------------------------
---v10 Updated Quarry1-2: Updated the images for Quarry and included a mining_vech0. Will be making a new folder for the
+v10 Updated Quarry1-2: Updated the images for Quarry and included a mining_vech0. Will be making a new folder for the
                         vechs shortly. Will be updating Quarry3-4 as well.
+
+--v11 Quarry 3-4 Updated <-x_x->: Quarry3-4 Updated, updated fishing boats to have animation, however a bug will occur
+                                    if the player decided to transform a lake into a fishing spot. Will work on finding
+                                    a solution.

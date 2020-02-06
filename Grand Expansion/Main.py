@@ -176,7 +176,7 @@ def AchievmentRewards(Num):
         UpgradeInfo["Factory So"] = ["100 Metal", "1 Food per second", "1 metal", "3 Electricity"]
     if Num == 5:
         UnUpgradable.pop(UnUpgradable.index("Water Fish"))
-        UnUpgradable.append("Fisherman")
+        UnUpgradable.append("Fisherman0")
         UpgradeInfo["Water Fish"] = ["100 Wood", "25 metal", "0 Food", "2 Food"]
 
 
@@ -203,19 +203,41 @@ def draw(x, y, Obj, Type, height, width, Images, AnimationStage, Count):
             else:
                 AnimationStage["Water"][1] -= 0.025 / Count["Water"]
 
+
+
         if Type == "Dam":
-            # The Animation for Waterwheels/Dams
+            # The Animation for Dam
             if AnimationStage["Dam"][0] == 1:
                 gameDisplay.blit(Images["Dam1"], (x, y))
             if AnimationStage["Dam"][0] == 2:
                 gameDisplay.blit(Images["Dam2"], (x, y))
             if AnimationStage["Dam"][1] <= 0:
                 AnimationStage["Dam"][0] += 1
-                AnimationStage["Dam"][1] = random.randint(800,1000) # random vara for dam to open/close
+                AnimationStage["Dam"][1] = random.randint(800, 1000)  # random vara for dam to open/close
                 if AnimationStage["Dam"][0] == 3:
                     AnimationStage["Dam"][0] = 1
             else:
                 AnimationStage["Dam"][1] -= 10 / Count["Dam"]
+
+
+        if Type.find("Fisherman") != -1:
+            # The Animation for fisherman
+            if AnimationStage["Fisherman"][0] == 1:
+                gameDisplay.blit(Images["Fisherman1"], (x, y))
+            if AnimationStage["Fisherman"][0] == 2:
+                gameDisplay.blit(Images["Fisherman2"], (x, y))
+            if AnimationStage["Fisherman"][0] == 3:
+                gameDisplay.blit(Images["Fisherman2"], (x, y))
+
+            if AnimationStage["Fisherman"][1] <= 0:
+                AnimationStage["Fisherman"][0] += 1
+                AnimationStage["Fisherman"][1] = 0.5
+                if AnimationStage["Fisherman"][0] == 4:
+                    AnimationStage["Fisherman"][0] = 1
+            else:
+                AnimationStage["Fisherman"][1] -= 0.5/ Count["Fisherman"]
+
+
 
         # Drawing all the diffrent tiles
         if Type == "Quarry Lv1":
@@ -236,8 +258,8 @@ def draw(x, y, Obj, Type, height, width, Images, AnimationStage, Count):
             gameDisplay.blit(Images["Forest2"], (x, y))
         if Type == "Farm":
             gameDisplay.blit(Images["Farm"], (x, y))
-        if Type == "Fisherman":
-            gameDisplay.blit(Images["Fisherman"], (x, y))
+        if Type == "Fisherman0":
+            gameDisplay.blit(Images["Fisherman0"], (x, y))
         if Type == "Solar_Power":
             gameDisplay.blit(Images["Solar_Power"], (x, y))
 
@@ -444,7 +466,7 @@ def game_loop(height, width, prestige, LoadSave):
                 Tiles = ["Grass", "City", "Factory", "Factory Su", "Factory So", "Solar_Power", "Super_Factory",
                          "Forest Lv1", "Forest Lv2", "Forest Lv3"
                     , "Forest Lv4", "Quarry Lv1", "Quarry Lv2", "Quarry Lv3", "Quarry Lv4", "Water", "Water Dam",
-                         "Water Fish", "Fisherman", "Dam"
+                         "Water Fish", "Fisherman0", "Dam"
                     , "CityFar", "CityFac", "Farm"]
                 for j in range(height):
                     for i in range(width):
@@ -478,7 +500,7 @@ def game_loop(height, width, prestige, LoadSave):
     Tiles = ["Grass", "City", "Factory", "Factory Su", "Factory So", "Solar_Power", "Super_Factory", "Forest Lv1",
              "Forest Lv2", "Forest Lv3"
         , "Forest Lv4", "Quarry Lv1", "Quarry Lv2", "Quarry Lv3", "Quarry Lv4", "Water", "Water Dam", "Water Fish",
-             "Fisherman", "Dam"
+             "Fisherman0", "Dam"
         , "CityFar", "CityFac", "Farm"]
     for j in range(height):
         for i in range(width):
@@ -816,7 +838,7 @@ def game_loop(height, width, prestige, LoadSave):
                                              "Forest Lv1", "Forest Lv2", "Forest Lv3", "Forest Lv4", "Quarry Lv1",
                                              "Quarry Lv2",
                                              "Quarry Lv3", "Quarry Lv4", "Water", "Water Dam", "Water Fish",
-                                             "Fisherman", "Dam"
+                                             "Fisherman0", "Dam"
                                         , "CityFar", "CityFac", "Farm"]
 
                                     for j in range(height):
@@ -854,7 +876,7 @@ def game_loop(height, width, prestige, LoadSave):
                                              "Forest Lv1", "Forest Lv2", "Forest Lv3", "Forest Lv4", "Quarry Lv1",
                                              "Quarry Lv2",
                                              "Quarry Lv3", "Quarry Lv4", "Water", "Water Dam", "Water Fish",
-                                             "Fisherman", "Dam"
+                                             "Fisherman0", "Dam"
                                         , "CityFar", "CityFac", "Farm"]
 
                                     for j in range(height):
@@ -928,7 +950,7 @@ def game_loop(height, width, prestige, LoadSave):
                                                      "Forest Lv1", "Forest Lv2", "Forest Lv3", "Forest Lv4",
                                                      "Quarry Lv1",
                                                      "Quarry Lv2", "Quarry Lv3", "Quarry Lv4", "Water", "Water Dam",
-                                                     "Water Fish", "Fisherman", "Dam"
+                                                     "Water Fish", "Fisherman0", "Dam"
                                                 , "CityFar", "CityFac", "Farm"]
                                             for j in range(height):
                                                 for i in range(width):
@@ -1050,7 +1072,7 @@ def game_loop(height, width, prestige, LoadSave):
                         ResourceCount["Wood"] -= 100
                         ResourceCount["Metal"] -= 25
                         MaterialProduction["Food"] += 2
-                        board[CurSelection[1]][CurSelection[0]] = "Fisherman"
+                        board[CurSelection[1]][CurSelection[0]] = "Fisherman0"
                     if board[CurSelection[1]][CurSelection[0]] == "City" and pos[0] >= 725 and pos[0] <= 925 and pos[
                         1] >= 550 and pos[1] <= 650:
                         board[CurSelection[1]][CurSelection[0]] = "CityFac"
@@ -1100,7 +1122,7 @@ def game_loop(height, width, prestige, LoadSave):
                     Tiles = ["Grass", "City", "Factory Su", "Factory Su", "Factory So", "Solar_Power", "Super_Factory",
                              "Forest Lv1", "Forest Lv2", "Forest Lv3"
                         , "Forest Lv4", "Quarry Lv1", "Quarry Lv2", "Quarry Lv3", "Quarry Lv4", "Water", "Water Dam",
-                             "Water Fish", "Fisherman", "Dam"
+                             "Water Fish", "Fisherman0", "Dam"
                         , "CityFar", "CityFac", "Farm"]
                     Value = [0, 1, 2, 2, 2, 3, 3, 0, 0, 1, 2, 0, 0, 1, 2, 0, 0, 0, 1, 2, 1, 1, 2]
                     for tileRow in board:
@@ -1113,11 +1135,13 @@ def game_loop(height, width, prestige, LoadSave):
                     game_loop(height, width, prestige + Earned, False)
 
         # Counting Tiles for certain animations
-        Count = {"Water": 0, "Dam": 0, "Forest Lv4": 0, "Quarry Lv4": 0, "Super_Factory": 0}
+        Count = {"Water": 0, "Water Fish": 0,"Dam": 0, "Forest Lv4": 0, "Quarry Lv4": 0, "Super_Factory": 0}
         for j in range(height):
             for i in range(width):
                 if board[j][i] == "Water" or board[j][i] == "Water Fish" or board[j][i] == "Water Dam":
                     Count["Water"] += 1
+                if board[j][i] == "Water Fish":
+                    Count["Water Fish"] += 1
                 if board[j][i] == "Dam":
                     Count["Dam"] += 1
                 if board[j][i] == "Forest Lv4":
@@ -1235,7 +1259,7 @@ def game_loop(height, width, prestige, LoadSave):
             Tiles = ["Grass", "City", "Factory", "Factory Su", "Factory So", "Solar_Power", "Super_Factory",
                      "Forest Lv1", "Forest Lv2", "Forest Lv3"
                 , "Forest Lv4", "Quarry Lv1", "Quarry Lv2", "Quarry Lv3", "Quarry Lv4", "Water", "Water Dam",
-                     "Water Fish", "Fisherman", "Dam"
+                     "Water Fish", "Fisherman0", "Dam"
                 , "CityFar", "CityFac", "Farm"]
             for j in range(height):
                 for i in range(width):
