@@ -46,7 +46,7 @@ MapLevel = 2
 
 # Plays the music
 pygame.mixer.music.load('Sounds/ambient-guitar-x1-loop-mode.mp3')
-pygame.mixer.music.set_volume(.2)
+pygame.mixer.music.set_volume(0)
 pygame.mixer.music.play(-1)
 global MusicPaused
 MusicPaused = False
@@ -211,11 +211,11 @@ def draw(x, y, Obj, Type, height, width, Images, AnimationStage, Count):
                 gameDisplay.blit(Images["Dam2"], (x, y))
             if AnimationStage["Dam"][1] <= 0:
                 AnimationStage["Dam"][0] += 1
-                AnimationStage["Dam"][1] = 0.5
+                AnimationStage["Dam"][1] = random.randint(800,1000) # random vara for dam to open/close
                 if AnimationStage["Dam"][0] == 3:
                     AnimationStage["Dam"][0] = 1
             else:
-                AnimationStage["Dam"][1] -= 0.05 / Count["Dam"]
+                AnimationStage["Dam"][1] -= 10 / Count["Dam"]
 
         # Drawing all the diffrent tiles
         if Type == "Quarry Lv1":

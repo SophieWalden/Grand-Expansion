@@ -1,6 +1,11 @@
 # Importing all the modules
 from pygame import freetype
 
+# time delay & random
+import random
+from random import randint
+from time import sleep
+
 try:
     import time, random, sys, os
 except ImportError:
