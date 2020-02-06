@@ -122,7 +122,7 @@ def menu(board, selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPr
     # Displays User's Mouse Selection
     if selection != [-1, -1]:
         if board[selection[1]][selection[0]] == "Dam":
-            text_surface, rect = Fonts[6].render(("Waterwheel"), (0, 0, 0))
+            text_surface, rect = Fonts[6].render(("Dam"), (0, 0, 0))
             gameDisplay.blit(text_surface, (665, 175))
 
         if board[selection[1]][selection[0]] == "Grass":

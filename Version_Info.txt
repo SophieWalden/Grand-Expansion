@@ -75,6 +75,9 @@ V9 Updated Resource Gathering Images: Updated Dam - animation, to include a dam,
 v10 Updated Quarry1-2: Updated the images for Quarry and included a mining_vech0. Will be making a new folder for the
                         vechs shortly. Will be updating Quarry3-4 as well.
 
---v11 Quarry 3-4 Updated <-x_x->: Quarry3-4 Updated, updated fishing boats to have animation, however a bug will occur
+v11 Quarry 3-4 Updated <-x_x->: Quarry3-4 Updated, updated fishing boats to have animation, however a bug will occur
                                     if the player decided to transform a lake into a fishing spot. Will work on finding
                                     a solution.
+
+--v12 Updated Text Info <-x_x->: Updated text info @ Menu.py line 125 WaterWheel -> Dam, to fit in with the modern theme.
+                                Fishing Bug still prevalent <-x_x->
