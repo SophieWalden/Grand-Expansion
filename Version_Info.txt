@@ -68,6 +68,9 @@ v8 Updated Wood Gathering Images: created a bit modern wood cutting image to sui
                                     v8.5 Edit: will have to work on making my forest edit a bit better, as of now its a bit
                                     'blobish' will have to make it a bit more wild/untamed for future updates.
 
---V9 Updated Resource Gathering Images: Updated Dam - animation, to include a dam, updated forest4 for lumber gathering
+V9 Updated Resource Gathering Images: Updated Dam - animation, to include a dam, updated forest4 for lumber gathering
                                         updated fisherman to fishing boat. modified dam animation to simulate dam
                                         releasing water/storing it.
+----------------------------    ----------------------------   ------------------------- ------------------------------
+--v10 Updated Quarry1-2: Updated the images for Quarry and included a mining_vech0. Will be making a new folder for the
+                        vechs shortly. Will be updating Quarry3-4 as well.
