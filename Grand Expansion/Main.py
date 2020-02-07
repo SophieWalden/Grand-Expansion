@@ -203,20 +203,6 @@ def draw(x, y, Obj, Type, height, width, Images, AnimationStage, Count):
             else:
                 AnimationStage["Water"][1] -= 0.025 / Count["Water"]
 
-        if AnimationStage["Fisherman"][0] == 1:
-            gameDisplay.blit(Images["Fisherman0"], (x, y))
-        if AnimationStage["Fisherman"][0] == 2:
-            gameDisplay.blit(Images["Fisherman1"], (x, y))
-        if AnimationStage["Fisherman"][0] == 3:
-            gameDisplay.blit(Images["Fisherman2"], (x, y))
-
-        if AnimationStage["Fisherman"][1] <= 0:
-            AnimationStage["Fisherman"][0] += 1
-            AnimationStage["Fisherman"][1] = 0.5
-            if AnimationStage["Fisherman"][0] == 4:
-                AnimationStage["Fisherman"][0] = 1
-        else:
-            AnimationStage["Fisherman"][1] -= 0.025 / Count["Fisherman"]
 
 
 
@@ -234,9 +220,18 @@ def draw(x, y, Obj, Type, height, width, Images, AnimationStage, Count):
             else:
                 AnimationStage["Dam"][1] -= 10 / Count["Dam"]
 
-
-
-
+        if Type == "Fisherman":
+            if AnimationStage["Fisherman"][0] == 1:
+                gameDisplay.blit(Images["Fisherman1"], (x, y))
+            if AnimationStage["Fisherman"][0] == 2:
+                gameDisplay.blit(Images["Fisherman2"], (x, y))
+            if AnimationStage["Fisherman"][1] <= 0:
+                AnimationStage["Fisherman"][0] += 1
+                AnimationStage["Fisherman"][1] = random.randint(850, 1200)  # random vara for dam to open/close
+                if AnimationStage["Fisherman"][0] == 3:
+                    AnimationStage["Fisherman"][0] = 1
+            else:
+                AnimationStage["Fisherman"][1] -= 5 / Count["Fisherman"]
 
         # Drawing all the diffrent tiles
         if Type == "Quarry Lv1":
