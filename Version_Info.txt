@@ -104,5 +104,6 @@ v15 Wiki & Project Implementation: Will be making a beta version for a project p
                                         respo. To give further information about this game, and the direction that it
                                         will take as well.
 
-                                        --v15.5 RGB Color Edit: - RGB colors used when a user's mouse hovers an option:
+                                        v15.5 RGB Color Edit: - RGB colors used when a user's mouse hovers an option:
                                          link: https://www.rapidtables.com/web/color/RGB_Color.html
+                                         --v15.8 Sound Update: Sound has been reactivated
