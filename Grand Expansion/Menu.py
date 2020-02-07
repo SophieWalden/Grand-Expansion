@@ -288,7 +288,7 @@ def menu(board, selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPr
                 else:
                     pygame.draw.rect(gameDisplay, (255, 0, 0), (725, 550, 200, 100), 0)
 
-                text_surface, rect = Fonts[5].render(("Fisherman"), (0, 0, 0))
+                text_surface, rect = Fonts[5].render(("Fishing Boat"), (0, 0, 0))
                 gameDisplay.blit(text_surface, (740, 575))
 
                 if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 350 and pos[1] <= 450:
@@ -343,6 +343,7 @@ def menu(board, selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPr
                 num = Count["Forest Lv4"] - (ResourceCount["Electricity"] * Mult["Electricity"])
                 ResourceCount["Wood"] -= 15 * num * Mult["Wood"]
                 ResourceCount["Electricity"] = 0
+
         if Count["Quarry Lv4"] >= 1 and ResourceCount["Electricity"] > 0:
             if ResourceCount["Electricity"] * Mult["Electricity"] >= Count["Quarry Lv4"]:
                 ResourceCount["Electricity"] -= int(Count["Quarry Lv4"] / Mult["Electricity"])

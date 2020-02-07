@@ -85,5 +85,10 @@ v12 Updated Text Info <-x_x->: Updated text info @ Menu.py line 125 WaterWheel -
                                 v12.5 Edit <-x_x->: Fixed typo for mining vechs
 
 
---v13 Updated Farm Button: moved Farm Button, will soon include 'power' as a third option while facto will generate metals
+v13 Updated Farm Button : moved Farm Button, will soon include 'power' as a third option while facto will generate metals
                             for now
+
+--v14 Fisherman & Tile Upgrade Update <-x_x->: updated couple of tiles for city to consume more food, while making the farms
+                                        produce more food, a balance have to be made or starvation(will be added later)
+                                        will occur.
+                                        Fisherman still working on the bug atm. <-x_x->
