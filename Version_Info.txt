@@ -100,9 +100,9 @@ v14 Fisherman & Tile Upgrade Update <-x_x->: updated couple of tiles for city to
                                                                                 zone.
 
 
---v15 Wiki & Project Implementation: Will be making a beta version for a project page as well as a wiki page for this
+v15 Wiki & Project Implementation: Will be making a beta version for a project page as well as a wiki page for this
                                         respo. To give further information about this game, and the direction that it
                                         will take as well.
 
-                                        -v15.5 RGB Color Edit: - RGB colors used when a user's mouse hovers an option:
+                                        --v15.5 RGB Color Edit: - RGB colors used when a user's mouse hovers an option:
                                          link: https://www.rapidtables.com/web/color/RGB_Color.html
