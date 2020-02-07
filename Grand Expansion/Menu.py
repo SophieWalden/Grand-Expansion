@@ -165,7 +165,7 @@ def menu(board, selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPr
             gameDisplay.blit(text_surface, (642, 175))
 
         # Button for upgrading
-        UpgradePaths = ["City", 'Food',"Water", "Factory",'Power']
+        UpgradePaths = ["City", "Water", "Factory"]
         stop = False
         for item in UpgradePaths:
             if board[selection[1]][selection[0]] == item:
@@ -185,7 +185,7 @@ def menu(board, selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPr
 
                 text_surface, rect = Fonts[5].render(("Upgrade"), (0, 0, 0))
                 gameDisplay.blit(text_surface, (760, 575))
-
+# Upgrade Info on production
                 text_surface, rect = Fonts[5].render(("Current Production: "), (0, 0, 0))
                 gameDisplay.blit(text_surface, (650, 250))
                 if len(UpgradeInfo[board[selection[1]][selection[0]]]) == 3:
@@ -212,6 +212,7 @@ def menu(board, selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPr
                         ("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][2])), (0, 0, 0))
                     gameDisplay.blit(text_surface, (670, 450))
                 else:
+
                     if board[selection[1]][selection[0]] != "Water":
                         text_surface, rect = Fonts[3].render(
                             ("Next Level: " + str(UpgradeInfo[board[selection[1]][selection[0]]][3])), (0, 0, 0))
@@ -260,13 +261,15 @@ def menu(board, selection, pygame, gameDisplay, Fonts, ResourceCount, MaterialPr
                 gameDisplay.blit(text_surface, (760, 575))
 
                 # Farm Button
-                if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 250 and pos[1] <= 100:
-                    pygame.draw.rect(gameDisplay, (150, 0, 0), (725, 250, 200, 100), 0)
+                if pos[0] >= 725 and pos[0] <= 925 and pos[1] >= 250 and pos[1] <= 350:
+                    # non mouse hover
+                    pygame.draw.rect(gameDisplay, (51,51,0), (725, 250, 200, 100), 0)
                 else:
-                    pygame.draw.rect(gameDisplay, (255, 0, 0), (725, 250, 200, 100), 0)
-
-                text_surface, rect = Fonts[5].render("Farm", (0, 0, 0))
-                gameDisplay.blit(text_surface, (780, 280))
+                    # Shaded once mouse hover
+                    pygame.draw.rect(gameDisplay, (102, 102, 0), (725, 250, 200, 100), 0)
+                # Text Location & Color
+                text_surface, rect = Fonts[5].render(("Farm"), (0, 250, 0))
+                gameDisplay.blit(text_surface, (780, 275))
 
             '''
                             # Power Button

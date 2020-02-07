@@ -345,7 +345,7 @@ def game_loop(height, width, prestige, LoadSave):
                      "Mandorium": 0}
     MaterialProduction = {"Wood": 0, "Stones": 0, "Food": 0, "Metal": 0, "Electricity": 0, "Prestige": 0,
                           "Mandorium": 0}
-    MaterialsEarned = {"Wood": 0, "Stones": 0, "Food": 0, "Metal": 0, "Electricity": 0, "Prestige": prestige,
+    MaterialsEarned = {"Wood": 250, "Stones": 250, "Food": 15, "Metal": 10, "Electricity": 0, "Prestige": prestige,
                        "Mandorium": 0}
     Cooldown = time.process_time()
     UnUpgradable = ["Water", "Grass", "Quarry Lv3", "Forest Lv3", "Water Fish", "Water Dam"]
