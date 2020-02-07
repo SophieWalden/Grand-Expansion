@@ -93,8 +93,12 @@ v14 Fisherman & Tile Upgrade Update <-x_x->: updated couple of tiles for city to
                                         will occur.
                                         Fisherman still working on the bug atm. <-x_x->
 
-                                        --v14.5 Fixed - Starting Issue <-x_x->: Fixed starting issue from the Fisherman
+                                        v14.5 Fixed - Starting Issue <-x_x->: Fixed starting issue from the Fisherman
                                                                                 Bug. Now the user can play the game, until
                                                                                 they upgrade the lake into a fishing boat
                                                                                 zone.
 
+
+--v15 Wiki & Project Implementation: Will be making a beta version for a project page as well as a wiki page for this
+                                        respo. To give further information about this game, and the direction that it
+                                        will take as well.
