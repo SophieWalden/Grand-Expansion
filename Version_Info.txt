@@ -109,5 +109,10 @@ v15 Wiki & Project Implementation: Will be making a beta version for a project p
                                          v15.8 Sound Update: Sound has been reactivated
 
 
---v16 Updated Images: Updated Super Factory, Factory images and added a nuclear power plant for future energy production
+v16 Updated Images: Updated Super Factory, Factory images and added a nuclear power plant for future energy production
                         in later versions.
+
+--v17 Updated City/New Category: Updated city to have a bit more 'dense' and overcrowed look, made a new folder for plants
+                                    as of now tree0.png is the newest addition which is currently being used on
+                                    city.png & super_factory.png.
+                                    Will work on adding new funcitons to the game shortly.
