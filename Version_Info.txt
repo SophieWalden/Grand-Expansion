@@ -131,5 +131,14 @@ v18 Farm->Town->City Update: making the final changes for farm -> town -> city i
                                 city to try to claim it -> A.I implemnt
 
 
-                                --v18.5 Images Folder Update: added new folder to hold specific images regarding their
+                                v18.5 Images Folder Update: added new folder to hold specific images regarding their
                                                         category & usage
+
+                                --v18.8 TempImg Implement: Implemented TempImg, so the folders can be active/be used
+                                                            as a reference for future updates to this game.
+                                                            Will be updating up these components @ a later date.
+
+                                                            Main objective is to make the city building start with
+                                                            farm then town lastly to city. Each upgrade will have its
+                                                            own pro's and cons. Any changes the user will have to
+                                                            weigh the options on the cost & benefit to that move.
