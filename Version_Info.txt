@@ -112,7 +112,20 @@ v15 Wiki & Project Implementation: Will be making a beta version for a project p
 v16 Updated Images: Updated Super Factory, Factory images and added a nuclear power plant for future energy production
                         in later versions.
 
---v17 Updated City/New Category: Updated city to have a bit more 'dense' and overcrowed look, made a new folder for plants
+v17 Updated City/New Category: Updated city to have a bit more 'dense' and overcrowed look, made a new folder for plants
                                     as of now tree0.png is the newest addition which is currently being used on
                                     city.png & super_factory.png.
-                                    Will work on adding new funcitons to the game shortly.
+                                    Will work on adding new functions to the game shortly.
+
+
+--v18 Farm->Town->City Update: making the final changes for farm -> town -> city images before I get started on making the
+                                city function to be the farm function first, which will create food.
+                                The player will then have the option on upgrading the farm into a town
+                                which will produce less food but increase the pop.
+                                The user will have 5 more upgrades for the town which will increase the consumption
+                                of electricty & food, after words the city upgrade will be availb. which will
+                                consume the most food, but produces x,y,z resources (will update later).
+
+                                If the player's food production goes neg the population will decrease and cause
+                                damage to the town/city and in future updates possible riots/hostile forces from that
+                                city to try to claim it -> A.I implemnt
