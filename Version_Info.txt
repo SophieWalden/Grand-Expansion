@@ -118,7 +118,7 @@ v17 Updated City/New Category: Updated city to have a bit more 'dense' and overc
                                     Will work on adding new functions to the game shortly.
 
 
---v18 Farm->Town->City Update: making the final changes for farm -> town -> city images before I get started on making the
+v18 Farm->Town->City Update: making the final changes for farm -> town -> city images before I get started on making the
                                 city function to be the farm function first, which will create food.
                                 The player will then have the option on upgrading the farm into a town
                                 which will produce less food but increase the pop.
@@ -129,3 +129,7 @@ v17 Updated City/New Category: Updated city to have a bit more 'dense' and overc
                                 If the player's food production goes neg the population will decrease and cause
                                 damage to the town/city and in future updates possible riots/hostile forces from that
                                 city to try to claim it -> A.I implemnt
+
+
+                                --v18.5 Images Folder Update: added new folder to hold specific images regarding their
+                                                        category & usage
