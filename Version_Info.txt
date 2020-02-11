@@ -107,7 +107,7 @@ v15 Wiki & Project Implementation: Will be making a beta version for a project p
                                         v15.5 RGB Color Edit: - RGB colors used when a user's mouse hovers an option:
                                          link: https://www.rapidtables.com/web/color/RGB_Color.html
                                          v15.8 Sound Update: Sound has been reactivated
-
+----------------------------    ----------------------------   ------------------------- ------------------------------
 
 v16 Updated Images: Updated Super Factory, Factory images and added a nuclear power plant for future energy production
                         in later versions.
@@ -134,7 +134,7 @@ v18 Farm->Town->City Update: making the final changes for farm -> town -> city i
                                 v18.5 Images Folder Update: added new folder to hold specific images regarding their
                                                         category & usage
 
-                                --v18.8 TempImg Implement: Implemented TempImg, so the folders can be active/be used
+                                v18.8 TempImg Implement: Implemented TempImg, so the folders can be active/be used
                                                             as a reference for future updates to this game.
                                                             Will be updating up these components @ a later date.
 
@@ -142,3 +142,13 @@ v18 Farm->Town->City Update: making the final changes for farm -> town -> city i
                                                             farm then town lastly to city. Each upgrade will have its
                                                             own pro's and cons. Any changes the user will have to
                                                             weigh the options on the cost & benefit to that move.
+----------------------------    ----------------------------   ------------------------- ------------------------------
+--v19 Squad Formation:  Added military category Image to finalized the last img, for now ground->infantary will be used
+                        once the critical objectives are completed will work on the military aspect for the game.
+
+                        Video that will be used as reference for military squad update:
+                        https://www.youtube.com/watch?v=OKRues4Fwrk
+
+                        Next update will be implementing version 18 into existence
+
+
