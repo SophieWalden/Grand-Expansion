@@ -143,12 +143,14 @@ v18 Farm->Town->City Update: making the final changes for farm -> town -> city i
                                                             own pro's and cons. Any changes the user will have to
                                                             weigh the options on the cost & benefit to that move.
 ----------------------------    ----------------------------   ------------------------- ------------------------------
---v19 Squad Formation:  Added military category Image to finalized the last img, for now ground->infantary will be used
+v19 Squad Formation:  Added military category Image to finalized the last img, for now ground->infantary will be used
                         once the critical objectives are completed will work on the military aspect for the game.
 
                         Video that will be used as reference for military squad update:
                         https://www.youtube.com/watch?v=OKRues4Fwrk
 
                         Next update will be implementing version 18 into existence
+
+                        --v19.5 Fixed Infantry Spelling: Just fixed infantry spelling error
 
 
