@@ -151,6 +151,6 @@ v19 Squad Formation:  Added military category Image to finalized the last img, f
 
                         Next update will be implementing version 18 into existence
 
-                        --v19.5 Fixed Infantry Spelling: Just fixed infantry spelling error
+                        v19.5 Fixed Infantry Spelling: Just fixed infantry spelling error
 
-
+--v20 Apc: added apc & testing with garrison feature for towns/cities as well as resource gathering upgrades
