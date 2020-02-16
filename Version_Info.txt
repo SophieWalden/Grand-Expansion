@@ -164,5 +164,9 @@ v21 Revamp: will be fixing the fisherman bug & re-doing the project from the gro
 
 ----------------------------    ----------------------------   ------------------------- ------------------------------
 
---v22 Grand Command: GC (Grand Command) has been created, transfered the static info such as source, images, font and
+v22 Grand Command: GC (Grand Command) has been created, transfered the static info such as source, images, font and
                     sound to the folder, will be redoing Grand Expansion code from the ground up.
+
+
+--v23 Transfer/Update: transfer/update complete will be working on making the window stable and re-sizeable then will
+                        be working on the game itself.
