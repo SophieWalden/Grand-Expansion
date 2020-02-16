@@ -1,4 +1,4 @@
-from source_modules import *
+
 #This is the file for all the code in the main menu
 
 #Load the images
@@ -43,7 +43,7 @@ def HomeScreen(pygame, gameDisplay, Fonts, clock, MusicPaused):
     Images = []
     Images = load_images("Images",8,8)
     MenuBoard = gen_Board([[0] * height for _ in range(width)],height,width)
-    AnimationStage = {"Water": [1,0.5],"Fisherman": [1,0.5],"Dam": [1,0.5]}
+    AnimationStage = {"Water": [1,0.5],"Dam": [1,0.5]}
     x = 0
     y = 0
     
@@ -55,13 +55,11 @@ def HomeScreen(pygame, gameDisplay, Fonts, clock, MusicPaused):
         
         
         #Counting for animation speed
-        Count = {"Water": 0,"Water Fish": 0,"Dam": 0,"Forest Lv4": 0,"Quarry Lv4": 0,"Super Factory": 0}
+        Count = {"Water": 0,"Dam": 0,"Forest Lv4": 0,"Quarry Lv4": 0,"Super Factory": 0}
         for j in range(height):
             for i in range(width):
                 if MenuBoard[j][i] == "Water" or MenuBoard[j][i] == "Water Fish" or MenuBoard[j][i] == "Water Dam":
                     Count["Water"] += 1
-                if MenuBoard[j][i] == "Water Fish":
-                    Count["Water Fish"] += 1
                 if MenuBoard[j][i] == "Dam":
                     Count["Dam"] += 1
                 if MenuBoard[j][i] == "Forest Lv4":
@@ -75,7 +73,6 @@ def HomeScreen(pygame, gameDisplay, Fonts, clock, MusicPaused):
         #Drawing all the tiles plus some extra to make it loop seemlessly
         for j in range(height):
             for i in range(width):
-                Main.draw(i * 80 + x,j * 80 + y,"Tile",MenuBoard[j][i],8,8, Images, AnimationStage, Count)
                 Main.draw(i * 80 + x,j * 80 + y,"Tile",MenuBoard[j][i],8,8, Images, AnimationStage, Count)
                 Main.draw(i * 80 + x + 1600,j * 80 + y,"Tile",MenuBoard[j][i],8,8, Images, AnimationStage, Count)
                 Main.draw(i * 80 + x,j * 80 + y + 1600,"Tile",MenuBoard[j][i],8,8, Images, AnimationStage, Count)

@@ -168,5 +168,10 @@ v22 Grand Command: GC (Grand Command) has been created, transfered the static in
                     sound to the folder, will be redoing Grand Expansion code from the ground up.
 
 
---v23 Transfer/Update: transfer/update complete will be working on making the window stable and re-sizeable then will
+v23 Transfer/Update: transfer/update complete will be working on making the window stable and re-sizeable then will
                         be working on the game itself.
+
+--v24 Re-Import: re-imported the orignal code onto Grand_Expansion as a reference/ onto folder Grand Expansion
+                    as of now the orignal has minimal bugs and its currently without the bugs of the fishing boat atm.
+
+                    Once the auto size is complete, will add it onto GE (Grand Expansion) as well.
