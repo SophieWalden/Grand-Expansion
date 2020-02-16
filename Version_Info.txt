@@ -153,4 +153,11 @@ v19 Squad Formation:  Added military category Image to finalized the last img, f
 
                         v19.5 Fixed Infantry Spelling: Just fixed infantry spelling error
 
---v20 Apc: added apc & testing with garrison feature for towns/cities as well as resource gathering upgrades
+v20 Apc: added apc & testing with garrison feature for towns/cities as well as resource gathering upgrades
+
+--v21 Revamp: will be fixing the fisherman bug & re-doing the project from the ground up, will help give me a better
+                understanding and implement a more concise program
+
+                                        **Other Updates**
+                -- Added riot police unit
+                -- Added riot police formation & blueprint to modify
