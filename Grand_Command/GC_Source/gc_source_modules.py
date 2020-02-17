@@ -59,3 +59,5 @@ try:
 except ImportError:
     print("Cant import mainMenu @ this time")
     sys.exit()
+# Initialize the game engine
+pygame.init()

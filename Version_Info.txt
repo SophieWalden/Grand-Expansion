@@ -177,7 +177,7 @@ v24 Re-Import: re-imported the orignal code onto Grand_Expansion as a reference/
                     Once the auto size is complete, will add it onto GE (Grand Expansion) as well.
 
 
---v25 Game Start: game is bootable atm, now will work on making the window screen more modifyable.
+v25 Game Start: game is bootable atm, now will work on making the window screen more modifyable.
                     New files added @ GC_Source gc_game_data.py which gets gc_source_modules import *
                     and display the screen size of the game -> this will be worked on making it more modifyable.
 
@@ -186,3 +186,11 @@ v24 Re-Import: re-imported the orignal code onto Grand_Expansion as a reference/
                     times a certain tile set is shown to the user on the Main Menu.
 
                     Will update again once gets the screen size to be more screen friendly.
+
+--v26 Window Resize: Been testing to see which screen size is suitable on my monitors, did an auto resize but figured
+                        for now make the screen size static, just implement the width & height that it can be played
+                        on a smaller monitor. In which I've tested on my smaller monitor & then compared it to my other
+                        larger monitors.
+
+                        Will have to see once more testing is done for the screen size on different monitors and if
+                        an auto-sizer is needed or not.
