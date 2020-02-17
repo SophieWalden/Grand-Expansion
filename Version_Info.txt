@@ -203,5 +203,10 @@ v27 FishingBoat Fix |x_x|: fixed fishing boat animation. Updated FishingBoat inf
                                 added mini information @ line 84-90 for FishingBoat
 
 
---v28 Options: Working on options button/ modifying it to handle user input to muting button.
+v28 Options: Working on options button/ modifying it to handle user input to muting button.
                 code can be found @ line 145. will work on improving the concept.
+
+--v30 Temp Custom: Included previous custom code of the game that was made a couple of days ago. Its V21 ->
+                    custom_Grand_Expansion. Modified mainMenu.py to include 'New Game' will be working on fixing the button
+                    and enabling a new game session to be played. Once the basics is sorted out will work on the continue
+                    function and work from there.
