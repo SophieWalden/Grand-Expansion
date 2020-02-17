@@ -1,0 +1,212 @@
+ Key Legend:
+                -- = current version
+                -wor: = working on this ver
+                 <-x_x-> = bug
+                 |x_x| = bug fixed
+                 <-o_o-> = design issue
+                 |o_o| = design issue fixed
+
+
+                     ~Updating to repo~
+               | --------------------------- |
+               | v# : Short Version Title    |
+               | Description: v# description |
+               | --------------------------- |
+ ----------------------------    ----------------------------   ------------------------- ------------------------------
+ v1 Aquired Fork: Aquired Fork from  8BitToaster ->  https://github.com/CyborgVillager/Grand-Expansion.
+                    will be updating this to handle custom ai, and be assisting in the devlopment.
+
+                    Edit: Edit some changes, mostly visual to help aid in making changes/ readable, will be fixing
+                    it over the course of this project lifespan.
+                        -Updated ReadMe.md'
+
+
+ v2 Tidying Up: Tidying up the code at the moment, before get to modifying it. I'm pretty stoked about this, my excitment
+                    on seeing this mini program grow is gonna be a blast!!.
+
+                    Besides that the main objectives is to clean up the code:
+                     line 993-1074 @ Main.py requires work on readability
+                      -line 300 @ Menu.py -> speed to gather resources
+                        Once the program gets a bit more finalize will be increasing the time it takes to gather resource
+                        this will also includes for a number of factors that will contribute to the speed as well.
+
+
+v3 Tidy Up/Modify: Made a source folder to contain the fonts & source modules. Also modified the images -> Solar Power
+                        & Super Factory to Solar_Power & Super_Factory. Modified the rest of the program to compensate
+                        for this change.
+                        Will be working on fixing the issue with upgrading the factory.
+                        At the moment if the user upgrades it to either super factory or solar power the image will not
+                        change to their choosing.
+                        After that will be working on a new upgrade under the classifcaiton for 'Power'. This will be
+                        used for Solar Power & any other power sources that can be used to obtain electricity.
+                        While the factory will be obtaining metals
+
+
+----------------------------    ----------------------------   ------------------------- ------------------------------
+v4 Font Source Edit : Modified Font to import source_modules instead of having 2-3 files having the same info
+v5 Commenting Menu.py: Studied #City Upgrade @ line 246 and made a template for future use
+                         # if pos[0] >= ### -> Mouse Selection X Layer
+                          -  # and pos[0] <= ### -> Mouse Selection Y Layer
+                          -  # and pos[1] >= ### -> Mouse X Layer Disengage Cutoff
+                          -  # and pos[1] <= ### -> Mouse Y Layer Disengage Cutoff
+
+                     v5.5 Edit: Included 'Power' Button for Solar Power @ #City Upgrade
+
+
+v6 City/Farm Modify: will be modifying on the structure of a farm -> City, will be fixing the button issue with
+                        Farm, then will work on the factory settings
+
+v7 Added Soundtrack: Added a an ambient soundtrack ambient-guitar-x1-loop-mode.mp4 to be played.
+                        Its created from frankum @ Freesound
+                        Link: https://freesound.org/people/frankum/sounds/393520/
+
+
+v8 Updated Wood Gathering Images: created a bit modern wood cutting image to suit the city image. From the looks of it
+                                    this game is based around the modern era due to the cities image. WIll update the
+                                    other images to suit the time period.
+
+                                    v8.5 Edit: will have to work on making my forest edit a bit better, as of now its a bit
+                                    'blobish' will have to make it a bit more wild/untamed for future updates.
+
+V9 Updated Resource Gathering Images: Updated Dam - animation, to include a dam, updated forest4 for lumber gathering
+                                        updated fisherman to fishing boat. modified dam animation to simulate dam
+                                        releasing water/storing it.
+----------------------------    ----------------------------   ------------------------- ------------------------------
+v10 Updated Quarry1-2: Updated the images for Quarry and included a mining_vech0. Will be making a new folder for the
+                        vechs shortly. Will be updating Quarry3-4 as well.
+
+v11 Quarry 3-4 Updated <-x_x->: Quarry3-4 Updated, updated fishing boats to have animation, however a bug will occur
+                                    if the player decided to transform a lake into a fishing spot. Will work on finding
+                                    a solution.
+
+v12 Updated Text Info <-x_x->: Updated text info @ Menu.py line 125 WaterWheel -> Dam, to fit in with the modern theme.
+                                Fishing Bug still prevalent <-x_x->
+
+                                v12.5 Edit <-x_x->: Fixed typo for mining vechs
+
+
+v13 Updated Farm Button : moved Farm Button, will soon include 'power' as a third option while facto will generate metals
+                            for now
+
+v14 Fisherman & Tile Upgrade Update <-x_x->: updated couple of tiles for city to consume more food, while making the farms
+                                        produce more food, a balance have to be made or starvation(will be added later)
+                                        will occur.
+                                        Fisherman still working on the bug atm. <-x_x->
+
+
+                                        v14.5 Fixed - Starting Issue <-x_x->: Fixed starting issue from the Fisherman
+                                                                                Bug. Now the user can play the game, until
+                                                                                they upgrade the lake into a fishing boat
+                                                                                zone.
+
+
+v15 Wiki & Project Implementation: Will be making a beta version for a project page as well as a wiki page for this
+                                        respo. To give further information about this game, and the direction that it
+                                        will take as well.
+
+                                        v15.5 RGB Color Edit: - RGB colors used when a user's mouse hovers an option:
+                                         link: https://www.rapidtables.com/web/color/RGB_Color.html
+                                         v15.8 Sound Update: Sound has been reactivated
+----------------------------    ----------------------------   ------------------------- ------------------------------
+
+v16 Updated Images: Updated Super Factory, Factory images and added a nuclear power plant for future energy production
+                        in later versions.
+
+v17 Updated City/New Category: Updated city to have a bit more 'dense' and overcrowed look, made a new folder for plants
+                                    as of now tree0.png is the newest addition which is currently being used on
+                                    city.png & super_factory.png.
+                                    Will work on adding new functions to the game shortly.
+
+
+v18 Farm->Town->City Update: making the final changes for farm -> town -> city images before I get started on making the
+                                city function to be the farm function first, which will create food.
+                                The player will then have the option on upgrading the farm into a town
+                                which will produce less food but increase the pop.
+                                The user will have 5 more upgrades for the town which will increase the consumption
+                                of electricty & food, after words the city upgrade will be availb. which will
+                                consume the most food, but produces x,y,z resources (will update later).
+
+                                If the player's food production goes neg the population will decrease and cause
+                                damage to the town/city and in future updates possible riots/hostile forces from that
+                                city to try to claim it -> A.I implemnt
+
+
+                                v18.5 Images Folder Update: added new folder to hold specific images regarding their
+                                                        category & usage
+
+                                v18.8 TempImg Implement: Implemented TempImg, so the folders can be active/be used
+                                                            as a reference for future updates to this game.
+                                                            Will be updating up these components @ a later date.
+
+                                                            Main objective is to make the city building start with
+                                                            farm then town lastly to city. Each upgrade will have its
+                                                            own pro's and cons. Any changes the user will have to
+                                                            weigh the options on the cost & benefit to that move.
+----------------------------    ----------------------------   ------------------------- ------------------------------
+v19 Squad Formation:  Added military category Image to finalized the last img, for now ground->infantary will be used
+                        once the critical objectives are completed will work on the military aspect for the game.
+
+                        Video that will be used as reference for military squad update:
+                        https://www.youtube.com/watch?v=OKRues4Fwrk
+
+                        Next update will be implementing version 18 into existence
+
+                        v19.5 Fixed Infantry Spelling: Just fixed infantry spelling error
+
+v20 Apc: added apc & testing with garrison feature for towns/cities as well as resource gathering upgrades
+
+v21 Revamp: will be fixing the fisherman bug & re-doing the project from the ground up, will help give me a better
+                understanding and implement a more concise program
+
+                                        **Other Updates**
+                -- Added riot police unit
+                -- Added riot police formation & blueprint to modify
+
+----------------------------    ----------------------------   ------------------------- ------------------------------
+
+v22 Grand Command: GC (Grand Command) has been created, transfered the static info such as source, images, font and
+                    sound to the folder, will be redoing Grand Expansion code from the ground up.
+
+
+v23 Transfer/Update: transfer/update complete will be working on making the window stable and re-sizeable then will
+                        be working on the game itself.
+
+v24 Re-Import: re-imported the orignal code onto Grand_Expansion as a reference/ onto folder Grand Expansion
+                    as of now the orignal has minimal bugs and its currently without the bugs of the fishing boat atm.
+
+                    Once the auto size is complete, will add it onto GE (Grand Expansion) as well.
+
+
+v25 Game Start: game is bootable atm, now will work on making the window screen more modifyable.
+                    New files added @ GC_Source gc_game_data.py which gets gc_source_modules import *
+                    and display the screen size of the game -> this will be worked on making it more modifyable.
+
+                    New file @ GC_Source -> tile_information. Basically the tile info regarding the different buildings
+                    , and soon to be units. As of now this connects to mainMenu.py @ line 19-52 has the % on # of
+                    times a certain tile set is shown to the user on the Main Menu.
+
+                    Will update again once gets the screen size to be more screen friendly.
+
+v26 Window Resize: Been testing to see which screen size is suitable on my monitors, did an auto resize but figured
+                        for now make the screen size static, just implement the width & height that it can be played
+                        on a smaller monitor. In which I've tested on my smaller monitor & then compared it to my other
+                        larger monitors.
+
+                        Will have to see once more testing is done for the screen size on different monitors and if
+                        an auto-sizer is needed or not.
+
+v27 FishingBoat Fix |x_x|: fixed fishing boat animation. Updated FishingBoat info @ tile_information line 40-54,
+                                animation is same as water but moves at a different rate.
+                                the rest of Fishing Boat information is @ mainMenu. Just had to included it part of
+                                the AnimationStage @ line 77, added it to Main Menu Looping Background @ line 58
+                                to be included of the main menu so the player can see the boat,
+                                added mini information @ line 84-90 for FishingBoat
+
+
+v28 Options: Working on options button/ modifying it to handle user input to muting button.
+                code can be found @ line 145. will work on improving the concept.
+
+--v30 Temp Custom: Included previous custom code of the game that was made a couple of days ago. Its V21 ->
+                    custom_Grand_Expansion. Modified mainMenu.py to include 'New Game' will be working on fixing the button
+                    and enabling a new game session to be played. Once the basics is sorted out will work on the continue
+                    function and work from there.
