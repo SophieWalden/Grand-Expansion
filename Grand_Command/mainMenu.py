@@ -123,7 +123,7 @@ def HomeScreen(pygame, gameDisplay, Fonts, clock, MusicPaused):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if 400 <= pos[0] <= 600 and 600 <= pos[1] <= 700 and screen == "Main":
                     main.game_loop(8, 8, 0, False)
-                if 625 <= pos[0] <= 825 and 600 <= pos[1] <= 700 and screen == "Main":
+                if 825 <= pos[0] <= 925 and 800 <= pos[1] <= 900 and screen == "Main":
                     screen = "Options"
                 if 775 <= pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775 and screen == "Options":
                     screen = "Main"
@@ -139,32 +139,18 @@ def HomeScreen(pygame, gameDisplay, Fonts, clock, MusicPaused):
 
         # Shows Main screen text and buttons
         if screen == "Main":
-            text_surface, rect = Fonts[2].render(("Grand Command"), (0, 0, 0))
-            gameDisplay.blit(text_surface, (85, 50))
-
-            if pos[0] >= 175 and pos[0] <= 375 and pos[1] >= 600 and pos[1] <= 700:
-                pygame.draw.rect(gameDisplay, (150, 0, 0), (175, 600, 200, 100), 0)
+            text_surface, rect = Fonts[2].render(("Grand Command"), (242, 43, 35))
+            gameDisplay.blit(text_surface, (220, 50))
+            # mouse clickable to options -> menu for mute sound atm
+            if 825 <= pos[0] <= 925 and 850 <= pos[1] <= 900:
+                # box location not-hover
+                pygame.draw.rect(gameDisplay, (150, 0, 0), (840, 800, 200, 100), 0)
             else:
-                pygame.draw.rect(gameDisplay, (255, 0, 0), (175, 600, 200, 100), 0)
-
-            if pos[0] >= 400 and pos[0] <= 600 and pos[1] >= 600 and pos[1] <= 700:
-                pygame.draw.rect(gameDisplay, (150, 0, 0), (400, 600, 200, 100), 0)
-            else:
-                pygame.draw.rect(gameDisplay, (255, 0, 0), (400, 600, 200, 100), 0)
-
-            text_surface, rect = Fonts[1].render("New Game", (0, 0, 0))
-            gameDisplay.blit(text_surface, (420, 630))
-
-            text_surface, rect = Fonts[1].render("Continue", (0, 0, 0))
-            gameDisplay.blit(text_surface, (200, 630))
-
-            if 625 <= pos[0] <= 825 and pos[1] >= 600 and pos[1] <= 700:
-                pygame.draw.rect(gameDisplay, (150, 0, 0), (625, 600, 200, 100), 0)
-            else:
-                pygame.draw.rect(gameDisplay, (255, 0, 0), (625, 600, 200, 100), 0)
+                # box location on-hover
+                pygame.draw.rect(gameDisplay, (255, 0, 0), (840, 800, 200, 100), 0)
 
             text_surface, rect = Fonts[1].render("Options", (0, 0, 0))
-            gameDisplay.blit(text_surface, (670, 630))
+            gameDisplay.blit(text_surface, (880, 830))
 
             # Shows the options menu
         if screen == "Options":
