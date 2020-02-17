@@ -171,7 +171,18 @@ v22 Grand Command: GC (Grand Command) has been created, transfered the static in
 v23 Transfer/Update: transfer/update complete will be working on making the window stable and re-sizeable then will
                         be working on the game itself.
 
---v24 Re-Import: re-imported the orignal code onto Grand_Expansion as a reference/ onto folder Grand Expansion
+v24 Re-Import: re-imported the orignal code onto Grand_Expansion as a reference/ onto folder Grand Expansion
                     as of now the orignal has minimal bugs and its currently without the bugs of the fishing boat atm.
 
                     Once the auto size is complete, will add it onto GE (Grand Expansion) as well.
+
+
+--v25 Game Start: game is bootable atm, now will work on making the window screen more modifyable.
+                    New files added @ GC_Source gc_game_data.py which gets gc_source_modules import *
+                    and display the screen size of the game -> this will be worked on making it more modifyable.
+
+                    New file @ GC_Source -> tile_information. Basically the tile info regarding the different buildings
+                    , and soon to be units. As of now this connects to mainMenu.py @ line 19-52 has the % on # of
+                    times a certain tile set is shown to the user on the Main Menu.
+
+                    Will update again once gets the screen size to be more screen friendly.

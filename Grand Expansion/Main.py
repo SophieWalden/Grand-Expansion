@@ -61,15 +61,15 @@ def load_images(path_to_directory,height,width):
 
 #Multipliers for Prestige
 global Mult
-Mult = {"Wood": 1, "Stones": 1, "Food": 1, "Metal": 1, "Electricity": 1,"Prestige": 1, "Mandorium": 1}
+Mult = {"Wood": 10, "Stones": 10, "Food": 10, "Metal": 10, "Electricity": 10,"Prestige": 1, "Mandorium": 1}
 
 #Map Level
 global MapLevel
-MapLevel = 0 
+MapLevel = 1
 
 #Plays the music
 pygame.mixer.music.load('Sounds/Soundtrack.wav')
-pygame.mixer.music.set_volume(0.2)
+pygame.mixer.music.set_volume(0)
 pygame.mixer.music.play(-1)
 global MusicPaused
 MusicPaused = False
@@ -536,7 +536,8 @@ def game_loop(height,width,prestige,LoadSave):
                     MenuClicking = True
                 PreviousPos = [xPos,yPos]
 
-                if pos[0] >= 445 and pos[0] <= 545 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True and ConfirmMessage == "You have collected 10k Mandorium":
+                if pos[0] >= 445 and pos[0] <= 545 and pos[1] >= 400 and pos[1] <= 450 and Confirming == True and \
+                        ConfirmMessage == "You have collected 10k Mandorium":
                     PrestigeCount = 0
                     for item in Mult:
                         Mult[item] *= 10
@@ -1092,7 +1093,8 @@ def game_loop(height,width,prestige,LoadSave):
 
 
         #This is my try at making multiple files. It looks very ineffecient and probably bad to use. 
-        board, ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achviements, Mult = Menu.menu(board,CurSelection, pygame, gameDisplay,[font_23,font_25,font_30,font_35,font_40,font_50,font_75,font_150],ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achievments, Mult, PrestigeCount, AscendCount)
+        board, ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count,\
+        Achviements, Mult = Menu.menu(board,CurSelection, pygame, gameDisplay,[font_23,font_25,font_30,font_35,font_40,font_50,font_75,font_150],ResourceCount, MaterialProduction, Cooldown, UnUpgradable, UpgradeInfo, MaterialsEarned, Count, Achievments, Mult, PrestigeCount, AscendCount)
         #Achvievment Check
         Achviement(Achievments)
 
