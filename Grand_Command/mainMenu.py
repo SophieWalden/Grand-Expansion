@@ -1,8 +1,8 @@
 from gc_source_modules import *
 
 
-#Load the images
-def load_images(path_to_directory,height,width):
+# Load the images
+def load_images(path_to_directory, height, width):
     import os
     import pygame
     images = {}
@@ -11,47 +11,59 @@ def load_images(path_to_directory,height,width):
             if name.endswith('.png'):
                 key = name[:-4]
                 img = pygame.image.load(os.path.join(dirpath, name)).convert()
-                img = pygame.transform.scale(img,(int(640/width),int(640/height)))
+                img = pygame.transform.scale(img, (int(640 / width), int(640 / height)))
                 images[key] = img
     return images
 
 
 # Main Menu Looping Background
-def gen_Board(board,height,width):
+def gen_Board(board, height, width):
     import random
     for j in range(height):
         for i in range(width):
-            percent = random.randint(1,200)
+            percent = random.randint(1, 200)
             if percent <= 20:
                 board[j][i] = "Grass"
             else:
+                if percent <= 55:
+                    board[j][i] = "barracks"
                 if percent <= 60:
                     board[j][i] = "Water"
                 elif percent <= 105:
                     board[j][i] = "Forest Lv1"
-                elif percent <= 112:
-                    board[j][i] = "barracks"
-                elif percent <= 125:
+                elif percent <= 115:
+                    board[j][i] = "Forest Lv3"
+
+                elif percent <= 135:
                     board[j][i] = "town_01"
-                elif percent <= 130:
+                elif percent <= 140:
                     board[j][i] = "town_02"
-                elif percent <= 139:
+                elif percent <= 143:
                     board[j][i] = "town_03"
-                elif percent <= 145:
+                elif percent <= 155:
                     board[j][i] = "town_04"
+
                 elif percent <= 156:
                     board[j][i] = "City_00"
                 elif percent <= 159:
                     board[j][i] = "Quarry Lv2"
+                elif percent <= 162:
+                    board[j][i] = "Quarry Lv3"
                 elif percent <= 165:
-                    board[j][i] = "Quarry Lv1"
+                    board[j][i] = "Factory"
+                elif percent <= 170:
+                    board[j][i] = "Solar_Power"
                 elif percent <= 175:
-                    board[j][i] = "Forest Lv2"
+                    board[j][i] = "Super_Factory"
+                elif percent <= 180:
+                    board[j][i] = "FishingBoat"
+
                 else:
-                    board[j][i] = "Grass"
+                    board[j][i] = "Dam"
     return board
 
-#Main Menu
+
+# Main Menu
 def HomeScreen(pygame, gameDisplay, Fonts, clock, MusicPaused):
     global AnimationStage, Count, Images
     import main
@@ -60,20 +72,22 @@ def HomeScreen(pygame, gameDisplay, Fonts, clock, MusicPaused):
     height = 20
     width = 20
     Images = []
-    Images = load_images("Images",8,8)
-    MenuBoard = gen_Board([[0] * height for _ in range(width)],height,width)
-    AnimationStage = {"Water": [1,0.5],"Dam": [1,0.5]}
+    Images = load_images("Images", 8, 8)
+    MenuBoard = gen_Board([[0] * height for _ in range(width)], height, width)
+    AnimationStage = {"Water": [1, 0.5], "FishingBoat": [1, 0.5], "Dam": [1, 0.5]}
     x = 0
     y = 0
 
     while run:
         gameDisplay.fill((0, 100, 255))
 
-        Count = {"Water": 0, "Dam": 0, "Forest Lv4": 0, "Quarry Lv4": 0, "Super Factory": 0}
+        Count = {"Water": 0, "FishingBoat": 0, "Dam": 0, "Forest Lv4": 0, "Quarry Lv4": 0, "Super Factory": 0}
         for j in range(height):
             for i in range(width):
-                if MenuBoard[j][i] == "Water" or MenuBoard[j][i] == "Water Fish" or MenuBoard[j][i] == "Water Dam":
+                if MenuBoard[j][i] == "Water" or MenuBoard[j][i] == "FishingBoat" or MenuBoard[j][i] == "Dam":
                     Count["Water"] += 1
+                if MenuBoard[j][i] == "FishingBoat":
+                    Count["FishingBoat"] += 1
                 if MenuBoard[j][i] == "Dam":
                     Count["Dam"] += 1
                 if MenuBoard[j][i] == "Forest Lv4":
@@ -107,13 +121,13 @@ def HomeScreen(pygame, gameDisplay, Fonts, clock, MusicPaused):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if pos[0] >= 400 and pos[0] <= 600 and pos[1] >= 600 and pos[1] <= 700 and screen == "Main":
+                if 400 <= pos[0] <= 600 and 600 <= pos[1] <= 700 and screen == "Main":
                     main.game_loop(8, 8, 0, False)
-                if pos[0] >= 625 and pos[0] <= 825 and pos[1] >= 600 and pos[1] <= 700 and screen == "Main":
+                if 625 <= pos[0] <= 825 and 600 <= pos[1] <= 700 and screen == "Main":
                     screen = "Options"
-                if pos[0] >= 775 and pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775 and screen == "Options":
+                if 775 <= pos[0] <= 975 and pos[1] >= 675 and pos[1] <= 775 and screen == "Options":
                     screen = "Main"
-                if pos[0] >= 175 and pos[0] <= 375 and pos[1] >= 600 and pos[1] <= 700 and screen == "Main":
+                if 175 <= pos[0] <= 375 and 600 <= pos[1] <= 700 and screen == "Main":
                     main.game_loop(8, 8, 0, True)
                 if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 50 and pos[1] <= 150 and screen == "Options":
                     if MusicPaused == False:
@@ -138,18 +152,18 @@ def HomeScreen(pygame, gameDisplay, Fonts, clock, MusicPaused):
             else:
                 pygame.draw.rect(gameDisplay, (255, 0, 0), (400, 600, 200, 100), 0)
 
-            text_surface, rect = Fonts[1].render(("New Game"), (0, 0, 0))
+            text_surface, rect = Fonts[1].render("New Game", (0, 0, 0))
             gameDisplay.blit(text_surface, (420, 630))
 
-            text_surface, rect = Fonts[1].render(("Continue"), (0, 0, 0))
+            text_surface, rect = Fonts[1].render("Continue", (0, 0, 0))
             gameDisplay.blit(text_surface, (200, 630))
 
-            if pos[0] >= 625 and pos[0] <= 825 and pos[1] >= 600 and pos[1] <= 700:
+            if 625 <= pos[0] <= 825 and pos[1] >= 600 and pos[1] <= 700:
                 pygame.draw.rect(gameDisplay, (150, 0, 0), (625, 600, 200, 100), 0)
             else:
                 pygame.draw.rect(gameDisplay, (255, 0, 0), (625, 600, 200, 100), 0)
 
-            text_surface, rect = Fonts[1].render(("Options"), (0, 0, 0))
+            text_surface, rect = Fonts[1].render("Options", (0, 0, 0))
             gameDisplay.blit(text_surface, (670, 630))
 
             # Shows the options menu
@@ -159,19 +173,19 @@ def HomeScreen(pygame, gameDisplay, Fonts, clock, MusicPaused):
             else:
                 pygame.draw.rect(gameDisplay, (255, 0, 0), (775, 675, 200, 100), 0)
 
-            text_surface, rect = Fonts[1].render(("Back"), (0, 0, 0))
+            text_surface, rect = Fonts[1].render("Back", (0, 0, 0))
             gameDisplay.blit(text_surface, (835, 705))
 
-            if pos[0] >= 200 and pos[0] <= 400 and pos[1] >= 50 and pos[1] <= 150:
+            if 200 <= pos[0] <= 400 and 50 <= pos[1] <= 150:
                 pygame.draw.rect(gameDisplay, (150, 0, 0), (200, 50, 200, 100), 0)
             else:
                 pygame.draw.rect(gameDisplay, (255, 0, 0), (200, 50, 200, 100), 0)
 
             if MusicPaused == False:
-                text_surface, rect = Fonts[1].render(("Mute Music"), (0, 0, 0))
+                text_surface, rect = Fonts[1].render("Mute Music", (0, 0, 0))
                 gameDisplay.blit(text_surface, (210, 80))
             else:
-                text_surface, rect = Fonts[0].render(("Unmute Music"), (0, 0, 0))
+                text_surface, rect = Fonts[0].render("Unmute Music", (0, 0, 0))
                 gameDisplay.blit(text_surface, (210, 86))
 
         pygame.display.flip()

@@ -187,10 +187,17 @@ v25 Game Start: game is bootable atm, now will work on making the window screen 
 
                     Will update again once gets the screen size to be more screen friendly.
 
---v26 Window Resize: Been testing to see which screen size is suitable on my monitors, did an auto resize but figured
+v26 Window Resize: Been testing to see which screen size is suitable on my monitors, did an auto resize but figured
                         for now make the screen size static, just implement the width & height that it can be played
                         on a smaller monitor. In which I've tested on my smaller monitor & then compared it to my other
                         larger monitors.
 
                         Will have to see once more testing is done for the screen size on different monitors and if
                         an auto-sizer is needed or not.
+
+--v27 FishingBoat Fix |x_x|: fixed fishing boat animation. Updated FishingBoat info @ tile_information line 40-54,
+                                animation is same as water but moves at a different rate.
+                                the rest of Fishing Boat information is @ mainMenu. Just had to included it part of
+                                the AnimationStage @ line 77, added it to Main Menu Looping Background @ line 58
+                                to be included of the main menu so the player can see the boat,
+                                added mini information @ line 84-90 for FishingBoat

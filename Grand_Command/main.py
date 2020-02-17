@@ -21,7 +21,7 @@ MapLevel = 1
 
 # Music
 pygame.mixer.music.load('Sounds/Background_SoundTrack.mp3')
-pygame.mixer.music.set_volume(0.3)
+pygame.mixer.music.set_volume(0)
 pygame.mixer.music.play(-1)
 global MusicPaused
 MusicPaused = False
